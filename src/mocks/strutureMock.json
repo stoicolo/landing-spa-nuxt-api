@@ -1,0 +1,36 @@
+{
+  "structure": {
+    "page_template": {
+      "id": 0,
+      "sections": [
+        {
+          "id": 0,
+          "position": 2,
+          "widget": {
+            "id": 2,
+            "name": "header_123",
+            "element": {}
+          }
+        },
+        {
+          "id": 1,
+          "position": 1,
+          "widget": {
+            "id": 1,
+            "name": "form_123",
+            "element": {}
+          }
+        },
+        {
+          "id": 1,
+          "position": 2,
+          "widget": {
+            "id": 2,
+            "widget_id": "footer_123",
+            "element": {}
+          }
+        }
+      ]
+    }
+  }
+}
