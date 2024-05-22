@@ -4,7 +4,7 @@ const config = require('../config/config');
 const swaggerDef = {
   openapi: '3.0.0',
   info: {
-    title: 'Catalogo Circular API documentation',
+    title: 'API for a Landing Page and Context Manegement Nuxt App',
     version,
     license: {
       name: 'MIT',
