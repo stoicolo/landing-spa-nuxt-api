@@ -9,10 +9,10 @@ const PageTemplate = sequelize.define('PageTemplate', {
     allowNull: false,
     trim: true,
   },
-  structure: {
-    type: DataTypes.JSON,
+  sections: {
+    type: DataTypes.ARRAY(DataTypes.JSON),
     allowNull: false,
-    defaultValue: {},
+    defaultValue: [],
   },
   userId: {
     type: DataTypes.INTEGER,
