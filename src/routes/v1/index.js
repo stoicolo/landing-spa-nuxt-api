@@ -2,7 +2,7 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const companyRoute = require('./company.route');
-const quizRoute = require('./quiz.route');
+const pageTemplateRoute = require('./page_template.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -22,8 +22,8 @@ const defaultRoutes = [
     route: companyRoute,
   },
   {
-    path: '/quizes',
-    route: quizRoute,
+    path: '/page_template',
+    route: pageTemplateRoute,
   },
 ];
 
