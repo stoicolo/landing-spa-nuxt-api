@@ -61,6 +61,11 @@ const Company = sequelize.define(
   }
 );
 
+// Add hooks
+// Company.beforeCreate(async (company) => {
+//   console.log('company beforeCreate', company);
+// });
+
 // Check if email is taken
 Company.isEmailTaken = async (email) => {
   const company = await Company.findOne({

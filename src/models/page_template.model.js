@@ -4,15 +4,10 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/sequelize');
 
 const PageTemplate = sequelize.define('PageTemplate', {
-  name: {
-    type: DataTypes.STRING,
+  sections: {
+    type: DataTypes.ARRAY(DataTypes.JSON),
     allowNull: false,
-    trim: true,
-  },
-  structure: {
-    type: DataTypes.JSON,
-    allowNull: false,
-    defaultValue: {},
+    defaultValue: [],
   },
   userId: {
     type: DataTypes.INTEGER,
