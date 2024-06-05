@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const createPageTemplate = {
   body: Joi.object().keys({
-    pageTemplateId: Joi.number().required(),
+    userId: Joi.number().required(),
     sections: Joi.array().items(Joi.object()),
   }),
 };

@@ -22,7 +22,7 @@ const defaultRoutes = [
     route: companyRoute,
   },
   {
-    path: '/page_template',
+    path: '/page_templates',
     route: pageTemplateRoute,
   },
 ];

@@ -67,9 +67,6 @@ const updatePageTemplateById = async (pageTemplateId, updateBody) => {
   if (!pageTemplate) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el id.');
   }
-  if (updateBody.email && (await PageTemplate.isEmailTaken(updateBody.email, pageTemplateId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Ese email ya esta en uso, prueba con otro.');
-  }
   Object.assign(pageTemplate, updateBody);
   await pageTemplate.save();
   return pageTemplate;
