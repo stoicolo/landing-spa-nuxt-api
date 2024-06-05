@@ -8,7 +8,7 @@ const PageTemplateModel = require('./page_template.model');
 // no es necesario y es redundante, ya se hace en el modelo de una forma más especifica.
 // UserModel.hasMany(TokenModel);
 // TokenModel.belongsTo(UserModel);
-// QuizModel.belongsTo(CompanyModel);
+// PageTemplateModel.belongsTo(CompanyModel);
 
 module.exports = {
   User: UserModel,

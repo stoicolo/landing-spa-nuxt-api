@@ -23,7 +23,7 @@ module.exports = router;
  * @swagger
  * tags:
  *   name: Page Templates
- *   description: Quiz management and retrieval
+ *   description: PageTemplate management and retrieval
  */
 
 /**
@@ -31,7 +31,7 @@ module.exports = router;
  * /page_template:
  *   post:
  *     summary: Create a page template
- *     description: Any registered user can create other quizes.
+ *     description: Any registered user can create other page templates.
  *     tags: [Page Templates]
  *     security:
  *       - bearerAuth: []
@@ -74,8 +74,8 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all quizes
- *     description: Only admins can retrieve all quizes.
+ *     summary: Get all page templates
+ *     description: Only admins can retrieve all page templates.
  *     tags: [Page Templates]
  *     security:
  *       - bearerAuth: []
@@ -96,7 +96,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of quizes
+ *         description: Maximum number of page templates
  *       - in: query
  *         name: page
  *         schema:
@@ -136,10 +136,10 @@ module.exports = router;
 
 /**
  * @swagger
- * /quizes/{id}:
+ * /page templates/{id}:
  *   get:
  *     summary: Get a page template
- *     description: Logged in quizes can fetch only their own page template information. Only admins can fetch other quizes.
+ *     description: Logged in page templates can fetch only their own page template information. Only admins can fetch other page templates.
  *     tags: [Page Templates]
  *     security:
  *       - bearerAuth: []
@@ -166,7 +166,7 @@ module.exports = router;
  *
  *   patch:
  *     summary: Update a page template
- *     description: Logged in quizes can only update their own information. Only admins can update other quizes.
+ *     description: Logged in page templates can only update their own information. Only admins can update other page templates.
  *     tags: [Page Templates]
  *     security:
  *       - bearerAuth: []
@@ -217,7 +217,7 @@ module.exports = router;
  *
  *   delete:
  *     summary: Delete a page template
- *     description: Logged in quizes can delete only themselves. Only admins can delete other quizes.
+ *     description: Logged in page templates can delete only themselves. Only admins can delete other page templates.
  *     tags: [Page Templates]
  *     security:
  *       - bearerAuth: []

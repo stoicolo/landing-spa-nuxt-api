@@ -17,7 +17,7 @@ const getPageTemplates = catchAsync(async (req, res) => {
 });
 
 const getPageTemplate = catchAsync(async (req, res) => {
-  const pageTemplate = await pageTemplateService.getQuizById(req.params.pageTemplateId);
+  const pageTemplate = await pageTemplateService.getPageTemplateById(req.params.pageTemplateId);
   if (!pageTemplate) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el id.');
   }
