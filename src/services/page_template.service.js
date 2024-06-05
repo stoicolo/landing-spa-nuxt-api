@@ -8,7 +8,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<PageTemplate>}
  */
 const createPageTemplate = async (pageTemplateBody) => {
-  // if (await PageTemplate.isCompanyQuizTaken(pageTemplateBody.companyId)) {
+  // if (await PageTemplate.isCompanyPageTemplateTaken(pageTemplateBody.companyId)) {
   //   throw new ApiError(
   //     httpStatus.BAD_REQUEST,
   //     'La Página Web ya tiene un PageTemplate previamente asignado, prueba con otra Página Web.'
@@ -38,12 +38,12 @@ const getPageTemplateById = async (id) => {
  */
 const getPageTemplates = async (filter, options) => {
   const { limit, offset } = options;
-  const quizes = await PageTemplate.findAll({
+  const pageTemplates = await PageTemplate.findAll({
     where: filter,
     limit,
     offset,
   });
-  return quizes;
+  return pageTemplates;
 };
 
 /**
