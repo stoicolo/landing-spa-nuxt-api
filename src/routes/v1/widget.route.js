@@ -28,7 +28,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /widget:
+ * /widgets:
  *   post:
  *     summary: Create a widget
  *     description: Any registered user can create other widgets.
@@ -136,7 +136,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /page-templates/{id}:
+ * /widgets/{id}:
  *   get:
  *     summary: Get a widget
  *     description: Logged in widgets can fetch only their own widget information. Only admins can fetch other widgets.

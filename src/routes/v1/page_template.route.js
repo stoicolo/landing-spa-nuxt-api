@@ -28,7 +28,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /page_template:
+ * /page_templates:
  *   post:
  *     summary: Create a page template
  *     description: Any registered user can create other page templates.
@@ -136,7 +136,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /page templates/{id}:
+ * /page_templates/{id}:
  *   get:
  *     summary: Get a page template
  *     description: Logged in page templates can fetch only their own page template information. Only admins can fetch other page templates.
