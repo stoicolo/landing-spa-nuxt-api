@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const companyRoute = require('./company.route');
 const pageTemplateRoute = require('./page_template.route');
+const widgetRoute = require('./widget.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -24,6 +25,10 @@ const defaultRoutes = [
   {
     path: '/page_templates',
     route: pageTemplateRoute,
+  },
+  {
+    path: '/widgets',
+    route: widgetRoute,
   },
 ];
 
