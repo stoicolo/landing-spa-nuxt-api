@@ -52,7 +52,7 @@ const getWidgets = async (filter, options) => {
  * @returns {Promise<Widget>}
  */
 const getWidgetByEmail = async (email) => {
-  return Widget.findOne({ email });
+  return Widget.findOne({ where: { email } });
 };
 
 /**
