@@ -52,7 +52,7 @@ const getPageTemplates = async (filter, options) => {
  * @returns {Promise<PageTemplate>}
  */
 const getPageTemplateByEmail = async (email) => {
-  return PageTemplate.findOne({ email });
+  return PageTemplate.findOne({ where: { email } });
 };
 
 /**
