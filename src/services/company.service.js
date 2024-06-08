@@ -43,7 +43,7 @@ const getCompanyById = async (id) => {
  * @returns {Promise<Company>}
  */
 const getCompanyByEmail = async (email) => {
-  return Company.findOne({ email });
+  return Company.findOne({ where: { email } });
 };
 
 /**
