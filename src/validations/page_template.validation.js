@@ -13,12 +13,13 @@ const getPageTemplate = {
   }),
 };
 
-const getPageTemplates = {
+const getPageTemplatesByUserId = {
   params: Joi.object().keys({
-    pageTemplateId: Joi.number(),
+    userId: Joi.number(),
   }),
   query: Joi.object().keys({
     sections: Joi.array().items(Joi.object()),
+    userId: Joi.number(),
   }),
 };
 
@@ -42,7 +43,7 @@ const deledeletePageTemplate = {
 module.exports = {
   createPageTemplate,
   getPageTemplate,
-  getPageTemplates,
+  getPageTemplatesByUserId,
   updatePageTemplate,
   deledeletePageTemplate,
 };
