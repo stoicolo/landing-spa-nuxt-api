@@ -1,5 +1,5 @@
 const express = require('express');
-const auth = require('../../middlewares/auth-config');
+const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const pageTemplateValidation = require('../../validations/page_template.validation');
 const pageTemplateController = require('../../controllers/page_template.controller');
