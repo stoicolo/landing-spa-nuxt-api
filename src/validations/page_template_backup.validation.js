@@ -1,19 +1,19 @@
 const Joi = require('joi');
 
-const createPageTemplate = {
+const createPageTemplateBackup = {
   body: Joi.object().keys({
     userId: Joi.number().required(),
     sections: Joi.array().items(Joi.object()),
   }),
 };
 
-const getPageTemplate = {
+const getPageTemplateBackup = {
   params: Joi.object().keys({
-    pageTemplateId: Joi.number().required(),
+    pageTemplateBackupId: Joi.number().required(),
   }),
 };
 
-const getPageTemplatesByUserId = {
+const getPageTemplateBackupsByUserId = {
   params: Joi.object().keys({
     userId: Joi.number(),
   }),
@@ -23,9 +23,9 @@ const getPageTemplatesByUserId = {
   }),
 };
 
-const updatePageTemplate = {
+const updatePageTemplateBackup = {
   params: Joi.object().keys({
-    pageTemplateId: Joi.number().required(),
+    pageTemplateBackupId: Joi.number().required(),
   }),
   body: Joi.object()
     .keys({
@@ -34,16 +34,16 @@ const updatePageTemplate = {
     .min(1),
 };
 
-const deledeletePageTemplate = {
+const deledeletePageTemplateBackup = {
   params: Joi.object().keys({
-    pageTemplateId: Joi.number().required(),
+    pageTemplateBackupId: Joi.number().required(),
   }),
 };
 
 module.exports = {
-  createPageTemplate,
-  getPageTemplate,
-  getPageTemplatesByUserId,
-  updatePageTemplate,
-  deledeletePageTemplate,
+  createPageTemplateBackup,
+  getPageTemplateBackup,
+  getPageTemplateBackupsByUserId,
+  updatePageTemplateBackup,
+  deledeletePageTemplateBackup,
 };

@@ -1,5 +1,5 @@
 const express = require('express');
-const auth = require('../../middlewares/auth-config');
+const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
 const widgetValidation = require('../../validations/widget.validation');
 const widgetController = require('../../controllers/widget.controller');

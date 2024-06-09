@@ -28,31 +28,12 @@ const getPageTemplateById = async (id) => {
 };
 
 /**
- * Query for pageTemplates
- * @param {Object} filter - Mongo filter
- * @param {Object} options - Query options
- * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
- * @param {number} [options.limit] - Maximum number of results per page (default = 10)
- * @param {number} [options.page] - Current page (default = 1)
- * @returns {Promise<QueryResult>}
- */
-const getPageTemplates = async (filter, options) => {
-  const { limit, offset } = options;
-  const pageTemplates = await PageTemplate.findAll({
-    where: filter,
-    limit,
-    offset,
-  });
-  return pageTemplates;
-};
-
-/**
- * Get pageTemplate by email
- * @param {string} email
+ * Query for pageTemplate
+ * @param {userId} userId
  * @returns {Promise<PageTemplate>}
  */
-const getPageTemplateByEmail = async (email) => {
-  return PageTemplate.findOne({ where: { email } });
+const getPageTemplateByUserId = async (userId) => {
+  return PageTemplate.findByPk(userId);
 };
 
 /**
@@ -89,8 +70,7 @@ const deletePageTemplateById = async (pageTemplateId) => {
 module.exports = {
   createPageTemplate,
   getPageTemplateById,
-  getPageTemplates,
-  getPageTemplateByEmail,
+  getPageTemplateByUserId,
   updatePageTemplateById,
   deletePageTemplateById,
 };

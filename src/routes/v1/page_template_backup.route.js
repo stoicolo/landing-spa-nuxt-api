@@ -1,38 +1,61 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const companyValidation = require('../../validations/company.validation');
-const companyController = require('../../controllers/company.controller');
+const pageTemplateBackupValidation = require('../../validations/page_template_backup.validation');
+const pageTemplateBackupController = require('../../controllers/page_template_backup.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth(), validate(companyValidation.createCompany), companyController.createCompany)
-  .get(auth('getCompanies'), validate(companyValidation.getCompanies), companyController.getCompanies);
+  .post(
+    auth(),
+    validate(pageTemplateBackupValidation.createPageTemplateBackup),
+    pageTemplateBackupController.createPageTemplateBackup
+  );
 
 router
-  .route('/:companyId')
-  .get(auth('getCompanies'), validate(companyValidation.getCompany), companyController.getCompany)
-  .patch(auth(), validate(companyValidation.updateCompany), companyController.updateCompany)
-  .delete(auth('manageCompanies'), validate(companyValidation.deleteCompany), companyController.deleteCompany);
+  .route('/user/:userId')
+  .get(
+    auth(),
+    validate(pageTemplateBackupValidation.getPageTemplateBackupsByUserId),
+    pageTemplateBackupController.getPageTemplateBackupsByUserId
+  );
+
+router
+  .route('/:pageTemplateBackupId')
+  .get(
+    auth(),
+    validate(pageTemplateBackupValidation.getPageTemplateBackup),
+    pageTemplateBackupController.getPageTemplateBackup
+  )
+  .patch(
+    auth(),
+    validate(pageTemplateBackupValidation.updatePageTemplateBackup),
+    pageTemplateBackupController.updatePageTemplateBackup
+  )
+  .delete(
+    auth(),
+    validate(pageTemplateBackupValidation.deletePageTemplateBackup),
+    pageTemplateBackupController.deletePageTemplateBackup
+  );
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Companies
- *   description: Company management and retrieval
+ *   name: Page Templates Backup
+ *   description: PageTemplateBackup management and retrieval
  */
 
 /**
  * @swagger
- * /companies:
+ * /page_template_backups:
  *   post:
- *     summary: Create a company
- *     description: Any registered user can create other companies.
- *     tags: [Companies]
+ *     summary: Create a page template backup
+ *     description: Any registered user can create other page template backups.
+ *     tags: [Page Templates Backup]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -42,9 +65,7 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - name
- *               - email
- *               - password
+ *               - NA
  *             properties:
  *               name:
  *                 type: string
@@ -76,9 +97,9 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all companies
- *     description: Only admins can retrieve all companies.
- *     tags: [Companies]
+ *     summary: Get all page template backups
+ *     description: Only admins can retrieve all page template backups.
+ *     tags: [Page Templates Backup]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -98,7 +119,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of companies
+ *         description: Maximum number of page template backups
  *       - in: query
  *         name: page
  *         schema:
@@ -138,11 +159,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /companies/{id}:
+ * /page_template_backups/{id}:
  *   get:
- *     summary: Get a company
- *     description: Logged in companies can fetch only their own company information. Only admins can fetch other companies.
- *     tags: [Companies]
+ *     summary: Get a page template backup
+ *     description: Logged in page template backups can fetch only their own page template backup information. Only admins can fetch other page template backups.
+ *     tags: [Page Templates Backup]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -167,9 +188,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a company
- *     description: Logged in companies can only update their own information. Only admins can update other companies.
- *     tags: [Companies]
+ *     summary: Update a page template backup
+ *     description: Logged in page template backups can only update their own information. Only admins can update other page template backups.
+ *     tags: [Page Templates Backup]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -218,9 +239,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a company
- *     description: Logged in companies can delete only themselves. Only admins can delete other companies.
- *     tags: [Companies]
+ *     summary: Delete a page template backup
+ *     description: Logged in page template backups can delete only themselves. Only admins can delete other page template backups.
+ *     tags: [Page Templates Backup]
  *     security:
  *       - bearerAuth: []
  *     parameters:
