@@ -8,8 +8,11 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth(), validate(pageTemplateValidation.createPageTemplate), pageTemplateController.createPageTemplate)
-  .get(auth(), validate(pageTemplateValidation.getPageTemplates), pageTemplateController.getPageTemplates);
+  .post(auth(), validate(pageTemplateValidation.createPageTemplate), pageTemplateController.createPageTemplate);
+
+router
+  .route('/user/:userId')
+  .get(auth(), validate(pageTemplateValidation.getPageTemplatesByUserId), pageTemplateController.getPageTemplatesByUserId);
 
 router
   .route('/:pageTemplateId')
