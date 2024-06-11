@@ -80,7 +80,7 @@ User.isEmailTaken = async (email) => {
 
 // Check if password matches the user's password
 User.prototype.isPasswordMatch = async function (password) {
-  return bcrypt.compare(password, this.password);
+  return bcrypt.compareSync(password, this.password);
 };
 
 // Add plugins
