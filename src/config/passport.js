@@ -57,15 +57,18 @@ module.exports = () => {
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
         secretOrKey: 'CC_24',
       },
-      (jwtPayload, callback) => {
-        // find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-        return User.findByPk(jwtPayload.sub)
-          .then((user) => {
+      async (jwtPayload, callback) => {
+        try {
+          const user = await User.findByPk(jwtPayload.sub);
+
+          if (user) {
             return callback(null, user.dataValues);
-          })
-          .catch((err) => {
-            return callback(err);
-          });
+          }
+
+          return callback(null, false, { message: 'User not found' });
+        } catch (err) {
+          return callback(err);
+        }
       }
     )
   );
