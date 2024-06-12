@@ -17,8 +17,7 @@ const getPageTemplatesByUserId = {
   params: Joi.object().keys({
     userId: Joi.number(),
   }),
-  query: Joi.object().keys({
-    sections: Joi.array().items(Joi.object()),
+  body: Joi.object().keys({
     userId: Joi.number(),
   }),
 };
