@@ -15,7 +15,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
 
   if (!user || !(await user.isPasswordMatch(password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Contraseña o Email incorrecto');
   }
   return user;
 };
@@ -28,10 +28,11 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({
     where: { token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false },
+    order: [['createdAt', 'DESC']],
   });
 
   if (!refreshTokenDoc) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'No encontrado');
   }
 
   await refreshTokenDoc.destroy();
@@ -52,7 +53,7 @@ const refreshAuth = async (refreshToken) => {
     await refreshTokenDoc.destroy();
     return tokenService.generateAuthTokens(user);
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Por favor autenticarse para continuar.');
   }
 };
 
@@ -72,7 +73,7 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
     await userService.updateUserById(user.id, { password: newPassword });
     await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Reseteo de contraseña fallido');
   }
 };
 
@@ -83,17 +84,17 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
  */
 const verifyEmail = async (verifyEmailToken) => {
   try {
-    const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.REFRESH);
+    const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
     const user = await userService.getUserById(verifyEmailTokenDoc.dataValues.userId);
 
     if (!user) {
       throw new Error();
     }
 
-    await Token.destroy({ where: { userId: user.id, type: tokenTypes.REFRESH } });
+    await Token.destroy({ where: { userId: user.id, type: tokenTypes.VERIFY_EMAIL } });
     await userService.updateUserById(user.id, { isEmailVerified: true });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Email no encontrado');
   }
 };
 

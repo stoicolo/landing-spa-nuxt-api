@@ -65,7 +65,7 @@ module.exports = () => {
             return callback(null, user.dataValues);
           }
 
-          return callback(null, false, { message: 'User not found' });
+          return callback(null, false, { message: 'Usuario no encontrado' });
         } catch (err) {
           return callback(err);
         }
