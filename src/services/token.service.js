@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const moment = require('moment');
+const dayjs = require('dayjs');
 const httpStatus = require('http-status');
 const config = require('../config/config');
 const userService = require('./user.service');
@@ -18,7 +18,7 @@ const { tokenTypes } = require('../config/tokens');
 const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   const payload = {
     sub: userId,
-    iat: moment().unix(),
+    iat: dayjs().unix(),
     exp: expires.unix(),
     type,
   };
@@ -40,7 +40,7 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
     const tokenDoc = await Token.create({
       token,
       userId,
-      expires: expires.toDate(),
+      expires: expires.format('YYYY-MM-DD HH:mm:ss'),
       type,
       blacklisted,
     });
@@ -65,11 +65,13 @@ const verifyToken = async (token, type) => {
       userId: payload.sub,
       blacklisted: false,
     },
+    order: [['createdAt', 'DESC']],
   });
 
   if (!tokenDoc) {
     throw new Error('Token no encontrado, verifica que el token sea valido.');
   }
+
   return tokenDoc;
 };
 
@@ -79,21 +81,22 @@ const verifyToken = async (token, type) => {
  * @returns {Promise<Object>}
  */
 const generateAuthTokens = async (user) => {
-  const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+  const accessTokenExpires = dayjs().add(config.jwt.accessExpirationMinutes, 'minutes');
   const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+  // await saveToken(accessToken, user.id, accessTokenExpires, tokenTypes.ACCESS);
 
-  const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
+  const refreshTokenExpires = dayjs().add(config.jwt.refreshExpirationDays, 'days');
   const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
   await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {
       token: accessToken,
-      expires: accessTokenExpires.toDate(),
+      expires: accessTokenExpires.format('YYYY-MM-DD HH:mm:ss'),
     },
     refresh: {
       token: refreshToken,
-      expires: refreshTokenExpires.toDate(),
+      expires: refreshTokenExpires.format('YYYY-MM-DD HH:mm:ss'),
     },
   };
 };
@@ -108,7 +111,7 @@ const generateResetPasswordToken = async (email) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'No hay usuario con este email.');
   }
-  const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
+  const expires = dayjs().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
   await saveToken(resetPasswordToken, user.id, expires, tokenTypes.RESET_PASSWORD);
   return resetPasswordToken;
@@ -120,7 +123,7 @@ const generateResetPasswordToken = async (email) => {
  * @returns {Promise<string>}
  */
 const generateVerifyEmailToken = async (user) => {
-  const expires = moment().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
+  const expires = dayjs().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
   const verifyEmailToken = generateToken(user.id, expires, tokenTypes.VERIFY_EMAIL);
 
   await saveToken(verifyEmailToken, user.id, expires, tokenTypes.VERIFY_EMAIL);
