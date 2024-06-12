@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "pwa-node",
+        "request": "launch",
+        "name": "Launch via Nodemon",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": [
+          "run",
+          "dev"
+        ],
+        "port": 9229,
+        "restart": true,
+        "protocol": "inspector",
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "skipFiles": ["<node_internals>/**"],
+        "autoAttachChildProcesses": true
+      }
+    ]
+  }
