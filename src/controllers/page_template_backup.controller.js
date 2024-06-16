@@ -32,6 +32,14 @@ const getPageTemplateBackupsByUserId = catchAsync(async (req, res) => {
   res.send(pageTemplateBackup);
 });
 
+const getPageTemplateBackupsByName = catchAsync(async (req, res) => {
+  const pageTemplateBackup = await pageTemplateBackupService.getPageTemplateBackupsByName(req.params.templateName);
+  if (!pageTemplateBackup) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Id de Usuario.');
+  }
+  res.send(pageTemplateBackup);
+});
+
 const updatePageTemplateBackup = catchAsync(async (req, res) => {
   const pageTemplateBackup = await pageTemplateBackupService.updatePageTemplateBackupById(
     req.params.pageTemplateBackupId,
@@ -48,6 +56,7 @@ const deletePageTemplateBackup = catchAsync(async (req, res) => {
 module.exports = {
   createPageTemplateBackup,
   getPageTemplateBackupsByUserId,
+  getPageTemplateBackupsByName,
   getPageTemplateBackup,
   updatePageTemplateBackup,
   deletePageTemplateBackup,
