@@ -6,3 +6,4 @@ module.exports.companyService = require('./company.service');
 module.exports.widgetService = require('./widget.service');
 module.exports.pageTemplateService = require('./page_template.service');
 module.exports.pageTemplateBackupService = require('./page_template_backup.service');
+module.exports.pageService = require('./page.service');
