@@ -32,8 +32,8 @@ const getPagesByUserId = catchAsync(async (req, res) => {
   res.send(page);
 });
 
-const getPagesByName = catchAsync(async (req, res) => {
-  const page = await pageService.getPagesByName(req.params.templateName);
+const getPageByName = catchAsync(async (req, res) => {
+  const page = await pageService.getPageByName(req.params.pageName);
   if (!page) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Id de Usuario.');
   }
@@ -53,7 +53,7 @@ const deletePage = catchAsync(async (req, res) => {
 module.exports = {
   createPage,
   getPagesByUserId,
-  getPagesByName,
+  getPageByName,
   getPage,
   updatePage,
   deletePage,
