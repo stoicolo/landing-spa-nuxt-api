@@ -40,6 +40,14 @@ router
     pageTemplateBackupController.deletePageTemplateBackup
   );
 
+router
+  .route('/:templateName')
+  .get(
+    auth(),
+    validate(pageTemplateBackupValidation.getPageTemplateBackupsByName),
+    pageTemplateBackupController.getPageTemplateBackupsByName
+  );
+
 module.exports = router;
 
 /**
