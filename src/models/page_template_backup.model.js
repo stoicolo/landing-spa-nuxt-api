@@ -6,6 +6,11 @@ const { sequelize } = require('../config/sequelize');
 const PageTemplateBackup = sequelize.define(
   'PageTemplateBackup',
   {
+    templateName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     sections: {
       type: DataTypes.ARRAY(DataTypes.JSON),
       allowNull: false,
