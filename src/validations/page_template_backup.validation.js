@@ -4,6 +4,7 @@ const createPageTemplateBackup = {
   body: Joi.object().keys({
     userId: Joi.number().required(),
     sections: Joi.array().items(Joi.object()),
+    templateName: Joi.string(),
   }),
 };
 
@@ -20,6 +21,17 @@ const getPageTemplateBackupsByUserId = {
   query: Joi.object().keys({
     sections: Joi.array().items(Joi.object()),
     userId: Joi.number(),
+  }),
+};
+
+const getPageTemplateBackupsByName = {
+  params: Joi.object().keys({
+    templateName: Joi.string(),
+  }),
+  query: Joi.object().keys({
+    sections: Joi.array().items(Joi.object()),
+    userId: Joi.number(),
+    templateName: Joi.string(),
   }),
 };
 
@@ -44,6 +56,7 @@ module.exports = {
   createPageTemplateBackup,
   getPageTemplateBackup,
   getPageTemplateBackupsByUserId,
+  getPageTemplateBackupsByName,
   updatePageTemplateBackup,
   deledeletePageTemplateBackup,
 };
