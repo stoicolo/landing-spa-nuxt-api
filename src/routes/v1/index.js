@@ -5,6 +5,7 @@ const companyRoute = require('./company.route');
 const pageTemplateRoute = require('./page_template.route');
 const pageTemplateBackupRoute = require('./page_template_backup.route');
 const widgetRoute = require('./widget.route');
+const pageRoute = require('./page.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -30,6 +31,10 @@ const defaultRoutes = [
   {
     path: '/page_template_backups',
     route: pageTemplateBackupRoute,
+  },
+  {
+    path: '/pages',
+    route: pageRoute,
   },
   {
     path: '/widgets',
