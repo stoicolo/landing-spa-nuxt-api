@@ -37,6 +37,19 @@ const getPageTemplateBackupsByUserId = async (userId) => {
 };
 
 /**
+ * Query for pageTemplateBackups
+ * @param {userId} userId
+ * @returns {Promise<PageTemplateBackup>}
+ */
+const getPageTemplateBackupsByName = async (templateName) => {
+  return PageTemplateBackup.findOne({
+    where: {
+      templateName,
+    },
+  });
+};
+
+/**
  * Update pageTemplateBackup by id
  * @param {ObjectId} pageTemplateBackupId
  * @param {Object} updateBody
@@ -70,6 +83,7 @@ const deletePageTemplateBackupById = async (pageTemplateBackupId) => {
 module.exports = {
   createPageTemplateBackup,
   getPageTemplateBackupById,
+  getPageTemplateBackupsByName,
   getPageTemplateBackupsByUserId,
   updatePageTemplateBackupById,
   deletePageTemplateBackupById,
