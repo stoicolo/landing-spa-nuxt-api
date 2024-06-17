@@ -33,7 +33,11 @@ const getPageTemplateBackupById = async (id) => {
  * @returns {Promise<PageTemplateBackup>}
  */
 const getPageTemplateBackupsByUserId = async (userId) => {
-  return PageTemplateBackup.findByPk(userId);
+  return PageTemplateBackup.findAll({
+    where: {
+      userId,
+    },
+  });
 };
 
 /**
