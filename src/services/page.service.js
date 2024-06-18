@@ -3,19 +3,35 @@ const { Page } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
+ * Query for page name
+ * @param {userId} userId
+ * @returns {Promise<PageTemplateBackup>}
+ */
+const getPageByName = async (pageName) => {
+  return Page.findOne({
+    where: {
+      pageName,
+    },
+  });
+};
+
+/**
  * Create a page
  * @param {Object} pageBody
  * @returns {Promise<Page>}
  */
 const createPage = async (pageBody) => {
-  // if (await Page.isCompanyPageTaken(pageBody.companyId)) {
-  //   throw new ApiError(
-  //     httpStatus.BAD_REQUEST,
-  //     'La Página Web ya tiene un Page Template Backup previamente asignado, prueba con otra Página Web.'
-  //   );
-  // }
+  try {
+    const page = await getPageByName(pageBody.pageName);
 
-  return Page.create(pageBody);
+    if (page) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'El nombre del Page ya existe, prueba con otro nombre.');
+    }
+
+    return Page.create(pageBody);
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
 };
 
 /**
@@ -36,19 +52,6 @@ const getPagesByUserId = async (userId) => {
   return Page.findAll({
     where: {
       userId,
-    },
-  });
-};
-
-/**
- * Query for page name
- * @param {userId} userId
- * @returns {Promise<PageTemplateBackup>}
- */
-const getPageByName = async (pageName) => {
-  return Page.findOne({
-    where: {
-      pageName,
     },
   });
 };
