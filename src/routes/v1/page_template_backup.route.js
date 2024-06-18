@@ -41,7 +41,7 @@ router
   );
 
 router
-  .route('/:templateName')
+  .route('/name/:templateName')
   .get(
     auth(),
     validate(pageTemplateBackupValidation.getPageTemplateBackupsByName),
