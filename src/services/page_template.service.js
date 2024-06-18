@@ -3,7 +3,7 @@ const { PageTemplate } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
- * Create a pageTemplate
+ * Create a Page Template
  * @param {Object} pageTemplateBody
  * @returns {Promise<PageTemplate>}
  */
@@ -19,7 +19,7 @@ const createPageTemplate = async (pageTemplateBody) => {
 };
 
 /**
- * Get pageTemplateI by id
+ * Get Page Template by id
  * @param {ObjectId} id
  * @returns {Promise<PageTemplate>}
  */
@@ -28,16 +28,20 @@ const getPageTemplateById = async (id) => {
 };
 
 /**
- * Query for pageTemplate
+ * Query for Page Template
  * @param {userId} userId
  * @returns {Promise<PageTemplate>}
  */
-const getPageTemplateByUserId = async (userId) => {
-  return PageTemplate.findByPk(userId);
+const getPageTemplatesByUserId = async (userId) => {
+  return PageTemplate.findAll({
+    where: {
+      userId,
+    },
+  });
 };
 
 /**
- * Update pageTemplate by id
+ * Update Page Template by id
  * @param {ObjectId} pageTemplateId
  * @param {Object} updateBody
  * @returns {Promise<PageTemplate>}
@@ -54,7 +58,7 @@ const updatePageTemplateById = async (pageTemplateId, updateBody) => {
 };
 
 /**
- * Delete pageTemplate by id
+ * Delete Page Template by id
  * @param {ObjectId} pageTemplateId
  * @returns {Promise<PageTemplate>}
  */
@@ -70,7 +74,7 @@ const deletePageTemplateById = async (pageTemplateId) => {
 module.exports = {
   createPageTemplate,
   getPageTemplateById,
-  getPageTemplateByUserId,
+  getPageTemplatesByUserId,
   updatePageTemplateById,
   deletePageTemplateById,
 };

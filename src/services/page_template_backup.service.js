@@ -3,45 +3,7 @@ const { PageTemplateBackup } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
- * Create a pageTemplateBackup
- * @param {Object} pageTemplateBackupBody
- * @returns {Promise<PageTemplateBackup>}
- */
-const createPageTemplateBackup = async (pageTemplateBackupBody) => {
-  // if (await PageTemplateBackup.isCompanyPageTemplateBackupTaken(pageTemplateBackupBody.companyId)) {
-  //   throw new ApiError(
-  //     httpStatus.BAD_REQUEST,
-  //     'La Página Web ya tiene un Page Template Backup previamente asignado, prueba con otra Página Web.'
-  //   );
-  // }
-
-  return PageTemplateBackup.create(pageTemplateBackupBody);
-};
-
-/**
- * Get pageTemplateBackup by id
- * @param {ObjectId} id
- * @returns {Promise<PageTemplateBackup>}
- */
-const getPageTemplateBackupById = async (id) => {
-  return PageTemplateBackup.findByPk(id);
-};
-
-/**
- * Query for pageTemplateBackups
- * @param {userId} userId
- * @returns {Promise<PageTemplateBackup>}
- */
-const getPageTemplateBackupsByUserId = async (userId) => {
-  return PageTemplateBackup.findAll({
-    where: {
-      userId,
-    },
-  });
-};
-
-/**
- * Query for pageTemplateBackups
+ * Query for Page Template Backups
  * @param {userId} userId
  * @returns {Promise<PageTemplateBackup>}
  */
@@ -54,7 +16,48 @@ const getPageTemplateBackupsByName = async (templateName) => {
 };
 
 /**
- * Update pageTemplateBackup by id
+ * Create a Page Template Backup
+ * @param {Object} pageTemplateBackupBody
+ * @returns {Promise<PageTemplateBackup>}
+ */
+const createPageTemplateBackup = async (pageTemplateBackupBody) => {
+  try {
+    const pageTemplateBackup = await getPageTemplateBackupsByName(pageTemplateBackupBody.templateName);
+
+    if (pageTemplateBackup) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'El nombre del Page Template Backup ya existe, prueba con otro nombre.');
+    }
+
+    return PageTemplateBackup.create(pageTemplateBackupBody);
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
+};
+
+/**
+ * Get Page Template Backup by id
+ * @param {ObjectId} id
+ * @returns {Promise<PageTemplateBackup>}
+ */
+const getPageTemplateBackupById = async (id) => {
+  return PageTemplateBackup.findByPk(id);
+};
+
+/**
+ * Query for Page Template Backups
+ * @param {userId} userId
+ * @returns {Promise<PageTemplateBackup>}
+ */
+const getPageTemplateBackupsByUserId = async (userId) => {
+  return PageTemplateBackup.findAll({
+    where: {
+      userId,
+    },
+  });
+};
+
+/**
+ * Update Page Template Backup by id
  * @param {ObjectId} pageTemplateBackupId
  * @param {Object} updateBody
  * @returns {Promise<PageTemplateBackup>}
@@ -71,7 +74,7 @@ const updatePageTemplateBackupById = async (pageTemplateBackupId, updateBody) =>
 };
 
 /**
- * Delete pageTemplateBackup by id
+ * Delete Page Template Backup by id
  * @param {ObjectId} pageTemplateBackupId
  * @returns {Promise<PageTemplateBackup>}
  */
