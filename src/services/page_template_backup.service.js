@@ -7,10 +7,11 @@ const ApiError = require('../utils/ApiError');
  * @param {userId} userId
  * @returns {Promise<PageTemplateBackup>}
  */
-const getPageTemplateBackupsByName = async (templateName) => {
+const getPageTemplateBackupsByName = async (backupName, userId) => {
   return PageTemplateBackup.findOne({
     where: {
-      templateName,
+      backupName,
+      userId,
     },
   });
 };
@@ -22,7 +23,10 @@ const getPageTemplateBackupsByName = async (templateName) => {
  */
 const createPageTemplateBackup = async (pageTemplateBackupBody) => {
   try {
-    const pageTemplateBackup = await getPageTemplateBackupsByName(pageTemplateBackupBody.templateName);
+    const pageTemplateBackup = await getPageTemplateBackupsByName(
+      pageTemplateBackupBody.backupName,
+      pageTemplateBackupBody.userId
+    );
 
     if (pageTemplateBackup) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'El nombre del Page Template Backup ya existe, prueba con otro nombre.');
