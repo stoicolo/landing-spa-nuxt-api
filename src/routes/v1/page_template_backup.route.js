@@ -15,7 +15,7 @@ router
   );
 
 router
-  .route('/user/:userId')
+  .route('/user/')
   .get(
     auth(),
     validate(pageTemplateBackupValidation.getPageTemplateBackupsByUserId),
@@ -23,7 +23,7 @@ router
   );
 
 router
-  .route('/:pageTemplateBackupId')
+  .route('/id/')
   .get(
     auth(),
     validate(pageTemplateBackupValidation.getPageTemplateBackup),
@@ -41,7 +41,7 @@ router
   );
 
 router
-  .route('/name/:templateName')
+  .route('/name/')
   .get(
     auth(),
     validate(pageTemplateBackupValidation.getPageTemplateBackupsByName),
