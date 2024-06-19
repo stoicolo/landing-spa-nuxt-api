@@ -17,7 +17,7 @@ const createPageTemplateBackup = catchAsync(async (req, res) => {
 // });
 
 const getPageTemplateBackup = catchAsync(async (req, res) => {
-  const pageTemplateBackup = await pageTemplateBackupService.getPageTemplateBackupById(req.params.pageTemplateBackupId);
+  const pageTemplateBackup = await pageTemplateBackupService.getPageTemplateBackupById(req.body.pageTemplateBackupId);
   if (!pageTemplateBackup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Id.');
   }
@@ -25,7 +25,7 @@ const getPageTemplateBackup = catchAsync(async (req, res) => {
 });
 
 const getPageTemplateBackupsByUserId = catchAsync(async (req, res) => {
-  const pageTemplateBackup = await pageTemplateBackupService.getPageTemplateBackupsByUserId(req.params.userId);
+  const pageTemplateBackup = await pageTemplateBackupService.getPageTemplateBackupsByUserId(req.body.userId);
   if (!pageTemplateBackup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Id de Usuario.');
   }
@@ -33,7 +33,10 @@ const getPageTemplateBackupsByUserId = catchAsync(async (req, res) => {
 });
 
 const getPageTemplateBackupsByName = catchAsync(async (req, res) => {
-  const pageTemplateBackup = await pageTemplateBackupService.getPageTemplateBackupsByName(req.params.templateName);
+  const pageTemplateBackup = await pageTemplateBackupService.getPageTemplateBackupsByName(
+    req.body.backupName,
+    req.body.userId
+  );
   if (!pageTemplateBackup) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Id de Usuario.');
   }
@@ -42,14 +45,14 @@ const getPageTemplateBackupsByName = catchAsync(async (req, res) => {
 
 const updatePageTemplateBackup = catchAsync(async (req, res) => {
   const pageTemplateBackup = await pageTemplateBackupService.updatePageTemplateBackupById(
-    req.params.pageTemplateBackupId,
+    req.body.pageTemplateBackupId,
     req.body
   );
   res.send(pageTemplateBackup);
 });
 
 const deletePageTemplateBackup = catchAsync(async (req, res) => {
-  await pageTemplateBackupService.deletePageTemplateBackupById(req.params.pageTemplateBackupId);
+  await pageTemplateBackupService.deletePageTemplateBackupById(req.body.pageTemplateBackupId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
