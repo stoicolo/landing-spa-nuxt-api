@@ -2,52 +2,48 @@ const Joi = require('joi');
 
 const createPageTemplateBackup = {
   body: Joi.object().keys({
+    backupName: Joi.string().required(),
+    pageTemplateId: Joi.number().required(),
     userId: Joi.number().required(),
+    pageName: Joi.string().required(),
     sections: Joi.array().items(Joi.object()),
-    templateName: Joi.string(),
   }),
 };
 
 const getPageTemplateBackup = {
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     pageTemplateBackupId: Joi.number().required(),
   }),
 };
 
 const getPageTemplateBackupsByUserId = {
-  params: Joi.object().keys({
-    userId: Joi.number(),
-  }),
-  query: Joi.object().keys({
-    sections: Joi.array().items(Joi.object()),
-    userId: Joi.number(),
+  body: Joi.object().keys({
+    userId: Joi.number().required(),
   }),
 };
 
 const getPageTemplateBackupsByName = {
-  params: Joi.object().keys({
-    templateName: Joi.string(),
-  }),
-  query: Joi.object().keys({
-    sections: Joi.array().items(Joi.object()),
-    userId: Joi.number(),
-    templateName: Joi.string(),
+  body: Joi.object().keys({
+    backupName: Joi.string().required(),
+    userId: Joi.number().required(),
   }),
 };
 
 const updatePageTemplateBackup = {
-  params: Joi.object().keys({
-    pageTemplateBackupId: Joi.number().required(),
-  }),
   body: Joi.object()
     .keys({
+      pageTemplateBackupId: Joi.number().required(),
+      userId: Joi.number().required(),
+      backupName: Joi.string(),
+      pageTemplateId: Joi.number(),
+      pageName: Joi.string(),
       sections: Joi.array().items(Joi.object()),
     })
     .min(1),
 };
 
 const deledeletePageTemplateBackup = {
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     pageTemplateBackupId: Joi.number().required(),
   }),
 };
