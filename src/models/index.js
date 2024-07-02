@@ -6,6 +6,7 @@ const WidgetModel = require('./widget.model');
 const PageTemplateModel = require('./page_template.model');
 const PageTemplateBackupModel = require('./page_template_backup.model');
 const PageModel = require('./page.model');
+const WebsiteModel = require('./website.model');
 
 // no es necesario y es redundante, ya se hace en el modelo de una forma más especifica.
 // UserModel.hasMany(TokenModel);
@@ -20,4 +21,5 @@ module.exports = {
   PageTemplate: PageTemplateModel,
   PageTemplateBackup: PageTemplateBackupModel,
   Page: PageModel,
+  Website: WebsiteModel,
 };
