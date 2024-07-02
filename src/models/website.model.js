@@ -20,6 +20,11 @@ const Website = sequelize.define(
         key: 'id',
       },
     },
+    websiteName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
   },
   {
     timestamps: true,

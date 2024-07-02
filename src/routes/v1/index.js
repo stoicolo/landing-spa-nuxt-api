@@ -42,7 +42,7 @@ const defaultRoutes = [
     route: widgetRoute,
   },
   {
-    path: '/website',
+    path: '/websites',
     route: websiteRoute,
   },
 ];
