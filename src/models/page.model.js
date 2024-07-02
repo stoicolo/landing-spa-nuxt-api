@@ -6,6 +6,14 @@ const { sequelize } = require('../config/sequelize');
 const Page = sequelize.define(
   'Page',
   {
+    websiteId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Website',
+        key: 'id',
+      },
+    },
     templateId: {
       type: DataTypes.INTEGER,
       allowNull: false,
