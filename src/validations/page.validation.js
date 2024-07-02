@@ -5,6 +5,7 @@ const createPage = {
     userId: Joi.number().required(),
     templateId: Joi.number().required(),
     pageName: Joi.string().required(),
+    websiteId: Joi.number().required(),
   }),
 };
 
@@ -22,6 +23,7 @@ const getPagesByUserId = {
     templateId: Joi.number(),
     userId: Joi.number(),
     pageName: Joi.string(),
+    websiteId: Joi.number(),
   }),
 };
 
@@ -33,6 +35,7 @@ const getPageByName = {
     templateId: Joi.number(),
     userId: Joi.number(),
     pageName: Joi.string(),
+    websiteId: Joi.number(),
   }),
 };
 
