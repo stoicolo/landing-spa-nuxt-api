@@ -3,7 +3,6 @@ const Joi = require('joi');
 const createWebsite = {
   body: Joi.object().keys({
     userId: Joi.number().required(),
-    pageId: Joi.number().required(),
     websiteName: Joi.string().required(),
   }),
 };
@@ -19,7 +18,6 @@ const getWebsitesByUserId = {
     userId: Joi.number(),
   }),
   query: Joi.object().keys({
-    pageId: Joi.number(),
     userId: Joi.number(),
     websiteName: Joi.string(),
   }),
@@ -30,7 +28,6 @@ const getWebsiteByName = {
     websiteName: Joi.string(),
   }),
   query: Joi.object().keys({
-    pageId: Joi.number(),
     userId: Joi.number(),
     websiteName: Joi.string(),
   }),
