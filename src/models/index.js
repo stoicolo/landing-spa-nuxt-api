@@ -7,8 +7,10 @@ const PageTemplateModel = require('./page_template.model');
 const PageTemplateBackupModel = require('./page_template_backup.model');
 const PageModel = require('./page.model');
 const WebsiteModel = require('./website.model');
+const MenuHeaderModel = require('./menu_header.model');
+const MenuDetailModel = require('./menu_detail.model');
 
-// no es necesario y es redundante, ya se hace en el modelo de una forma más especifica.
+// referencia: ya no es necesario ya que es redundante. ahora se hace en el modelo de una forma más especifica.
 // UserModel.hasMany(TokenModel);
 // TokenModel.belongsTo(UserModel);
 // PageTemplateModel.belongsTo(CompanyModel);
@@ -22,4 +24,6 @@ module.exports = {
   PageTemplateBackup: PageTemplateBackupModel,
   Page: PageModel,
   Website: WebsiteModel,
+  MenuHeader: MenuHeaderModel,
+  MenuDetail: MenuDetailModel,
 };
