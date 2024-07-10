@@ -9,10 +9,30 @@ const router = express.Router();
 router.route('/').post(auth(), validate(menuValidation.createMenu), menuController.createMenu);
 
 router
-  .route('/:menuId')
+  .route('/menu/')
   .post(auth(), validate(menuValidation.getMenu), menuController.getMenu)
   .patch(auth(), validate(menuValidation.updateMenu), menuController.updateMenu)
   .delete(auth(), validate(menuValidation.deleteMenu), menuController.deleteMenu);
+
+router
+  .route('/menu-page/')
+  .post(auth(), validate(menuValidation.createMenuPage), menuController.createMenuPage)
+  .patch(auth(), validate(menuValidation.updateMenuPage), menuController.updateMenuPage)
+  .delete(auth(), validate(menuValidation.deleteMenuPage), menuController.deleteMenuPage);
+
+router.route('/get-menu-pages/').post(auth(), validate(menuValidation.getMenuPage), menuController.getMenuPage);
+
+router
+  .route('/menu-pages-bulk/')
+  .post(auth(), validate(menuValidation.createMenuPagesBulk), menuController.createMenuPagesBulk);
+
+router
+  .route('/get-menu-with-details/')
+  .post(auth(), validate(menuValidation.getMenuWithDetails), menuController.getMenuWithDetails);
+
+router
+  .route('/create-menu-with-details')
+  .post(auth(), validate(menuValidation.createMenuWithDetails), menuController.createMenuWithDetails);
 
 module.exports = router;
 
