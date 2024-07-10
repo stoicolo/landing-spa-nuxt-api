@@ -40,24 +40,10 @@ const MenuDetail = sequelize.define(
       allowNull: true,
       unique: true,
     },
-    target: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      unique: true,
-    },
     order: {
       type: DataTypes.INTEGER,
       allowNull: true,
       unique: true,
-    },
-    current: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
-    subItems: {
-      type: DataTypes.ARRAY(DataTypes.JSON),
-      allowNull: true,
-      defaultValue: [],
     },
   },
   {
@@ -68,4 +54,10 @@ const MenuDetail = sequelize.define(
   }
 );
 
-module.exports = MenuDetail;
+const associateMenuDetail = (models) => {
+  MenuDetail.belongsTo(models.MenuHeader, {
+    foreignKey: 'menuHeaderId',
+  });
+};
+
+module.exports = { MenuDetail, associateMenuDetail };

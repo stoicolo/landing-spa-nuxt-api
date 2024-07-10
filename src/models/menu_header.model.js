@@ -20,10 +20,6 @@ const MenuHeader = sequelize.define(
         key: 'id',
       },
     },
-    status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-    },
   },
   {
     timestamps: true,
@@ -33,4 +29,11 @@ const MenuHeader = sequelize.define(
   }
 );
 
-module.exports = MenuHeader;
+const associateMenuHeader = (models) => {
+  MenuHeader.hasMany(models.MenuDetail, {
+    foreignKey: 'menuHeaderId',
+    as: 'menuDetails',
+  });
+};
+
+module.exports = { MenuHeader, associateMenuHeader };
