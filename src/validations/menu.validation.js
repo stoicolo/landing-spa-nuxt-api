@@ -37,8 +37,8 @@ const createMenuPage = {
     menuName: Joi.string().required(),
     href: Joi.string().required(),
     slug: Joi.string().required(),
-    iconName: Joi.string().required(),
-    order: Joi.number().required(),
+    iconName: Joi.string(),
+    order: Joi.number(),
   }),
 };
 
@@ -68,12 +68,12 @@ const createMenuWithDetails = {
     menuDetails: Joi.array()
       .items(
         Joi.object().keys({
-          pageId: Joi.number().allow(null),
+          pageId: Joi.number().required(),
           menuName: Joi.string().required(),
           href: Joi.string().required(),
           slug: Joi.string().required(),
-          iconName: Joi.string().allow(null),
-          order: Joi.number().allow(null),
+          iconName: Joi.string(),
+          order: Joi.number(),
         })
       )
       .min(1)
@@ -98,7 +98,7 @@ const updateMenuPage = {
   body: Joi.object()
     .keys({
       menuHeaderId: Joi.number().required(),
-      pageId: Joi.number(),
+      pageId: Joi.number().required(),
       menuName: Joi.string().required(),
       href: Joi.string().required(),
       slug: Joi.string().required(),
