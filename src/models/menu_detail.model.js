@@ -7,6 +7,7 @@ const MenuDetail = sequelize.define(
     menuHeaderId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'MenuHeader',
         key: 'id',
@@ -15,6 +16,7 @@ const MenuDetail = sequelize.define(
     pageId: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      primaryKey: true,
       references: {
         model: 'Page',
         key: 'id',
@@ -23,7 +25,6 @@ const MenuDetail = sequelize.define(
     menuName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     href: {
       type: DataTypes.STRING,
@@ -48,15 +49,20 @@ const MenuDetail = sequelize.define(
   },
   {
     timestamps: true,
-    sequelize, // We need to pass the `sequelize` instance
+    sequelize,
     modelName: 'MenuDetail',
     tableName: 'MenuDetail',
+    // Definir la clave primaria compuesta
+    primaryKey: ['menuHeaderId', 'pageId'],
   }
 );
 
 const associateMenuDetail = (models) => {
   MenuDetail.belongsTo(models.MenuHeader, {
     foreignKey: 'menuHeaderId',
+  });
+  MenuDetail.belongsTo(models.Page, {
+    foreignKey: 'pageId',
   });
 };
 

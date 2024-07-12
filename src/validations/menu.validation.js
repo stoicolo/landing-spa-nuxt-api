@@ -99,9 +99,9 @@ const updateMenuPage = {
     .keys({
       menuHeaderId: Joi.number().required(),
       pageId: Joi.number().required(),
-      menuName: Joi.string().required(),
-      href: Joi.string().required(),
-      slug: Joi.string().required(),
+      menuName: Joi.string(),
+      href: Joi.string(),
+      slug: Joi.string(),
       iconName: Joi.string(),
       order: Joi.number(),
     })
