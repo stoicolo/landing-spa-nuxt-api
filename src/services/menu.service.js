@@ -89,7 +89,9 @@ const deleteMenu = async (menuBody) => {
 const getMenuPageById = async (menuBody) => {
   return MenuDetail.findOne({
     where: {
+      id: menuBody.id,
       menuHeaderId: menuBody.menuHeaderId,
+      pageId: menuBody.pageId,
     },
   });
 };
@@ -102,7 +104,9 @@ const getMenuPageById = async (menuBody) => {
 const getMenuPage = async (menuBody) => {
   return MenuDetail.findAll({
     where: {
+      id: menuBody.id,
       menuHeaderId: menuBody.menuHeaderId,
+      pageId: menuBody.pageId,
     },
   });
 };
@@ -234,15 +238,19 @@ const getMenuWithDetails = async (menuBody) => {
  * @returns {Promise<MenuDetail>}
  */
 const updateMenuPage = async (menuBody) => {
-  const menuPage = await getMenuPageById(menuBody);
+  try {
+    const menuPage = await getMenuPageById(menuBody);
 
-  if (!menuPage) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el id.');
+    if (!menuPage) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el id.');
+    }
+    Object.assign(menuPage.dataValues, menuBody);
+
+    await menuPage.save();
+    return menuPage;
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error.message || 'Error al actualizar el menú de la página.');
   }
-  Object.assign(menuPage, menuBody);
-
-  await menuPage.save();
-  return menuPage;
 };
 
 /**
