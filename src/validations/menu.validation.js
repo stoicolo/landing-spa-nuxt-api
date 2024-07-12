@@ -97,6 +97,7 @@ const getMenuPage = {
 const updateMenuPage = {
   body: Joi.object()
     .keys({
+      id: Joi.number().required(),
       menuHeaderId: Joi.number().required(),
       pageId: Joi.number().required(),
       menuName: Joi.string(),
