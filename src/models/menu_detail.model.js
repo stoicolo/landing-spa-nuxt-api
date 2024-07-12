@@ -15,7 +15,7 @@ const MenuDetail = sequelize.define(
     },
     pageId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       primaryKey: true,
       references: {
         model: 'Page',
