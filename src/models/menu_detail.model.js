@@ -25,6 +25,7 @@ const MenuDetail = sequelize.define(
     menuName: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     href: {
       type: DataTypes.STRING,
@@ -39,12 +40,12 @@ const MenuDetail = sequelize.define(
     iconName: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
+      unique: false,
     },
     order: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      unique: true,
+      unique: false,
     },
   },
   {
