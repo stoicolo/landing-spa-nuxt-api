@@ -104,7 +104,6 @@ const getMenuPageById = async (menuBody) => {
 const getMenuPage = async (menuBody) => {
   return MenuDetail.findAll({
     where: {
-      id: menuBody.id,
       menuHeaderId: menuBody.menuHeaderId,
       pageId: menuBody.pageId,
     },
@@ -244,9 +243,18 @@ const updateMenuPage = async (menuBody) => {
     if (!menuPage) {
       throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el id.');
     }
-    Object.assign(menuPage.dataValues, menuBody);
 
-    await menuPage.save();
+    const updatableFields = ['menuName', 'href', 'slug'];
+    updatableFields.forEach((field) => {
+      if (menuBody[field] !== undefined) {
+        menuPage[field] = menuBody[field];
+      }
+    });
+
+    await menuPage.save({ fields: updatableFields });
+
+    await menuPage.reload();
+
     return menuPage;
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error.message || 'Error al actualizar el menú de la página.');
