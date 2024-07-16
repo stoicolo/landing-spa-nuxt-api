@@ -3,9 +3,9 @@ const Joi = require('joi');
 const createPublishHistory = {
   body: Joi.object().keys({
     domain: Joi.string().required(),
-    websiteId: Joi.string().required(),
-    userId: Joi.string().required(),
-    menuHeaderId: Joi.string().required(),
+    websiteId: Joi.number().required(),
+    userId: Joi.number().required(),
+    menuHeaderId: Joi.number().required(),
     isActive: Joi.boolean().required(),
     isPublic: Joi.boolean().required(),
   }),
@@ -17,6 +17,12 @@ const getPublishHistoriesById = {
   }),
 };
 
+const getPublishHistoriesByWebsiteId = {
+  params: Joi.object().keys({
+    websiteId: Joi.number(),
+  }),
+};
+
 const getPublishHistoriesByUserId = {
   params: Joi.object().keys({
     userId: Joi.number(),
@@ -24,11 +30,9 @@ const getPublishHistoriesByUserId = {
 };
 
 const updatePublishHistory = {
-  params: Joi.object().keys({
-    publishHistoryId: Joi.number().required(),
-  }),
   body: Joi.object()
     .keys({
+      publishHistoryId: Joi.number().required(),
       domain: Joi.string(),
       isPublic: Joi.boolean(),
       isActive: Joi.boolean(),
@@ -37,7 +41,7 @@ const updatePublishHistory = {
 };
 
 const deletePublishHistory = {
-  params: Joi.object().keys({
+  body: Joi.object().keys({
     publishHistoryId: Joi.number().required(),
   }),
 };
@@ -46,6 +50,7 @@ module.exports = {
   createPublishHistory,
   getPublishHistoriesById,
   getPublishHistoriesByUserId,
+  getPublishHistoriesByWebsiteId,
   updatePublishHistory,
   deletePublishHistory,
 };
