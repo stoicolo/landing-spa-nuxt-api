@@ -24,8 +24,8 @@ const createPublishHistory = async (publishHistoryBody) => {
   try {
     const publishHistory = await getPublishHistoriesByWebsiteId(publishHistoryBody.websiteId);
 
-    if (publishHistory) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'El Website ya fué publicado.');
+    if (publishHistory && publishHistory.length > 0) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'El Website ya fué publicado, puede actualizarlo o eliminarlo.');
     }
 
     return PublishHistory.create(publishHistoryBody);
@@ -67,6 +67,7 @@ const updatePublishHistoryById = async (publishHistoryId, updateBody) => {
  */
 const deletePublishHistoryById = async (publishHistoryId) => {
   const publishHistory = await getPublishHistoryById(publishHistoryId);
+
   if (!publishHistory) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Website no encontrada, verifica el id.');
   }
