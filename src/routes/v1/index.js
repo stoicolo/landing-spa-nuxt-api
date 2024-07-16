@@ -8,6 +8,7 @@ const widgetRoute = require('./widget.route');
 const pageRoute = require('./page.route');
 const websiteRoute = require('./website.route');
 const menuRoute = require('./menu.route');
+const publishHistoryRoute = require('./publish_history.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -49,6 +50,10 @@ const defaultRoutes = [
   {
     path: '/menus',
     route: menuRoute,
+  },
+  {
+    path: '/publish_histories',
+    route: publishHistoryRoute,
   },
 ];
 

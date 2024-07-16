@@ -7,3 +7,4 @@ module.exports.pageTemplatBackupValidation = require('./page_template_backup.val
 module.exports.pageValidation = require('./page.validation');
 module.exports.websiteValidation = require('./website.validation');
 module.exports.menuValidation = require('./menu.validation');
+module.exports.publishHistoryValidation = require('./publish_history.validation');
