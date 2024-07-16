@@ -6,7 +6,7 @@ const { sequelize } = require('../config/sequelize');
 const PublishHistory = sequelize.define(
   'PublishHistory',
   {
-    pageName: {
+    domain: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
