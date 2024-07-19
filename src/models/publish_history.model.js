@@ -31,7 +31,7 @@ const PublishHistory = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'PageTemplate',
+        model: 'MenuHeader',
         key: 'id',
       },
     },
