@@ -105,7 +105,6 @@ const getMenuPage = async (menuBody) => {
   return MenuDetail.findAll({
     where: {
       menuHeaderId: menuBody.menuHeaderId,
-      pageId: menuBody.pageId,
     },
   });
 };
