@@ -7,6 +7,7 @@ const PageTemplateBackupModel = require('./page_template_backup.model');
 const PageModel = require('./page.model');
 const WebsiteModel = require('./website.model');
 const PublishHistoryModel = require('./publish_history.model');
+const PublicWebsiteModel = require('./public_website.model');
 const { MenuHeader, associateMenuHeader } = require('./menu_header.model');
 const { MenuDetail, associateMenuDetail } = require('./menu_detail.model');
 
@@ -20,6 +21,7 @@ const models = {
   Page: PageModel,
   Website: WebsiteModel,
   PublishHistory: PublishHistoryModel,
+  PublicWebsite: PublicWebsiteModel,
   MenuHeader,
   MenuDetail,
 };
