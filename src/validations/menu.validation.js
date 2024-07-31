@@ -32,6 +32,7 @@ const deleteMenu = {
 
 const createMenuPage = {
   body: Joi.object().keys({
+    websiteId: Joi.number().required(),
     menuHeaderId: Joi.number().required(),
     pageId: Joi.number().required(),
     menuName: Joi.string().required(),
