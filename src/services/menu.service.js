@@ -110,13 +110,46 @@ const getMenuPage = async (menuBody) => {
 };
 
 /**
+ * Query for menu pages by slug
+ * @param {Object} menuBody
+ * @returns {Promise<Array<MenuDetail>>}
+ */
+const getMenuPageBySlug = async (menuBody) => {
+  const { websiteId } = menuBody;
+
+  try {
+    const existingMenu = await MenuHeader.findOne({
+      where: { websiteId },
+    });
+
+    if (!existingMenu) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'El Website NO tiene un Menu asignado.');
+    }
+
+    const existingMenuDetail = await MenuDetail.findAll({
+      where: {
+        menuHeaderId: menuBody.menuHeaderId,
+        slug: menuBody.slug,
+      },
+    });
+
+    if (!existingMenuDetail || existingMenuDetail.length === 0) {
+      return MenuDetail.create(menuBody);
+    }
+    throw new ApiError(httpStatus.BAD_REQUEST, 'El Menú Slug ya está asignado a otro menú. Por favor, elija otro Slug.');
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error.message || 'Error al crear el menú con detalles');
+  }
+};
+
+/**
  * Create a menu page
  * @param {Object} menuBody
  * @returns {Promise<MenuDetail>}
  */
 const createMenuPage = async (menuBody) => {
   try {
-    const menuPage = await getMenuPage(menuBody);
+    const menuPage = await getMenuPageBySlug(menuBody);
 
     if (menuPage && menuPage.length > 0) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'El Website ya tiene un Menu asignado.');
@@ -280,6 +313,7 @@ module.exports = {
   updateMenu,
   deleteMenu,
   getMenuPage,
+  getMenuPageBySlug,
   createMenuPage,
   createMenuPagesBulk,
   createMenuWithDetails,
