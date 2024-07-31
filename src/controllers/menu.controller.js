@@ -27,7 +27,7 @@ const deleteMenu = catchAsync(async (req, res) => {
 });
 
 const createMenuPage = catchAsync(async (req, res) => {
-  const menu = await menuService.createMenuPage(req.body);
+  const menu = await menuService.getMenuPageBySlug(req.body);
   res.status(httpStatus.CREATED).send(menu);
 });
 
