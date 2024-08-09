@@ -28,6 +28,10 @@ const PublicWebsite = sequelize.define(
       allowNull: false,
       defaultValue: true,
     },
+    publishedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   {
     timestamps: true,
