@@ -8,6 +8,7 @@ const createPublishHistory = {
     menuHeaderId: Joi.number().required(),
     isActive: Joi.boolean().required(),
     isPublic: Joi.boolean().required(),
+    publishedAt: Joi.date(),
   }),
 };
 
@@ -36,6 +37,7 @@ const updatePublishHistory = {
       domain: Joi.string(),
       isPublic: Joi.boolean(),
       isActive: Joi.boolean(),
+      publishedAt: Joi.date(),
     })
     .min(1),
 };
