@@ -43,6 +43,10 @@ const PublishHistory = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    publishedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   {
     timestamps: true,
