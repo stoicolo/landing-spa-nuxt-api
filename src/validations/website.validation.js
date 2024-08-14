@@ -4,6 +4,8 @@ const createWebsite = {
   body: Joi.object().keys({
     userId: Joi.number().required(),
     websiteName: Joi.string().required(),
+    domain: Joi.string().required(),
+    slug: Joi.string().required(),
   }),
 };
 
@@ -17,18 +19,10 @@ const getWebsitesByUserId = {
   params: Joi.object().keys({
     userId: Joi.number(),
   }),
-  query: Joi.object().keys({
-    userId: Joi.number(),
-    websiteName: Joi.string(),
-  }),
 };
 
 const getWebsiteByName = {
   params: Joi.object().keys({
-    websiteName: Joi.string(),
-  }),
-  query: Joi.object().keys({
-    userId: Joi.number(),
     websiteName: Joi.string(),
   }),
 };
@@ -40,6 +34,8 @@ const updateWebsite = {
   body: Joi.object()
     .keys({
       websiteName: Joi.string(),
+      domain: Joi.string(),
+      slug: Joi.string(),
     })
     .min(1),
 };

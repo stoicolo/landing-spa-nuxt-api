@@ -17,6 +17,16 @@ const Website = sequelize.define(
       allowNull: false,
       unique: true,
     },
+    domain: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
   },
   {
     timestamps: true,
