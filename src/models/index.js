@@ -21,9 +21,9 @@ const models = {
   Page: PageModel,
   Website: WebsiteModel,
   PublishHistory: PublishHistoryModel,
-  PublicWebsite: PublicWebsiteModel,
   MenuHeader,
   MenuDetail,
+  PublicWebsite: PublicWebsiteModel,
 };
 
 associateMenuHeader(models);

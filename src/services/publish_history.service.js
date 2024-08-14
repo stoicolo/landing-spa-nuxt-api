@@ -51,17 +51,18 @@ const getPublishHistoryById = async (id) => {
  */
 const updatePublishHistoryById = async (publishHistoryId, updateBody) => {
   const publishHistory = await getPublishHistoryById(publishHistoryId);
+  const updatedBody = { ...updateBody };
 
   if (!publishHistory) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Website no se puede publicar, verifica el id.');
   }
 
-  if (updateBody.publishedAt) {
-    updateBody.publishedAt = new Date(updateBody.publishedAt);
-    publishHistory.setDataValue('publishedAt', updateBody.publishedAt);
+  if (updatedBody.publishedAt) {
+    updatedBody.publishedAt = new Date(updatedBody.publishedAt);
+    publishHistory.setDataValue('publishedAt', updatedBody.publishedAt);
   }
 
-  Object.assign(publishHistory, updateBody);
+  Object.assign(publishHistory, updatedBody);
   publishHistory.changed('publishedAt', true); // Forzar la actualización de publishedAt
   await publishHistory.save({ silent: false });
 

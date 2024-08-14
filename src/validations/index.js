@@ -8,3 +8,4 @@ module.exports.pageValidation = require('./page.validation');
 module.exports.websiteValidation = require('./website.validation');
 module.exports.menuValidation = require('./menu.validation');
 module.exports.publishHistoryValidation = require('./publish_history.validation');
+module.exports.publicWebsiteValidation = require('./public_website.validation');

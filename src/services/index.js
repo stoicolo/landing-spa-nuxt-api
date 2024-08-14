@@ -10,3 +10,4 @@ module.exports.pageService = require('./page.service');
 module.exports.websiteService = require('./website.service');
 module.exports.menuService = require('./menu.service');
 module.exports.publishHistoryService = require('./publish_history.service');
+module.exports.publicWebsiteService = require('./public_website.service');

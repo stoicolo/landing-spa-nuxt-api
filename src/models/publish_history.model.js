@@ -1,4 +1,4 @@
-// PageTemplate.js
+// PublishHistory.js
 
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/sequelize');

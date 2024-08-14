@@ -14,6 +14,16 @@ const PublicWebsite = sequelize.define(
         key: 'id',
       },
     },
+    websiteDomain: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    websiteSlug: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     content: {
       type: DataTypes.JSON,
       allowNull: false,

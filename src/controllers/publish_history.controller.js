@@ -5,9 +5,13 @@ const catchAsync = require('../utils/catchAsync');
 const { publishHistoryService } = require('../services');
 
 const createPublishHistory = catchAsync(async (req, res) => {
-  const page = await publishHistoryService.createPublishHistory(req.body);
+  try {
+    const page = await publishHistoryService.createPublishHistory(req.body);
 
-  res.status(httpStatus.CREATED).send(page);
+    res.status(httpStatus.CREATED).send(page);
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
 });
 
 const getPublishHistoryById = catchAsync(async (req, res) => {
