@@ -3,7 +3,25 @@ const { sequelize } = require('./sequelize');
 function generateMigrations() {
   const { models } = sequelize;
 
-  Object.values(models).forEach(async (model) => {
+  // important to sort the models to avoid foreign key constraint errors
+  const modelsSorted = {
+    User: models.User,
+    Token: models.Token,
+    Company: models.Company,
+    Widget: models.Widget,
+    PageTemplate: models.PageTemplate,
+    PageTemplateBackup: models.PageTemplateBackup,
+    Website: models.Website,
+    Page: models.Page,
+    PublishHistory: models.PublishHistory,
+    PublicWebsite: models.PublicWebsite,
+    MenuHeader: models.MenuHeader,
+    MenuDetail: models.MenuDetail,
+  };
+
+  console.log('%csrc/config/generateMigrations.js:22 Models Sort', 'color: #007acc;', modelsSorted);
+
+  Object.values(modelsSorted).forEach(async (model) => {
     const modelName = model.name;
 
     await sequelize.getQueryInterface().createTable(modelName, {
