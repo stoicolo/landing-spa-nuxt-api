@@ -13,7 +13,7 @@ router
 
 router
   .route('/website/')
-  .get(
+  .post(
     auth(),
     validate(publishHistoryValidation.getPublishHistoriesByWebsiteId),
     publishHistoryController.getPublishHistoriesByWebsiteId
