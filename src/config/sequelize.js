@@ -1,5 +1,6 @@
 // sequelize config and Postgres database connection
 
+// DEVELOPMENT
 // const { Sequelize } = require('sequelize');
 // const config = require('./config');
 
@@ -16,6 +17,7 @@
 
 // module.exports = { sequelize };
 
+// PRODUCTION
 const { Sequelize } = require('sequelize');
 const config = require('./config');
 
