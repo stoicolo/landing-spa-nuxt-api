@@ -24,7 +24,8 @@ router.route('/get-menu-pages/').post(auth(), validate(menuValidation.getMenuPag
 
 router
   .route('/menu-pages-bulk/')
-  .post(auth(), validate(menuValidation.createMenuPagesBulk), menuController.createMenuPagesBulk);
+  .post(auth(), validate(menuValidation.createMenuPagesBulk), menuController.createMenuPagesBulk)
+  .patch(auth(), validate(menuValidation.updateMenuPagesBulk), menuController.updateMenuPagesBulk);
 
 router
   .route('/get-menu-with-details/')
