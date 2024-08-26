@@ -61,6 +61,25 @@ const createMenuPagesBulk = {
       .required(),
   }),
 };
+const updateMenuPagesBulk = {
+  body: Joi.object().keys({
+    menuHeaderId: Joi.number().required(),
+    menuPages: Joi.array()
+      .items(
+        Joi.object().keys({
+          id: Joi.number(),
+          pageId: Joi.number(),
+          menuName: Joi.string().required(),
+          href: Joi.string().required(),
+          slug: Joi.string().required(),
+          iconName: Joi.string(),
+          order: Joi.number(),
+        })
+      )
+      .min(1)
+      .required(),
+  }),
+};
 
 const createMenuWithDetails = {
   body: Joi.object().keys({
@@ -123,6 +142,7 @@ module.exports = {
   deleteMenu,
   createMenuPage,
   createMenuPagesBulk,
+  updateMenuPagesBulk,
   createMenuWithDetails,
   getMenuWithDetails,
   getMenuPage,
