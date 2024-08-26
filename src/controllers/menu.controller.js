@@ -36,6 +36,19 @@ const createMenuPagesBulk = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(menuPages);
 });
 
+const updateMenuPagesBulk = async (req, res) => {
+  try {
+    const result = await menuService.updateMenuPagesBulk(req.body);
+    res.status(httpStatus.OK).json(result);
+  } catch (error) {
+    if (error instanceof ApiError) {
+      res.status(error.statusCode).json({ message: error.message });
+    } else {
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error interno del servidor' });
+    }
+  }
+};
+
 const createMenuWithDetails = catchAsync(async (req, res) => {
   const menu = await menuService.createMenuWithDetails(req.body);
   res.status(httpStatus.CREATED).send(menu);
@@ -74,6 +87,7 @@ module.exports = {
   deleteMenu,
   createMenuPage,
   createMenuPagesBulk,
+  updateMenuPagesBulk,
   createMenuWithDetails,
   getMenuWithDetails,
   getMenuPage,
