@@ -327,6 +327,18 @@ const getMenuWithDetails = async (menuBody) => {
       {
         model: MenuDetail,
         as: 'menuDetails',
+        attributes: [
+          'id',
+          'menuHeaderId',
+          'pageId',
+          'menuName',
+          'href',
+          'slug',
+          'iconName',
+          'order',
+          'createdAt',
+          'updatedAt',
+        ],
       },
     ],
   });
