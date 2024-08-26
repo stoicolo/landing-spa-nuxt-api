@@ -189,6 +189,81 @@ const createMenuPagesBulk = async (menuBody) => {
 };
 
 /**
+ * Update menu pages in bulk
+ * @param {Object} menuBody
+ * @returns {Promise<Array<MenuDetail>>}
+ */
+const updateMenuPagesBulk = async (menuBody) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const { menuHeaderId, menuPages } = menuBody;
+
+    const menuHeader = await MenuHeader.findByPk(menuHeaderId, { transaction });
+    if (!menuHeader) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Menu Header no encontrado.');
+    }
+
+    const updatePromises = menuPages.map(async (page) => {
+      try {
+        const [updatedCount] = await MenuDetail.update(
+          {
+            menuName: page.menuName,
+            href: page.href,
+            slug: page.slug,
+            iconName: page.iconName,
+            order: page.order,
+          },
+          {
+            where: {
+              menuHeaderId,
+              pageId: page.pageId,
+            },
+            transaction,
+          }
+        );
+
+        if (updatedCount === 0) {
+          console.warn(
+            `No se actualizó ningún registro para MenuDetail con menuHeaderId ${menuHeaderId} y pageId ${page.pageId}`
+          );
+        }
+
+        return updatedCount;
+      } catch (updateError) {
+        if (updateError.name === 'SequelizeUniqueConstraintError') {
+          const field = updateError.errors[0].path;
+          throw new ApiError(
+            httpStatus.CONFLICT,
+            `El valor "${updateError.errors[0].value}" ya existe para el campo ${field} en otro MenuDetail.`
+          );
+        }
+        throw updateError;
+      }
+    });
+
+    await Promise.all(updatePromises);
+
+    const updatedMenuPages = await MenuDetail.findAll({
+      where: {
+        menuHeaderId,
+        pageId: menuPages.map((page) => page.pageId),
+      },
+      transaction,
+    });
+
+    await transaction.commit();
+    return updatedMenuPages;
+  } catch (error) {
+    await transaction.rollback();
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(httpStatus.BAD_REQUEST, `Error al actualizar MenuDetails: ${error.message}`);
+  }
+};
+
+/**
  * Create a menu with details
  * @param {Object} menuBody
  * @returns {Promise<Object>}
@@ -316,6 +391,7 @@ module.exports = {
   getMenuPageBySlug,
   createMenuPage,
   createMenuPagesBulk,
+  updateMenuPagesBulk,
   createMenuWithDetails,
   getMenuWithDetails,
   updateMenuPage,
