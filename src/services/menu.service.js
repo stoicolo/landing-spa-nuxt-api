@@ -420,7 +420,7 @@ const deleteMenuPagesBulk = async (menuBody) => {
     const deletedCount = await MenuDetail.destroy({
       where: {
         menuHeaderId,
-        pageId: {
+        id: {
           [Op.in]: menuPagesIds,
         },
       },
