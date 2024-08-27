@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { Op } = require('sequelize');
 const { MenuHeader, MenuDetail } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { sequelize } = require('../config/sequelize');
@@ -394,6 +395,53 @@ const deleteMenuPage = async (menuBody) => {
   return menuPage;
 };
 
+/**
+ * Delete MenuDetailsPage in Bulk
+ * @param {Object} menuBody
+ * @returns {Promise<MenuDetail>}
+ */
+const deleteMenuPagesBulk = async (menuBody) => {
+  const { websiteId, menuHeaderId, menuPagesIds } = menuBody;
+
+  if (!websiteId || !menuHeaderId || !Array.isArray(menuPagesIds)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Parámetros inválidos.');
+  }
+
+  const transaction = await sequelize.transaction();
+  try {
+    const menuHeader = await MenuHeader.findOne({
+      where: { id: menuHeaderId, websiteId },
+      transaction,
+    });
+    if (!menuHeader) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Menu Header no encontrado.');
+    }
+
+    const deletedCount = await MenuDetail.destroy({
+      where: {
+        menuHeaderId,
+        pageId: {
+          [Op.in]: menuPagesIds,
+        },
+      },
+      transaction,
+    });
+
+    if (deletedCount === 0) {
+      console.warn(`No se eliminó ningún registro para MenuDetail con menuHeaderId ${menuHeaderId}`);
+    }
+
+    await transaction.commit();
+    return deletedCount;
+  } catch (error) {
+    await transaction.rollback();
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new ApiError(httpStatus.BAD_REQUEST, `Error al eliminar MenuDetails: ${error.message}`);
+  }
+};
+
 module.exports = {
   createMenu,
   getMenu,
@@ -408,4 +456,5 @@ module.exports = {
   getMenuWithDetails,
   updateMenuPage,
   deleteMenuPage,
+  deleteMenuPagesBulk,
 };
