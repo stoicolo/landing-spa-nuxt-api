@@ -135,6 +135,14 @@ const deleteMenuPage = {
   }),
 };
 
+const deleteMenuPagesBulk = {
+  body: Joi.object().keys({
+    websiteId: Joi.number().required(),
+    menuHeaderId: Joi.number().required(),
+    menuPagesIds: Joi.array().items(Joi.number()).min(1).required(),
+  }),
+};
+
 module.exports = {
   createMenu,
   getMenu,
@@ -148,4 +156,5 @@ module.exports = {
   getMenuPage,
   updateMenuPage,
   deleteMenuPage,
+  deleteMenuPagesBulk,
 };
