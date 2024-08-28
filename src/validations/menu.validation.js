@@ -114,6 +114,13 @@ const getMenuPage = {
   }),
 };
 
+const getPagesWithoutMenu = {
+  body: Joi.object().keys({
+    menuHeaderId: Joi.number().required(),
+    websiteId: Joi.number().required(),
+  }),
+};
+
 const updateMenuPage = {
   body: Joi.object()
     .keys({
@@ -153,6 +160,7 @@ module.exports = {
   updateMenuPagesBulk,
   createMenuWithDetails,
   getMenuWithDetails,
+  getPagesWithoutMenu,
   getMenuPage,
   updateMenuPage,
   deleteMenuPage,
