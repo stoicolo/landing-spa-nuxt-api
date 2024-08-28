@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const { Op } = require('sequelize');
-const { MenuHeader, MenuDetail } = require('../models');
+const { MenuHeader, MenuDetail, Page } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { sequelize } = require('../config/sequelize');
 
@@ -108,6 +108,35 @@ const getMenuPage = async (menuBody) => {
       menuHeaderId: menuBody.menuHeaderId,
     },
   });
+};
+
+/**
+ * Query for pages without menu assigned for a specific menuHeaderId
+ * @param {Object} menuBody - Object containing menuHeaderId
+ * @returns {Promise<Array<Page>>}
+ */
+const getPagesWithoutMenu = async (menuBody) => {
+  const { menuHeaderId } = menuBody;
+
+  const pagesWithMenu = await MenuDetail.findAll({
+    attributes: ['pageId'],
+    where: {
+      menuHeaderId,
+    },
+    raw: true,
+  });
+
+  const pageIdsWithMenu = pagesWithMenu.map((item) => item.pageId);
+
+  const pagesWithoutMenu = await Page.findAll({
+    where: {
+      id: {
+        [Op.notIn]: pageIdsWithMenu,
+      },
+    },
+  });
+
+  return pagesWithoutMenu;
 };
 
 /**
@@ -454,6 +483,7 @@ module.exports = {
   updateMenuPagesBulk,
   createMenuWithDetails,
   getMenuWithDetails,
+  getPagesWithoutMenu,
   updateMenuPage,
   deleteMenuPage,
   deleteMenuPagesBulk,
