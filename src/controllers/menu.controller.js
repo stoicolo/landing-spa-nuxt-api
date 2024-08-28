@@ -70,6 +70,14 @@ const getMenuPage = catchAsync(async (req, res) => {
   res.send(menu);
 });
 
+const getPagesWithoutMenu = catchAsync(async (req, res) => {
+  const menu = await menuService.getPagesWithoutMenu(req.body);
+  if (!menu) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Sub Menú no encontrado, verifica el Id.');
+  }
+  res.send(menu);
+});
+
 const updateMenuPage = catchAsync(async (req, res) => {
   const menu = await menuService.updateMenuPage(req.body);
   res.send(menu);
@@ -104,6 +112,7 @@ module.exports = {
   updateMenuPagesBulk,
   createMenuWithDetails,
   getMenuWithDetails,
+  getPagesWithoutMenu,
   getMenuPage,
   updateMenuPage,
   deleteMenuPage,
