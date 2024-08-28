@@ -23,6 +23,10 @@ router
 router.route('/get-menu-pages/').post(auth(), validate(menuValidation.getMenuPage), menuController.getMenuPage);
 
 router
+  .route('/get-pages-without-menus/')
+  .post(auth(), validate(menuValidation.getPagesWithoutMenu), menuController.getPagesWithoutMenu);
+
+router
   .route('/menu-pages-bulk/')
   .post(auth(), validate(menuValidation.createMenuPagesBulk), menuController.createMenuPagesBulk)
   .patch(auth(), validate(menuValidation.updateMenuPagesBulk), menuController.updateMenuPagesBulk)
