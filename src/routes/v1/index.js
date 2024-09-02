@@ -11,6 +11,7 @@ const menuRoute = require('./menu.route');
 const publishHistoryRoute = require('./publish_history.route');
 const publicWebsiteRoute = require('./public_website.route');
 const docsRoute = require('./docs.route');
+const uploadsRoute = require('./uploads.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -59,6 +60,10 @@ const defaultRoutes = [
   {
     path: '/public_websites',
     route: publicWebsiteRoute,
+  },
+  {
+    path: '/uploads',
+    route: uploadsRoute,
   },
 ];
 
