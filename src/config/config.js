@@ -30,6 +30,11 @@ const envVarsSchema = Joi.object()
     SMTP_USERNAME: Joi.string().description('username for email server'),
     SMTP_PASSWORD: Joi.string().description('password for email server'),
     EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+    IDRIVE_ENDPOINT: Joi.string().description('iDrive endpoint'),
+    IDRIVE_REGION: Joi.string().description('iDrive region'),
+    IDRIVE_ACCESS_KEY: Joi.string().description('iDrive access key'),
+    IDRIVE_SECRET_KEY: Joi.string().description('iDrive secret key'),
+    IDRIVE_BUCKET_NAME: Joi.string().description('iDrive bucket name'),
   })
   .unknown();
 
@@ -72,5 +77,12 @@ module.exports = {
         rejectUnauthorized: false,
       },
     },
+  },
+  idrive: {
+    endpoint: envVars.IDRIVE_ENDPOINT,
+    region: envVars.IDRIVE_REGION,
+    accessKeyId: envVars.IDRIVE_ACCESS_KEY,
+    secretAccessKey: envVars.IDRIVE_SECRET_KEY,
+    bucketName: envVars.IDRIVE_BUCKET_NAME,
   },
 };
