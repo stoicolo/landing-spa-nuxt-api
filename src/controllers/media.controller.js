@@ -1,11 +1,11 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { uploadsService } = require('../services');
+const { mediaService } = require('../services');
 
 const uploadImage = catchAsync(async (req, res) => {
   try {
-    const result = await uploadsService.uploadSingleImage(req, res);
+    const result = await mediaService.uploadSingleImage(req, res);
 
     res.status(httpStatus.OK).json(result);
   } catch (error) {
@@ -18,17 +18,28 @@ const uploadImage = catchAsync(async (req, res) => {
 });
 
 const deleteImage = async (req, res) => {
-  await uploadsService.deleteImage(req.params.imageId);
+  await mediaService.deleteImage(req.params.imageId);
   res.status(httpStatus.NO_CONTENT).send();
 };
 
-const listImages = async (req, res) => {
-  const images = await uploadsService.listImages();
+const getImages = async (req, res) => {
+  const images = await mediaService.getImages();
+
   res.status(httpStatus.OK).send(images);
 };
+
+const getImagesURLsByWebsiteId = catchAsync(async (req, res) => {
+  const images = await mediaService.getImagesURLsByWebsiteId(req.body.websiteId);
+
+  if (!images) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Website no encontrado, verifica el Id de Usuario.');
+  }
+  res.send(images);
+});
 
 module.exports = {
   uploadImage,
   deleteImage,
-  listImages,
+  getImages,
+  getImagesURLsByWebsiteId,
 };
