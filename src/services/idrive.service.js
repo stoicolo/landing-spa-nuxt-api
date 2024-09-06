@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand, DeleteObjectCommand, ListObjectsCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand, ListObjectsV2Command } = require('@aws-sdk/client-s3');
 const config = require('../config/config');
 
 const s3 = new S3Client({
@@ -11,14 +11,22 @@ const s3 = new S3Client({
   forcePathStyle: true,
 });
 
-const uploadImage = async (file) => {
+const normalizeFileName = (name) => {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+};
+
+const uploadImage = async (file, path = 'images', websiteId = 0) => {
   if (!file || !file.buffer || !file.originalname) {
     throw new Error('Invalid file object');
   }
 
+  const normalizedName = normalizeFileName(file.originalname);
   const params = {
     Bucket: config.idrive.bucketName,
-    Key: `images/${Date.now()}_${file.originalname}`,
+    Key: `${path}/${Date.now()}_${normalizedName}_${websiteId}`,
     Body: file.buffer,
     ContentType: file.mimetype,
   };
@@ -59,11 +67,18 @@ const listImages = async () => {
   };
 
   try {
-    const command = new ListObjectsCommand(params);
+    const command = new ListObjectsV2Command(params);
     const data = await s3.send(command);
+
+    if (!data.Contents) {
+      return [];
+    }
+
     return data.Contents.map((item) => ({
       url: `${config.idrive.endpoint}/${config.idrive.bucketName}/${item.Key}`,
       id: item.Key,
+      lastModified: item.LastModified,
+      size: item.Size,
     }));
   } catch (error) {
     console.error('Error listing images from iDrive:', error);
