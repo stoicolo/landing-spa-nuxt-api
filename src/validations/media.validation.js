@@ -32,7 +32,7 @@ const getImages = {
 };
 
 const getImagesURLsByWebsiteId = {
-  body: Joi.object().keys({
+  query: Joi.object().keys({
     websiteId: Joi.number().required(),
   }),
 };

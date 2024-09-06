@@ -29,12 +29,25 @@ const getImages = async (req, res) => {
 };
 
 const getImagesURLsByWebsiteId = catchAsync(async (req, res) => {
-  const images = await mediaService.getImagesURLsByWebsiteId(req.body.websiteId);
+  const websiteId = req.query.websiteId;
 
-  if (!images) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Website no encontrado, verifica el Id de Usuario.');
+  if (!websiteId) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'websiteId is requiered');
   }
-  res.send(images);
+
+  const numericWebsiteId = Number(websiteId);
+
+  if (isNaN(numericWebsiteId)) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'websiteId should be a number');
+  }
+
+  const images = await mediaService.getImagesURLsByWebsiteId(numericWebsiteId);
+
+  if (!images || images.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Images not found, veryfy the websiteId');
+  }
+
+  res.status(httpStatus.OK).send(images);
 });
 
 module.exports = {
