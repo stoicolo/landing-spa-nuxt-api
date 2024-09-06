@@ -17,6 +17,7 @@ function generateMigrations() {
     PublicWebsite: models.PublicWebsite,
     MenuHeader: models.MenuHeader,
     MenuDetail: models.MenuDetail,
+    Media: models.Media,
   };
 
   console.log('%csrc/config/generateMigrations.js:22 Models Sort', 'color: #007acc;', modelsSorted);
