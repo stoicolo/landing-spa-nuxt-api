@@ -9,4 +9,4 @@ module.exports.websiteValidation = require('./website.validation');
 module.exports.menuValidation = require('./menu.validation');
 module.exports.publishHistoryValidation = require('./publish_history.validation');
 module.exports.publicWebsiteValidation = require('./public_website.validation');
-module.exports.uploadsValidation = require('./uploads.validation');
+module.exports.mediaValidation = require('./media.validation');
