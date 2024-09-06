@@ -10,6 +10,7 @@ const PublishHistoryModel = require('./publish_history.model');
 const PublicWebsiteModel = require('./public_website.model');
 const { MenuHeader, associateMenuHeader } = require('./menu_header.model');
 const { MenuDetail, associateMenuDetail } = require('./menu_detail.model');
+const MediaModel = require('./media.model');
 
 const models = {
   User: UserModel,
@@ -24,6 +25,7 @@ const models = {
   MenuHeader,
   MenuDetail,
   PublicWebsite: PublicWebsiteModel,
+  Media: MediaModel,
 };
 
 associateMenuHeader(models);
