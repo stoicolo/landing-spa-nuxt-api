@@ -45,7 +45,7 @@ if (error) {
 }
 
 module.exports = {
-  env: envVars.NODE_ENV,
+  node_env: envVars.NODE_ENV,
   port: envVars.PORT,
   jwt: {
     secret: envVars.JWT_SECRET,
