@@ -11,4 +11,4 @@ module.exports.websiteService = require('./website.service');
 module.exports.menuService = require('./menu.service');
 module.exports.publishHistoryService = require('./publish_history.service');
 module.exports.publicWebsiteService = require('./public_website.service');
-module.exports.uploadsService = require('./uploads.service');
+module.exports.mediaService = require('./media.service');
