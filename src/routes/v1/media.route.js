@@ -2,8 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const uploadsValidation = require('../../validations/uploads.validation');
-const uploadsController = require('../../controllers/uploads.controller');
+const mediaValidation = require('../../validations/media.validation');
+const mediaController = require('../../controllers/media.controller');
 
 const router = express.Router();
 
@@ -15,12 +15,12 @@ router
   .post(
     auth(),
     upload.single('image'), // Middleware de multer para manejar la carga de archivos
-    validate(uploadsValidation.uploadImage),
-    uploadsController.uploadImage
+    validate(mediaValidation.uploadImage),
+    mediaController.uploadImage
   )
-  .get(auth(), uploadsController.listImages); // Cambiado a listImages, asumiendo que tiene esta función
+  .get(auth(), validate(mediaValidation.getImagesURLsByWebsiteId), mediaController.getImagesURLsByWebsiteId);
 
-router.route('/images/:imageId').delete(auth(), validate(uploadsValidation.deleteImage), uploadsController.deleteImage);
+router.route('/images/:imageExternalId').delete(auth(), validate(mediaValidation.deleteImage), mediaController.deleteImage);
 
 module.exports = router;
 
@@ -33,12 +33,12 @@ module.exports = router;
 
 /**
  * @swagger
- * /uploads/images:
+ * /media/images:
  *
  *   get:
- *     summary: Get all Menu
- *     description: Only admins can retrieve all Menu .
- *     tags: [Menu  s]
+ *     summary: Get all Media
+ *     description: Only admins can retrieve all Media .
+ *     tags: [Media  s]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -58,14 +58,14 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of Menu
+ *         description: Maximum number of Media
  *       - in: query
- *         name: menu
+ *         name: media
  *         schema:
  *           type: integer
  *           minimum: 1
  *           default: 1
- *         description: Menu  number
+ *         description: Media  number
  *     responses:
  *       "200":
  *         description: OK
@@ -78,13 +78,13 @@ module.exports = router;
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/User'
- *                 menu:
+ *                 media:
  *                   type: integer
  *                   example: 1
  *                 limit:
  *                   type: integer
  *                   example: 10
- *                 totalMenu:
+ *                 totalMedia:
  *                   type: integer
  *                   example: 1
  *                 totalResults:
