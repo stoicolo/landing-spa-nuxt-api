@@ -40,6 +40,7 @@ const createMenuPage = {
     slug: Joi.string().required(),
     iconName: Joi.string(),
     order: Joi.number(),
+    hidden: Joi.boolean(),
   }),
 };
 
@@ -74,6 +75,7 @@ const updateMenuPagesBulk = {
           slug: Joi.string().required(),
           iconName: Joi.string(),
           order: Joi.number(),
+          hidden: Joi.boolean(),
         })
       )
       .min(1)
@@ -132,6 +134,7 @@ const updateMenuPage = {
       slug: Joi.string(),
       iconName: Joi.string(),
       order: Joi.number(),
+      hidden: Joi.boolean(),
     })
     .min(1),
 };

@@ -47,6 +47,11 @@ const MenuDetail = sequelize.define(
       allowNull: true,
       unique: false,
     },
+    hidden: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      unique: false,
+    },
   },
   {
     timestamps: true,
