@@ -243,6 +243,7 @@ const updateMenuPagesBulk = async (menuBody) => {
             slug: page.slug,
             iconName: page.iconName,
             order: page.order,
+            hidden: page.hidden,
           },
           {
             where: {
@@ -366,6 +367,7 @@ const getMenuWithDetails = async (menuBody) => {
           'slug',
           'iconName',
           'order',
+          'hidden',
           'createdAt',
           'updatedAt',
         ],
