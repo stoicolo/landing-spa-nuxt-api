@@ -2,13 +2,18 @@ const Joi = require('joi');
 
 const createWebsite = {
   body: Joi.object().keys({
-    userId: Joi.number().required(),
-    websiteName: Joi.string().required(),
-    domain: Joi.string().required(),
-    slug: Joi.string().required(),
+    userId: Joi.number().integer().positive().required(),
+    websiteName: Joi.string().min(3).max(100).required(),
+    domain: Joi.string().domain().required(),
+    slug: Joi.string()
+      .lowercase()
+      .pattern(/^[a-z0-9-]+$/)
+      .min(3)
+      .max(50)
+      .required(),
+    websiteGlobalConfig: Joi.alternatives().try(Joi.object()).required(),
   }),
 };
-
 const getWebsites = {
   params: Joi.object().keys({
     websiteId: Joi.number().required(),
@@ -33,9 +38,15 @@ const updateWebsite = {
   }),
   body: Joi.object()
     .keys({
-      websiteName: Joi.string(),
-      domain: Joi.string(),
-      slug: Joi.string(),
+      userId: Joi.number().integer().positive(),
+      websiteName: Joi.string().min(3).max(100),
+      domain: Joi.string().domain(),
+      slug: Joi.string()
+        .lowercase()
+        .pattern(/^[a-z0-9-]+$/)
+        .min(3)
+        .max(50),
+      websiteGlobalConfig: Joi.alternatives().try(Joi.object()),
     })
     .min(1),
 };
