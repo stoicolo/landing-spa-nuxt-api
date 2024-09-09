@@ -24,6 +24,10 @@ const PublicWebsite = sequelize.define(
       allowNull: false,
       unique: true,
     },
+    websiteGlobalConfig: {
+      type: DataTypes.JSONB,
+      allowNull: false,
+    },
     content: {
       type: DataTypes.JSON,
       allowNull: false,
