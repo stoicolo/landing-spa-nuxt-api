@@ -18,9 +18,8 @@ router
     validate(mediaValidation.uploadImage),
     mediaController.uploadImage
   )
-  .get(auth(), validate(mediaValidation.getImagesURLsByWebsiteId), mediaController.getImagesURLsByWebsiteId);
-
-router.route('/images/:imageExternalId').delete(auth(), validate(mediaValidation.deleteImage), mediaController.deleteImage);
+  .get(auth(), validate(mediaValidation.getImagesURLsByWebsiteId), mediaController.getImagesURLsByWebsiteId)
+  .delete(auth(), validate(mediaValidation.deleteImages), mediaController.deleteImages);
 
 module.exports = router;
 
