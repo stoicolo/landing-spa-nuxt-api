@@ -22,30 +22,20 @@ const uploadImage = {
   }).required(),
 };
 
-const getImages = {
-  query: Joi.object().keys({
-    name: Joi.string(),
-    sortBy: Joi.string(),
-    limit: Joi.number().integer().min(1),
-    page: Joi.number().integer().min(1),
-  }),
-};
-
 const getImagesURLsByWebsiteId = {
   query: Joi.object().keys({
     websiteId: Joi.number().required(),
   }),
 };
 
-const deleteImage = {
-  params: Joi.object().keys({
-    imageId: Joi.string().required(),
+const deleteImages = {
+  body: Joi.object().keys({
+    imageIds: Joi.array().items(Joi.string()).min(1).required(),
   }),
 };
 
 module.exports = {
   uploadImage,
-  getImages,
   getImagesURLsByWebsiteId,
-  deleteImage,
+  deleteImages,
 };
