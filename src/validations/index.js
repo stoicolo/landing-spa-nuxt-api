@@ -10,3 +10,4 @@ module.exports.menuValidation = require('./menu.validation');
 module.exports.publishHistoryValidation = require('./publish_history.validation');
 module.exports.publicWebsiteValidation = require('./public_website.validation');
 module.exports.mediaValidation = require('./media.validation');
+module.exports.genericTemplateValidation = require('./generic_template.validation');
