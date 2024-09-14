@@ -33,7 +33,7 @@ const updatePageTemplate = {
     .min(1),
 };
 
-const deledeletePageTemplate = {
+const deletePageTemplate = {
   params: Joi.object().keys({
     pageTemplateId: Joi.number().required(),
   }),
@@ -44,5 +44,5 @@ module.exports = {
   getPageTemplate,
   getPageTemplatesByUserId,
   updatePageTemplate,
-  deledeletePageTemplate,
+  deletePageTemplate,
 };
