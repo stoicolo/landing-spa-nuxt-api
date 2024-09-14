@@ -9,3 +9,4 @@ module.exports.menuController = require('./menu.controller');
 module.exports.publishHistoryController = require('./publish_history.controller');
 module.exports.publicWebsiteController = require('./public_website.controller');
 module.exports.mediaController = require('./media.controller');
+module.exports.genericTemplateController = require('./generic_template.controller');
