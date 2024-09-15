@@ -44,6 +44,30 @@ const getImagesURLsByWebsiteId = async (websiteId) => {
   });
 };
 
+/**
+ * Get Media by id
+ * @param {Object} menuBody
+ * @returns {Promise<MenuDetail>}
+ */
+const getMediaById = async (id) => {
+  return Media.findOne({
+    where: {
+      id,
+    },
+  });
+};
+
+const updateImage = async (mediaId, updateBody) => {
+  const media = await getMediaById(mediaId);
+
+  if (!media) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Media not found, please check the id.');
+  }
+  Object.assign(media, updateBody);
+  await media.save();
+  return media;
+};
+
 const deleteImages = async (imageIds) => {
   const images = await Media.findAll({
     where: {
@@ -85,5 +109,6 @@ const deleteImages = async (imageIds) => {
 module.exports = {
   uploadSingleImage,
   getImagesURLsByWebsiteId,
+  updateImage,
   deleteImages,
 };
