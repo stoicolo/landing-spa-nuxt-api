@@ -29,6 +29,11 @@ const Media = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    categories: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+      defaultValue: [],
+    },
   },
   {
     timestamps: true,
