@@ -13,3 +13,4 @@ module.exports.publishHistoryService = require('./publish_history.service');
 module.exports.publicWebsiteService = require('./public_website.service');
 module.exports.mediaService = require('./media.service');
 module.exports.genericTemplateService = require('./generic_template.service');
+module.exports.genericCategoryService = require('./generic_category.service');
