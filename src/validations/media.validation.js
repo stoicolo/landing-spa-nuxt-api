@@ -7,6 +7,7 @@ const uploadImage = {
       .required(),
     userId: Joi.number().required(),
     websiteId: Joi.number().required(),
+    categories: Joi.array().items(Joi.string()).required(),
   }),
   file: Joi.object({
     fieldname: Joi.string().valid('image').required(),
@@ -28,6 +29,17 @@ const getImagesURLsByWebsiteId = {
   }),
 };
 
+const updateImage = {
+  query: Joi.object().keys({
+    mediaId: Joi.number().required(),
+  }),
+  body: Joi.object()
+    .keys({
+      categories: Joi.array().items(Joi.string()),
+    })
+    .min(1),
+};
+
 const deleteImages = {
   body: Joi.object().keys({
     imageIds: Joi.array().items(Joi.string()).min(1).required(),
@@ -37,5 +49,6 @@ const deleteImages = {
 module.exports = {
   uploadImage,
   getImagesURLsByWebsiteId,
+  updateImage,
   deleteImages,
 };

@@ -19,6 +19,7 @@ router
     mediaController.uploadImage
   )
   .get(auth(), validate(mediaValidation.getImagesURLsByWebsiteId), mediaController.getImagesURLsByWebsiteId)
+  .patch(auth(), validate(mediaValidation.updateImage), mediaController.updateImage)
   .delete(auth(), validate(mediaValidation.deleteImages), mediaController.deleteImages);
 
 module.exports = router;

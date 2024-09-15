@@ -39,6 +39,11 @@ const getImagesURLsByWebsiteId = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(images);
 });
 
+const updateImage = catchAsync(async (req, res) => {
+  const image = await mediaService.updateImage(req.query.mediaId, req.body);
+  res.send(image);
+});
+
 const deleteImages = catchAsync(async (req, res) => {
   await mediaService.deleteImages(req.body.imageIds);
   res.status(httpStatus.NO_CONTENT).send();
@@ -47,5 +52,6 @@ const deleteImages = catchAsync(async (req, res) => {
 module.exports = {
   uploadImage,
   getImagesURLsByWebsiteId,
+  updateImage,
   deleteImages,
 };
