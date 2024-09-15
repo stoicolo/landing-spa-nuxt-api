@@ -19,6 +19,11 @@ const PageTemplate = sequelize.define(
         key: 'id',
       },
     },
+    categories: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+      defaultValue: [],
+    },
   },
   {
     timestamps: true,
