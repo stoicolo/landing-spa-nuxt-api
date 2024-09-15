@@ -13,6 +13,7 @@ const publicWebsiteRoute = require('./public_website.route');
 const docsRoute = require('./docs.route');
 const mediaRoute = require('./media.route');
 const genericTemplateRoute = require('./generic_template.route');
+const genericCategoryRoute = require('./generic_category.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -69,6 +70,10 @@ const defaultRoutes = [
   {
     path: '/generic_templates',
     route: genericTemplateRoute,
+  },
+  {
+    path: '/generic_categories',
+    route: genericCategoryRoute,
   },
 ];
 
