@@ -11,7 +11,7 @@ const createGenericTemplate = catchAsync(async (req, res) => {
 const getGenericTemplate = catchAsync(async (req, res) => {
   const genericTemplate = await genericTemplateService.getGenericTemplateById(req.params.genericTemplateId);
   if (!genericTemplate) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Web page not found, please check the Id.');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Template not found, please check the Id.');
   }
   res.send(genericTemplate);
 });
@@ -19,7 +19,7 @@ const getGenericTemplate = catchAsync(async (req, res) => {
 const getGenericTemplatesByUserId = catchAsync(async (req, res) => {
   const genericTemplate = await genericTemplateService.getGenericTemplatesByUserId(req.params.userId);
   if (!genericTemplate) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Web page not found, please check the User Id.');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Template not found, please check the User Id.');
   }
   res.send(genericTemplate);
 });

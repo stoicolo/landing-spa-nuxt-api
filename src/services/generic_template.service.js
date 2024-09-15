@@ -43,7 +43,7 @@ const updateGenericTemplateById = async (genericTemplateId, updateBody) => {
   const genericTemplate = await getGenericTemplateById(genericTemplateId);
 
   if (!genericTemplate) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Web page not found, please check the id.');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Template not found, please check the id.');
   }
   Object.assign(genericTemplate, updateBody);
   await genericTemplate.save();
@@ -58,7 +58,7 @@ const updateGenericTemplateById = async (genericTemplateId, updateBody) => {
 const deleteGenericTemplateById = async (genericTemplateId) => {
   const genericTemplate = await getGenericTemplateById(genericTemplateId);
   if (!genericTemplate) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Web page not found, please check the id.');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Template not found, please check the id.');
   }
   await genericTemplate.destroy();
   return genericTemplate;
