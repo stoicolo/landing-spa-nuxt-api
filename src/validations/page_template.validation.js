@@ -4,6 +4,7 @@ const createPageTemplate = {
   body: Joi.object().keys({
     userId: Joi.number().required(),
     sections: Joi.array().items(Joi.object()),
+    categories: Joi.array().items(Joi.string()).required(),
   }),
 };
 
@@ -29,6 +30,7 @@ const updatePageTemplate = {
   body: Joi.object()
     .keys({
       sections: Joi.array().items(Joi.object()),
+      categories: Joi.array().items(Joi.string()),
     })
     .min(1),
 };

@@ -7,6 +7,7 @@ const createPageTemplateBackup = {
     userId: Joi.number().required(),
     pageName: Joi.string().required(),
     sections: Joi.array().items(Joi.object()),
+    categories: Joi.array().items(Joi.string()).required(),
   }),
 };
 
@@ -38,6 +39,7 @@ const updatePageTemplateBackup = {
       pageTemplateId: Joi.number(),
       pageName: Joi.string(),
       sections: Joi.array().items(Joi.object()),
+      categories: Joi.array().items(Joi.string()),
     })
     .min(1),
 };
