@@ -30,6 +30,24 @@ const getPageTemplateBackupsByName = {
   }),
 };
 
+const getTemplatesByCategories = {
+  query: Joi.object().keys({
+    categories: Joi.string()
+      .custom((value, helpers) => {
+        try {
+          const parsed = JSON.parse(value);
+          if (!Array.isArray(parsed)) {
+            return helpers.error('string.base');
+          }
+          return parsed;
+        } catch (error) {
+          return helpers.error('string.base');
+        }
+      })
+      .required(),
+  }),
+};
+
 const updatePageTemplateBackup = {
   body: Joi.object()
     .keys({
@@ -55,6 +73,7 @@ module.exports = {
   getPageTemplateBackup,
   getPageTemplateBackupsByUserId,
   getPageTemplateBackupsByName,
+  getTemplatesByCategories,
   updatePageTemplateBackup,
   deledeletePageTemplateBackup,
 };
