@@ -23,6 +23,24 @@ const getPageTemplatesByUserId = {
   }),
 };
 
+const getTemplatesByCategories = {
+  query: Joi.object().keys({
+    categories: Joi.string()
+      .custom((value, helpers) => {
+        try {
+          const parsed = JSON.parse(value);
+          if (!Array.isArray(parsed)) {
+            return helpers.error('string.base');
+          }
+          return parsed;
+        } catch (error) {
+          return helpers.error('string.base');
+        }
+      })
+      .required(),
+  }),
+};
+
 const updatePageTemplate = {
   params: Joi.object().keys({
     pageTemplateId: Joi.number().required(),
@@ -45,6 +63,7 @@ module.exports = {
   createPageTemplate,
   getPageTemplate,
   getPageTemplatesByUserId,
+  getTemplatesByCategories,
   updatePageTemplate,
   deletePageTemplate,
 };
