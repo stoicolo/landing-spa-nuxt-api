@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { Op, cast, literal } = require('sequelize');
 const { uploadImage, deleteImage } = require('./idrive.service');
 const { Media } = require('../models');
 const ApiError = require('../utils/ApiError');
@@ -12,6 +13,7 @@ const uploadSingleImage = async (req, res) => {
     }
 
     const result = await uploadImage(file, 'images', req.body.websiteId);
+    let bdResult = null;
 
     try {
       const menuBody = {
@@ -20,12 +22,12 @@ const uploadSingleImage = async (req, res) => {
         imageExternalUrl: result.url,
         imageExternalId: result.id,
       };
-      await Media.create(menuBody);
+      bdResult = await Media.create(menuBody);
     } catch (error) {
       res.json({ message: 'Error when saving images URLs', error: error.message });
     }
 
-    res.json({ message: 'image uploaded!', data: result });
+    res.json({ message: 'image uploaded!', data: bdResult });
   } catch (error) {
     res.status(500).json({ message: 'Error when uploading image: ', error: error.message });
   }
@@ -40,6 +42,16 @@ const getImagesURLsByWebsiteId = async (websiteId) => {
   return Media.findAll({
     where: {
       websiteId,
+    },
+  });
+};
+
+const getImagesURLsByCategories = async (categories) => {
+  return Media.findAll({
+    where: {
+      categories: {
+        [Op.overlap]: cast(literal(`ARRAY[${categories.map((cat) => `'${cat}'`).join(',')}]`), 'text[]'),
+      },
     },
   });
 };
@@ -109,6 +121,7 @@ const deleteImages = async (imageIds) => {
 module.exports = {
   uploadSingleImage,
   getImagesURLsByWebsiteId,
+  getImagesURLsByCategories,
   updateImage,
   deleteImages,
 };

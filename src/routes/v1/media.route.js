@@ -22,6 +22,9 @@ router
   .patch(auth(), validate(mediaValidation.updateImage), mediaController.updateImage)
   .delete(auth(), validate(mediaValidation.deleteImages), mediaController.deleteImages);
 
+router
+  .route('/images-list')
+  .get(auth(), validate(mediaValidation.getImagesURLsByCategories), mediaController.getImagesURLsByCategories);
 module.exports = router;
 
 /**
