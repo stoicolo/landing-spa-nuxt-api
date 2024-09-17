@@ -7,7 +7,6 @@ const uploadImage = {
       .required(),
     userId: Joi.number().required(),
     websiteId: Joi.number().required(),
-    categories: Joi.array().items(Joi.string()).required(),
   }),
   file: Joi.object({
     fieldname: Joi.string().valid('image').required(),
@@ -26,6 +25,24 @@ const uploadImage = {
 const getImagesURLsByWebsiteId = {
   query: Joi.object().keys({
     websiteId: Joi.number().required(),
+  }),
+};
+
+const getImagesURLsByCategories = {
+  query: Joi.object().keys({
+    categories: Joi.string()
+      .custom((value, helpers) => {
+        try {
+          const parsed = JSON.parse(value);
+          if (!Array.isArray(parsed)) {
+            return helpers.error('string.base');
+          }
+          return parsed;
+        } catch (error) {
+          return helpers.error('string.base');
+        }
+      })
+      .required(),
   }),
 };
 
@@ -49,6 +66,7 @@ const deleteImages = {
 module.exports = {
   uploadImage,
   getImagesURLsByWebsiteId,
+  getImagesURLsByCategories,
   updateImage,
   deleteImages,
 };

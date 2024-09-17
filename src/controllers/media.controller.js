@@ -39,6 +39,17 @@ const getImagesURLsByWebsiteId = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(images);
 });
 
+const getImagesURLsByCategories = catchAsync(async (req, res) => {
+  const { categories } = req.query;
+  const images = await mediaService.getImagesURLsByCategories(categories);
+
+  if (!images || images.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Images not found for the specified categories');
+  }
+
+  res.status(httpStatus.OK).send(images);
+});
+
 const updateImage = catchAsync(async (req, res) => {
   const image = await mediaService.updateImage(req.query.mediaId, req.body);
   res.send(image);
@@ -52,6 +63,7 @@ const deleteImages = catchAsync(async (req, res) => {
 module.exports = {
   uploadImage,
   getImagesURLsByWebsiteId,
+  getImagesURLsByCategories,
   updateImage,
   deleteImages,
 };
