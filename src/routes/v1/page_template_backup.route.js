@@ -180,4 +180,12 @@ router
     pageTemplateBackupController.getPageTemplateBackupsByName
   );
 
+router
+  .route('/templates_list')
+  .get(
+    auth(),
+    validate(pageTemplateBackupValidation.getTemplatesByCategories),
+    pageTemplateBackupController.getTemplatesByCategories
+  );
+
 module.exports = router;

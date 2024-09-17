@@ -43,6 +43,17 @@ const getPageTemplateBackupsByName = catchAsync(async (req, res) => {
   res.send(pageTemplateBackup);
 });
 
+const getTemplatesByCategories = catchAsync(async (req, res) => {
+  const { categories } = req.query;
+  const images = await pageTemplateBackupService.getTemplatesByCategories(categories);
+
+  if (!images || images.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Images not found for the specified categories');
+  }
+
+  res.status(httpStatus.OK).send(images);
+});
+
 const updatePageTemplateBackup = catchAsync(async (req, res) => {
   const pageTemplateBackup = await pageTemplateBackupService.updatePageTemplateBackupById(
     req.body.pageTemplateBackupId,
@@ -61,6 +72,7 @@ module.exports = {
   getPageTemplateBackupsByUserId,
   getPageTemplateBackupsByName,
   getPageTemplateBackup,
+  getTemplatesByCategories,
   updatePageTemplateBackup,
   deletePageTemplateBackup,
 };

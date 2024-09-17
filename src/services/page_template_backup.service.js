@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { Op, cast, literal } = require('sequelize');
 const { PageTemplateBackup } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -60,6 +61,16 @@ const getPageTemplateBackupsByUserId = async (userId) => {
   });
 };
 
+const getTemplatesByCategories = async (categories) => {
+  return PageTemplateBackup.findAll({
+    where: {
+      categories: {
+        [Op.overlap]: cast(literal(`ARRAY[${categories.map((cat) => `'${cat}'`).join(',')}]`), 'text[]'),
+      },
+    },
+  });
+};
+
 /**
  * Update Page Template Backup by id
  * @param {ObjectId} pageTemplateBackupId
@@ -96,6 +107,7 @@ module.exports = {
   getPageTemplateBackupById,
   getPageTemplateBackupsByName,
   getPageTemplateBackupsByUserId,
+  getTemplatesByCategories,
   updatePageTemplateBackupById,
   deletePageTemplateBackupById,
 };
