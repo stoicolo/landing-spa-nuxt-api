@@ -15,6 +15,10 @@ router
   .get(auth(), validate(pageTemplateValidation.getPageTemplatesByUserId), pageTemplateController.getPageTemplatesByUserId);
 
 router
+  .route('/templates_list')
+  .get(auth(), validate(pageTemplateValidation.getTemplatesByCategories), pageTemplateController.getTemplatesByCategories);
+
+router
   .route('/:pageTemplateId')
   .get(auth(), validate(pageTemplateValidation.getPageTemplate), pageTemplateController.getPageTemplate)
   .patch(auth(), validate(pageTemplateValidation.updatePageTemplate), pageTemplateController.updatePageTemplate)

@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const { Op, cast, literal } = require('sequelize');
 const { PageTemplate } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -8,13 +9,6 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<PageTemplate>}
  */
 const createPageTemplate = async (pageTemplateBody) => {
-  // if (await PageTemplate.isCompanyPageTemplateTaken(pageTemplateBody.companyId)) {
-  //   throw new ApiError(
-  //     httpStatus.BAD_REQUEST,
-  //     'La Página Web ya tiene un PageTemplate previamente asignado, prueba con otra Página Web.'
-  //   );
-  // }
-
   return PageTemplate.create(pageTemplateBody);
 };
 
@@ -36,6 +30,16 @@ const getPageTemplatesByUserId = async (userId) => {
   return PageTemplate.findAll({
     where: {
       userId,
+    },
+  });
+};
+
+const getTemplatesByCategories = async (categories) => {
+  return PageTemplate.findAll({
+    where: {
+      categories: {
+        [Op.overlap]: cast(literal(`ARRAY[${categories.map((cat) => `'${cat}'`).join(',')}]`), 'text[]'),
+      },
     },
   });
 };
@@ -75,6 +79,7 @@ module.exports = {
   createPageTemplate,
   getPageTemplateById,
   getPageTemplatesByUserId,
+  getTemplatesByCategories,
   updatePageTemplateById,
   deletePageTemplateById,
 };

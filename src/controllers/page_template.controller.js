@@ -9,13 +9,6 @@ const createPageTemplate = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(pageTemplate);
 });
 
-// const getPageTemplates = catchAsync(async (req, res) => {
-//   const filter = pick(req.query, ['name']);
-//   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-//   const result = await pageTemplateService.getPageTemplates(filter, options);
-//   res.send(result);
-// });
-
 const getPageTemplate = catchAsync(async (req, res) => {
   const pageTemplate = await pageTemplateService.getPageTemplateById(req.params.pageTemplateId);
   if (!pageTemplate) {
@@ -32,6 +25,17 @@ const getPageTemplatesByUserId = catchAsync(async (req, res) => {
   res.send(pageTemplate);
 });
 
+const getTemplatesByCategories = catchAsync(async (req, res) => {
+  const { categories } = req.query;
+  const images = await pageTemplateService.getTemplatesByCategories(categories);
+
+  if (!images || images.length === 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Images not found for the specified categories');
+  }
+
+  res.status(httpStatus.OK).send(images);
+});
+
 const updatePageTemplate = catchAsync(async (req, res) => {
   const pageTemplate = await pageTemplateService.updatePageTemplateById(req.params.pageTemplateId, req.body);
   res.send(pageTemplate);
@@ -46,6 +50,7 @@ module.exports = {
   createPageTemplate,
   getPageTemplatesByUserId,
   getPageTemplate,
+  getTemplatesByCategories,
   updatePageTemplate,
   deletePageTemplate,
 };
