@@ -13,6 +13,7 @@ const { MenuDetail, associateMenuDetail } = require('./menu_detail.model');
 const MediaModel = require('./media.model');
 const GenericTemplateModel = require('./generic_template.model');
 const GenericCategoryModel = require('./generic_category.model');
+const PublicWebhookModel = require('./public_webhook.model');
 
 const models = {
   User: UserModel,
@@ -30,6 +31,7 @@ const models = {
   Media: MediaModel,
   GenericTemplate: GenericTemplateModel,
   GenericCategory: GenericCategoryModel,
+  PublicWebhook: PublicWebhookModel,
 };
 
 associateMenuHeader(models);
