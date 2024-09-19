@@ -11,3 +11,4 @@ module.exports.publicWebsiteController = require('./public_website.controller');
 module.exports.mediaController = require('./media.controller');
 module.exports.genericTemplateController = require('./generic_template.controller');
 module.exports.genericCategoryController = require('./generic_category.controller');
+module.exports.publicWebhookController = require('./public_webhook.controller');
