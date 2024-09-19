@@ -20,6 +20,7 @@ function generateMigrations() {
     Media: models.Media,
     GenericTemplate: models.GenericTemplate,
     GenericCategory: models.GenericCategory,
+    PublicWebhook: models.PublicWebhook,
   };
 
   console.log('%csrc/config/generateMigrations.js:22 Models Sort', 'color: #007acc;', modelsSorted);
