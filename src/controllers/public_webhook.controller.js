@@ -3,9 +3,19 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { publicWebhookService } = require('../services');
 
-const registerTransaction = catchAsync(async (req, res) => {
+const successfulSubscription = catchAsync(async (req, res) => {
   try {
-    const page = await publicWebhookService.registerTransaction(req.body);
+    const page = await publicWebhookService.successfulSubscription(req.body);
+
+    res.status(httpStatus.CREATED).send(page);
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
+});
+
+const successfulPayment = catchAsync(async (req, res) => {
+  try {
+    const page = await publicWebhookService.successfulPayment(req.body);
 
     res.status(httpStatus.CREATED).send(page);
   } catch (error) {
@@ -14,5 +24,6 @@ const registerTransaction = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  registerTransaction,
+  successfulSubscription,
+  successfulPayment,
 };

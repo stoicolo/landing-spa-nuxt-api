@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const registerTransaction = {
+const successfulSubscription = {
   body: Joi.object().keys({
     id_plan: Joi.number().required(),
     email: Joi.string().required(),
@@ -14,6 +14,18 @@ const registerTransaction = {
   }),
 };
 
+const successfulPayment = {
+  body: Joi.object().keys({
+    id_plan: Joi.number().required(),
+    email: Joi.string().required(),
+    amount: Joi.number().required(),
+    orderNumber: Joi.string().required(),
+    paymentId: Joi.number().required(),
+    auth: Joi.number().required(),
+  }),
+};
+
 module.exports = {
-  registerTransaction,
+  successfulSubscription,
+  successfulPayment,
 };

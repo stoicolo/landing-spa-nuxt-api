@@ -6,8 +6,11 @@ const publicWebhookController = require('../../controllers/public_webhook.contro
 const router = express.Router();
 
 router
-  .route('/tilopay/weblox')
-  .post(validate(publicWebhookValidation.registerTransaction), publicWebhookController.registerTransaction);
+  .route('/tilopay/weblox/sucessful-subscription')
+  .post(validate(publicWebhookValidation.successfulSubscription), publicWebhookController.successfulSubscription);
+router
+  .route('/tilopay/weblox/sucessful-payment')
+  .post(validate(publicWebhookValidation.successfulPayment), publicWebhookController.successfulPayment);
 
 module.exports = router;
 
