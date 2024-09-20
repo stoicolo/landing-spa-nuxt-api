@@ -7,7 +7,20 @@ const ApiError = require('../utils/ApiError');
  * @param {Object} publicWebhookBody
  * @returns {Promise<PublicWebhook>}
  */
-const registerTransaction = async (publicWebhookBody) => {
+const successfulSubscription = async (publicWebhookBody) => {
+  try {
+    return PublicWebhook.create(publicWebhookBody);
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
+};
+
+/**
+ * Create a publicWebhook record
+ * @param {Object} publicWebhookBody
+ * @returns {Promise<PublicWebhook>}
+ */
+const successfulPayment = async (publicWebhookBody) => {
   try {
     return PublicWebhook.create(publicWebhookBody);
   } catch (error) {
@@ -16,5 +29,6 @@ const registerTransaction = async (publicWebhookBody) => {
 };
 
 module.exports = {
-  registerTransaction,
+  successfulSubscription,
+  successfulPayment,
 };

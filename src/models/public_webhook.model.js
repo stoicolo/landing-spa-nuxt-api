@@ -16,7 +16,7 @@ const PublicWebhook = sequelize.define(
     },
     modality: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     amount: {
       type: DataTypes.INTEGER,
@@ -24,15 +24,15 @@ const PublicWebhook = sequelize.define(
     },
     coupon: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     free_trial: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     next_payment_date: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     paymentId: {
       type: DataTypes.INTEGER,
