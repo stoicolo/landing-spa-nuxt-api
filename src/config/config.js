@@ -46,6 +46,8 @@ if (error) {
 
 module.exports = {
   node_env: envVars.NODE_ENV,
+  fe_url: envVars.FE_URL,
+  be_url: envVars.BE_URL,
   port: envVars.PORT,
   jwt: {
     secret: envVars.JWT_SECRET,
@@ -73,8 +75,9 @@ module.exports = {
         user: envVars.SMTP_USERNAME,
         pass: envVars.SMTP_PASSWORD,
       },
+      from: envVars.EMAIL_FROM,
       tls: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: true,
       },
     },
   },
