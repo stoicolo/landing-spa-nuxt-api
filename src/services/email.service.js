@@ -1,7 +1,8 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
-const transport = nodemailer.createTransport(config.email.smtp);
+
+const transport = nodemailer.createTransport({ ...config.email.smtp, logger: true, debug: true });
 
 if (config.env !== 'test') {
   transport
@@ -24,7 +25,7 @@ const sendEmail = async (to, subject, text) => {
   }
 
   try {
-    const msg = { from: config.email.from, to, subject, text };
+    const msg = { from: config.email.smtp.from, to, subject, text };
 
     await transport.sendMail(msg);
 
@@ -53,6 +54,58 @@ If you did not request any password resets, then ignore this email.`;
 };
 
 /**
+ * Creates a new activation token to send via email using email of user.
+ * Get all data via parameter using emailData for new email.
+ * @param  {} emailData
+ */
+const sendEmailActivation = async (emailData, token) => {
+  const mockupData = {
+    name: 'Juan',
+    lastName: 'Perez',
+    userId: 'jperez',
+    personalId: '123456789',
+    email: 'orrin.kutch@ethereal.email',
+  };
+
+  // create a link to activate the user
+  const link = `${config.fe_url}/activate-user/?token=${token}`;
+  const output = `
+        <p>Bienvenido ${mockupData.name}!</p>
+        <p>Hemos recibido su información personal satisfactoriamente. Por favor confirmar su deseo de ser parte de Weblox seleccionado el siguiente boton con un click:</p>
+        <table style="margin:0 auto;">
+          <tr>
+              <td style="background-color: rgb(18,126,177);border-radius: 5px;padding: 10px;text-align: center;">
+                  <a style="display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" target="_blank" href="${link}">
+                  Activar Usuario</a>
+              </td>
+          </tr>
+        </table>
+        <h3>Datos registrados en Weblox:</h3>
+        <ul>
+            <li>Nombre: ${mockupData.name} ${mockupData.lastName}</li>
+            <li>Usuario: ${mockupData.userId}</li>
+            <li>Cédula: ${mockupData.personalId}</li>
+            <li>Email: ${mockupData.email}</li>
+            <li>Teléfono Celular: ${mockupData.phoneNumber}</li>
+        </ul>
+        <p>Si desea modificar algun dato personal porfavor hacerlo por medio de la aplicación Weblox. \nAdemás, si desea saber más o reportar algun problema por favor utilizar el siguiente enlace: <a href='${config.fe_url}' target="_blank" style="">Weblox</a></p>
+        `;
+
+  // setup email data with unicode symbols
+  let mailOptions = {
+    from: '"Weblox" <info@softstoic.com>', // sender address
+    to: mockupData.email, // list of receivers
+    subject: 'Bienvenido a Weblox', // Subject line
+    text: `hola ${mockupData.name}!, te escribo desde Weblox.`, // plain text body
+    html: output, // html body
+  };
+
+  // send mail with defined transport object
+  await transport.sendMail(mailOptions);
+  console.log('Message sent: %s', info.messageId);
+};
+
+/**
  * Send verification email
  * @param {string} to
  * @param {string} token
@@ -61,11 +114,13 @@ If you did not request any password resets, then ignore this email.`;
 const sendVerificationEmail = async (to, token) => {
   const subject = 'Email Verification';
   // replace this url with the link to the email verification page of your front-end app
-  const verificationEmailUrl = `http://link-to-app/verify-email?token=${token}`;
+  const verificationEmailUrl = `${config.fe_url}/verify-email?token=${token}`;
   const text = `Dear user,
 To verify your email, click on this link: ${verificationEmailUrl}
 If you did not create an account, then ignore this email.`;
   await sendEmail(to, subject, text);
+
+  // sendEmailActivation('', token);
 };
 
 module.exports = {
@@ -73,4 +128,5 @@ module.exports = {
   sendEmail,
   sendResetPasswordEmail,
   sendVerificationEmail,
+  sendEmailActivation,
 };
