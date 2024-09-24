@@ -67,6 +67,12 @@ User.beforeCreate(async (user) => {
   }
 });
 
+User.beforeUpdate(async (user) => {
+  if (user.password) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+});
+
 // Check if email is taken
 User.isEmailTaken = async (email) => {
   const user = await User.findOne({
