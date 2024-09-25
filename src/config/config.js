@@ -77,7 +77,7 @@ module.exports = {
       },
       from: envVars.EMAIL_FROM,
       tls: {
-        rejectUnauthorized: true,
+        ciphers: 'SSLv3',
       },
     },
   },
