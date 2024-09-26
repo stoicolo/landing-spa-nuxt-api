@@ -20,6 +20,7 @@ const register = catchAsync(async (req, res) => {
     },
     tokens,
   };
+  await emailService.sendEmailActivation(response.user, response.tokens);
   logger.info(`User registered: ${user.email}`);
   res.status(httpStatus.CREATED).send(response);
 });
@@ -105,6 +106,18 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
 });
 
 /**
+ * Send activation email
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+const sendActivationEmail = catchAsync(async (req, res) => {
+  const verifyEmailToken = await tokenService.generateAuthTokens(req.body.user);
+  await emailService.sendEmailActivation(req.body.user, verifyEmailToken);
+  logger.info(`Activation email sent to: ${req.user.email}`);
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
+/**
  * Verify email
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -123,5 +136,6 @@ module.exports = {
   forgotPassword,
   resetPassword,
   sendVerificationEmail,
+  sendActivationEmail,
   verifyEmail,
 };

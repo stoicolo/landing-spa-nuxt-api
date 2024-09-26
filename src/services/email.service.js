@@ -66,19 +66,11 @@ If you did not request any password resets, then ignore this email.`;
  * @param  {} emailData
  */
 const sendEmailActivation = async (emailData, token) => {
-  const mockupData = {
-    name: 'Juan',
-    lastName: 'Perez',
-    userId: 'jperez',
-    personalId: '123456789',
-    email: 'orrin.kutch@ethereal.email',
-  };
-
   // create a link to activate the user
-  console.log('>>>>>>>>>>>>>>>>>>>>>>   %csrc/services/email.service.js:71 token', 'color: #007acc;', token);
-  const link = `${config.fe_url}/activate-user/?token=${token}`;
+
+  const link = `${config.fe_url}/activate-user/?token=${token.access.token}`;
   const output = `
-        <p>Bienvenido ${mockupData.name}!</p>
+        <p>Bienvenido ${emailData.name}!</p>
         <p>Hemos recibido su información personal satisfactoriamente. Por favor confirmar su deseo de ser parte de Weblox seleccionado el siguiente boton con un click:</p>
         <table style="margin:0 auto;">
           <tr>
@@ -90,27 +82,24 @@ const sendEmailActivation = async (emailData, token) => {
         </table>
         <h3>Datos registrados en Weblox:</h3>
         <ul>
-            <li>Nombre: ${mockupData.name} ${mockupData.lastName}</li>
-            <li>Usuario: ${mockupData.userId}</li>
-            <li>Cédula: ${mockupData.personalId}</li>
-            <li>Email: ${mockupData.email}</li>
-            <li>Teléfono Celular: ${mockupData.phoneNumber}</li>
+            <li>Nombre: ${emailData.name}</li>
+            <li>Usuario: ${emailData.id}</li>
+            <li>Email: ${emailData.email}</li>
         </ul>
         <p>Si desea modificar algun dato personal porfavor hacerlo por medio de la aplicación Weblox. \nAdemás, si desea saber más o reportar algun problema por favor utilizar el siguiente enlace: <a href='${config.fe_url}' target="_blank" style="">Weblox</a></p>
         `;
 
   // setup email data with unicode symbols
-  let mailOptions = {
+  const mailOptions = {
     from: '"Weblox" <support@softstoic.com>', // sender address
-    to: mockupData.email, // list of receivers
+    to: emailData.email, // list of receivers
     subject: 'Bienvenido a Weblox', // Subject line
-    text: `hola ${mockupData.name}!, te escribo desde Weblox.`, // plain text body
+    text: `hola ${emailData.name}!, te escribo desde Weblox.`, // plain text body
     html: output, // html body
   };
 
   // send mail with defined transport object
   await transport.sendMail(mailOptions);
-  console.log('Message sent: %s', info.messageId);
 };
 
 /**
