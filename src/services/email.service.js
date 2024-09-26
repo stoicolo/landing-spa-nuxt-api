@@ -68,7 +68,7 @@ If you did not request any password resets, then ignore this email.`;
 const sendEmailActivation = async (emailData, token) => {
   // create a link to activate the user
 
-  const link = `${config.fe_url}/activate-user/?token=${token.access.token}`;
+  const link = `${config.fe_url}/activate-user/?token=${token.verify_email.token}`;
   const output = `
         <p>Bienvenido ${emailData.name}!</p>
         <p>Hemos recibido su información personal satisfactoriamente. Por favor confirmar su deseo de ser parte de Weblox seleccionado el siguiente boton con un click:</p>
@@ -117,7 +117,7 @@ const sendVerificationEmail = async (to, token) => {
   If you did not create an account, then ignore this email.`;
   await sendEmail(to, subject, text);
 
-  // sendEmailActivation('', token.access.token);
+  // sendEmailActivation('', token.verify_email.token);
 };
 
 module.exports = {
