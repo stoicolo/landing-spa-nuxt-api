@@ -110,13 +110,14 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
 const verifyEmail = async (verifyEmailToken) => {
   try {
     const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
-    const user = await userService.getUserById(verifyEmailTokenDoc.user);
+    const user = await userService.getUserById(verifyEmailTokenDoc.dataValues.userId);
+
     if (!user) {
       throw new Error();
     }
-    await Token.destroy({ where: { userId: user.id, type: tokenTypes.VERIFY_EMAIL } });
-    await userService.updateUserById(user.id, { isEmailVerified: true });
-    logger.info(`Correo electrónico verificado exitosamente para el usuario: ${user.email}`);
+    await Token.destroy({ where: { userId: user.dataValues.id, type: tokenTypes.VERIFY_EMAIL } });
+    await userService.updateUserToActivated(user.dataValues.id, { isEmailVerified: true });
+    logger.info(`Correo electrónico verificado exitosamente para el usuario: ${user.dataValues.email}`);
   } catch (error) {
     logger.error(`Fallo en la verificación de correo electrónico: ${error.message}`);
     throw new ApiError(httpStatus.UNAUTHORIZED, 'La verificación de correo electrónico falló');

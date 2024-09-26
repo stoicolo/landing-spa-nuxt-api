@@ -54,6 +54,7 @@ const getUserByEmail = async (email) => {
  */
 const updateUserById = async (userId, updateBody) => {
   const user = await getUserById(userId);
+
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
   }
@@ -62,6 +63,28 @@ const updateUserById = async (userId, updateBody) => {
   }
   Object.assign(user, updateBody);
   await user.save();
+  return user;
+};
+
+/**
+ * Update User isEmailVerified
+ * @param {ObjectId} userId
+ * @param {Object} updateBody
+ * @returns {Promise<User>}
+ */
+const updateUserToActivated = async (userId, updateBody) => {
+  const user = await getUserById(userId);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+  }
+
+  Object.assign(user, updateBody);
+
+  delete user.dataValues.password;
+
+  await user.save();
+
   return user;
 };
 
@@ -85,5 +108,6 @@ module.exports = {
   getUserById,
   getUserByEmail,
   updateUserById,
+  updateUserToActivated,
   deleteUserById,
 };
