@@ -71,7 +71,7 @@ const refreshAuth = async (body) => {
       throw new Error();
     }
     await refreshTokenDoc.destroy();
-    return tokenService.generateAuthTokens(user);
+    return tokenService.generateAuthTokens(user, tokenTypes.REFRESH);
   } catch (error) {
     logger.error(`Error al refrescar el token de autenticación: ${error.message}`);
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Por favor, inicie sesión nuevamente');

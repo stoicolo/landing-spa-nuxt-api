@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 const logger = require('../config/logger');
+const { tokenTypes } = require('../config/tokens');
 
 /**
  * Register a new user
@@ -10,7 +11,7 @@ const logger = require('../config/logger');
  */
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  const tokens = await tokenService.generateAuthTokens(user);
+  const tokens = await tokenService.generateAuthTokens(user, tokenTypes.VERIFY_EMAIL);
   const response = {
     user: {
       id: user.id,
@@ -33,7 +34,7 @@ const register = catchAsync(async (req, res) => {
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const localUser = await authService.loginUserWithEmailAndPassword(email, password);
-  const tokens = await tokenService.generateAuthTokens(localUser);
+  const tokens = await tokenService.generateAuthTokens(localUser, tokenTypes.ACCESS);
   const response = {
     user: {
       id: localUser.id,
@@ -99,7 +100,7 @@ const resetPassword = catchAsync(async (req, res) => {
  * @param {Object} res - Express response object
  */
 const sendVerificationEmail = catchAsync(async (req, res) => {
-  const verifyEmailToken = await tokenService.generateAuthTokens(req.body.user);
+  const verifyEmailToken = await tokenService.generateAuthTokens(req.body.user, tokenTypes.VERIFY_EMAIL);
   await emailService.sendVerificationEmail(req.user.email, verifyEmailToken);
   logger.info(`Verification email sent to: ${req.user.email}`);
   res.status(httpStatus.NO_CONTENT).send();
@@ -111,7 +112,7 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
  * @param {Object} res - Express response object
  */
 const sendActivationEmail = catchAsync(async (req, res) => {
-  const verifyEmailToken = await tokenService.generateAuthTokens(req.body.user);
+  const verifyEmailToken = await tokenService.generateAuthTokens(req.body.user, tokenTypes.VERIFY_EMAIL);
   await emailService.sendEmailActivation(req.body.user, verifyEmailToken);
   logger.info(`Activation email sent to: ${req.user.email}`);
   res.status(httpStatus.NO_CONTENT).send();

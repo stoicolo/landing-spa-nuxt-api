@@ -51,25 +51,57 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
  * @param {User} user
  * @returns {Promise<Object>}
  */
-const generateAuthTokens = async (user) => {
-  const accessTokenExpires = dayjs().add(config.jwt.accessExpirationMinutes, 'minutes');
-  const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+const generateAuthTokens = async (user, tokenType) => {
+  let result = {};
 
-  const refreshTokenExpires = dayjs().add(config.jwt.refreshExpirationDays, 'days');
-  const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  if (tokenType === tokenTypes.ACCESS || tokenType === tokenTypes.REFRESH) {
+    const accessTokenExpires = dayjs().add(config.jwt.accessExpirationMinutes, 'minutes');
+    const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
 
-  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+    const refreshTokenExpires = dayjs().add(config.jwt.refreshExpirationDays, 'days');
+    const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
-  return {
-    access: {
-      token: accessToken,
-      expires: accessTokenExpires.toDate(),
-    },
-    refresh: {
-      token: refreshToken,
-      expires: refreshTokenExpires.toDate(),
-    },
-  };
+    await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+
+    result = {
+      access: {
+        token: accessToken,
+        expires: accessTokenExpires.toDate(),
+      },
+      refresh: {
+        token: refreshToken,
+        expires: refreshTokenExpires.toDate(),
+      },
+    };
+  } else if (tokenType === tokenTypes.VERIFY_EMAIL) {
+    const verifyEmailTokenExpires = dayjs().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
+    const verifyEmailToken = generateToken(user.id, verifyEmailTokenExpires, tokenTypes.VERIFY_EMAIL);
+
+    await saveToken(verifyEmailToken, user.id, verifyEmailTokenExpires, tokenTypes.VERIFY_EMAIL);
+
+    result = {
+      verify_email: {
+        token: verifyEmailToken,
+        expires: verifyEmailTokenExpires.toDate(),
+      },
+    };
+  } else if (tokenType === tokenTypes.RESET_PASSWORD) {
+    const resetPasswordTokenExpires = dayjs().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
+    const resetPasswordToken = generateToken(user.id, resetPasswordTokenExpires, tokenTypes.RESET_PASSWORD);
+
+    await saveToken(resetPasswordToken, user.id, resetPasswordTokenExpires, tokenTypes.RESET_PASSWORD);
+
+    result = {
+      reset_password: {
+        token: resetPasswordToken,
+        expires: resetPasswordTokenExpires.toDate(),
+      },
+    };
+  } else {
+    throw new Error('Invalid token type');
+  }
+
+  return result;
 };
 
 /**
@@ -137,7 +169,7 @@ const refreshAuth = async (refreshToken) => {
       throw new Error();
     }
     await refreshTokenDoc.remove();
-    return generateAuthTokens(user);
+    return generateAuthTokens(user, tokenTypes.REFRESH);
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Por favor, inicie sesión nuevamente');
   }
