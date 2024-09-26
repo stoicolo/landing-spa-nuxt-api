@@ -29,11 +29,13 @@ const User = sequelize.define(
       validate: {
         len: {
           args: [8],
-          msg: 'Password must be at least 8 characters in length',
+          msg: 'Password debe tener al menos 8 caracteres de longitud',
         },
         isValidPassword(value) {
-          if (/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value)) {
-            throw new Error('Password must contain at least one letter, one number, and one special character');
+          if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value)) {
+            throw new Error(
+              'Tenga al menos 8 caracteres de longitud , Contenga al menos una letra, Contenga al menos un número, Contenga al menos un carácter especial de la lista: @,$,!,%,*,#,?,&'
+            );
           }
         },
       },
