@@ -1,5 +1,3 @@
-// PublicWebhook.js
-
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/sequelize');
 
@@ -19,12 +17,13 @@ const PublicWebhook = sequelize.define(
       allowNull: true,
     },
     amount: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     coupon: {
       type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: null,
     },
     free_trial: {
       type: DataTypes.INTEGER,
@@ -41,6 +40,10 @@ const PublicWebhook = sequelize.define(
     auth: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    frequency: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
