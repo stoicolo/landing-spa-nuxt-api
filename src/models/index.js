@@ -13,7 +13,8 @@ const { MenuDetail, associateMenuDetail } = require('./menu_detail.model');
 const MediaModel = require('./media.model');
 const GenericTemplateModel = require('./generic_template.model');
 const GenericCategoryModel = require('./generic_category.model');
-const PublicWebhookModel = require('./public_webhook.model');
+const PublicWebhookSubscriptionsModel = require('./public_webhook_subscriptions.model');
+const PublicWebhookPaymentsModel = require('./public_webhook_payments.model');
 
 const models = {
   User: UserModel,
@@ -31,7 +32,8 @@ const models = {
   Media: MediaModel,
   GenericTemplate: GenericTemplateModel,
   GenericCategory: GenericCategoryModel,
-  PublicWebhook: PublicWebhookModel,
+  PublicWebhookSubscriptions: PublicWebhookSubscriptionsModel,
+  PublicWebhookPayments: PublicWebhookPaymentsModel,
 };
 
 associateMenuHeader(models);
