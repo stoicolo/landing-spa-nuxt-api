@@ -18,7 +18,7 @@ const ApiError = require('./utils/ApiError');
 
 const app = express();
 
-if (config.env !== 'test') {
+if (config.node_env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
@@ -47,7 +47,7 @@ passportConfig();
 app.use(passport.initialize());
 
 // limit repeated failed requests to auth endpoints
-if (config.env === 'production') {
+if (config.node_env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
 
@@ -57,6 +57,11 @@ app.use('/v1', routes);
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+});
+
+app.use('/v1/public_webhooks/tilopay/weblox/sucessful-subscription', (req, res, next) => {
+  console.log('Received body from Tilopay:', req.body);
+  next();
 });
 
 // convert error to ApiError, if needed

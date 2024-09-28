@@ -11,7 +11,7 @@ const successfulSubscription = {
     next_payment_date: Joi.string().required(),
     paymentId: Joi.number().required(),
     auth: Joi.number().required(),
-    frequency: Joi.string().allow(''),
+    frequency: Joi.alternatives().try(Joi.string(), Joi.valid(null)).allow('').required(),
   }),
 };
 
