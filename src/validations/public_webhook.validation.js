@@ -6,12 +6,12 @@ const successfulSubscription = {
     email: Joi.string().required(),
     modality: Joi.string().required(),
     amount: Joi.number().required(),
-    coupon: Joi.string().required(),
+    coupon: Joi.string(),
     free_trial: Joi.number().required(),
     next_payment_date: Joi.string().required(),
     paymentId: Joi.number().required(),
     auth: Joi.number().required(),
-    frequency: Joi.string().required(),
+    frequency: Joi.string(),
   }),
 };
 
