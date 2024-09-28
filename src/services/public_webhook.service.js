@@ -11,8 +11,8 @@ const successfulSubscription = async (publicWebhookBody) => {
   try {
     const subscription = {
       ...publicWebhookBody,
-      frequency: publicWebhookBody.frequency || null,
-      coupon: publicWebhookBody.coupon || null,
+      coupon: publicWebhookBody.coupon ?? null,
+      frequency: publicWebhookBody.frequency ?? null,
     };
 
     return await PublicWebhookSubscriptions.create(subscription);
