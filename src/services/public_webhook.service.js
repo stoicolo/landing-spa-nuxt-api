@@ -9,7 +9,13 @@ const ApiError = require('../utils/ApiError');
  */
 const successfulSubscription = async (publicWebhookBody) => {
   try {
-    return PublicWebhookSubscriptions.create(publicWebhookBody);
+    const subscription = {
+      ...publicWebhookBody,
+      coupon: publicWebhookBody.coupon || '',
+      frequency: publicWebhookBody.frequency || '',
+    };
+
+    return PublicWebhookSubscriptions.create(subscription);
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
