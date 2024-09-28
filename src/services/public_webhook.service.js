@@ -15,6 +15,7 @@ const successfulSubscription = async (publicWebhookBody) => {
       frequency: publicWebhookBody.frequency || '',
     };
 
+    console.log('%csrc/services/public_webhook.service.js:18 subscription', 'color: #007acc;', subscription);
     return PublicWebhookSubscriptions.create(subscription);
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
