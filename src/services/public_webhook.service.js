@@ -18,6 +18,7 @@ const successfulSubscription = async (publicWebhookBody) => {
     console.log('%csrc/services/public_webhook.service.js:18 subscription', 'color: #007acc;', subscription);
     return PublicWebhookSubscriptions.create(subscription);
   } catch (error) {
+    console.log('%csrc/services/public_webhook.service.js:21 error', 'color: #007acc;', error);
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
 };
