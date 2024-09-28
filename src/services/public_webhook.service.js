@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { PublicWebhook } = require('../models');
+const { PublicWebhookPayments, PublicWebhookSubscriptions } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -9,7 +9,7 @@ const ApiError = require('../utils/ApiError');
  */
 const successfulSubscription = async (publicWebhookBody) => {
   try {
-    return PublicWebhook.create(publicWebhookBody);
+    return PublicWebhookSubscriptions.create(publicWebhookBody);
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
@@ -22,7 +22,7 @@ const successfulSubscription = async (publicWebhookBody) => {
  */
 const successfulPayment = async (publicWebhookBody) => {
   try {
-    return PublicWebhook.create(publicWebhookBody);
+    return PublicWebhookPayments.create(publicWebhookBody);
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
