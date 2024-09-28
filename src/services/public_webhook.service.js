@@ -11,14 +11,12 @@ const successfulSubscription = async (publicWebhookBody) => {
   try {
     const subscription = {
       ...publicWebhookBody,
-      coupon: publicWebhookBody.coupon || '',
-      frequency: publicWebhookBody.frequency || '',
+      coupon: publicWebhookBody.coupon ?? '',
+      frequency: publicWebhookBody.frequency ?? '',
     };
 
-    console.log('%csrc/services/public_webhook.service.js:18 subscription', 'color: #007acc;', subscription);
-    return PublicWebhookSubscriptions.create(subscription);
+    return await PublicWebhookSubscriptions.create(subscription);
   } catch (error) {
-    console.log('%csrc/services/public_webhook.service.js:21 error', 'color: #007acc;', error);
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
 };
@@ -30,7 +28,7 @@ const successfulSubscription = async (publicWebhookBody) => {
  */
 const successfulPayment = async (publicWebhookBody) => {
   try {
-    return PublicWebhookPayments.create(publicWebhookBody);
+    return await PublicWebhookPayments.create(publicWebhookBody);
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
