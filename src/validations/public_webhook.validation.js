@@ -26,7 +26,16 @@ const successfulPayment = {
   }),
 };
 
+const failedPayment = {
+  body: Joi.object().keys({
+    id_plan: Joi.number().required(),
+    email: Joi.string().required(),
+    amount: Joi.number().required(),
+  }),
+};
+
 module.exports = {
   successfulSubscription,
   successfulPayment,
+  failedPayment,
 };
