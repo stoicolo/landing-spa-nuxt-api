@@ -23,7 +23,18 @@ const successfulPayment = catchAsync(async (req, res) => {
   }
 });
 
+const failedPayment = catchAsync(async (req, res) => {
+  try {
+    const page = await publicWebhookService.failedPayment(req.body);
+
+    res.status(httpStatus.CREATED).send(page);
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
+});
+
 module.exports = {
   successfulSubscription,
   successfulPayment,
+  failedPayment,
 };
