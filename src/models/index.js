@@ -15,6 +15,7 @@ const GenericTemplateModel = require('./generic_template.model');
 const GenericCategoryModel = require('./generic_category.model');
 const PublicWebhookSubscriptionsModel = require('./public_webhook_subscriptions.model');
 const PublicWebhookPaymentsModel = require('./public_webhook_payments.model');
+const PublicWebhookPaymentFailedModel = require('./public_webhook_payment_failed.model');
 
 const models = {
   User: UserModel,
@@ -34,6 +35,7 @@ const models = {
   GenericCategory: GenericCategoryModel,
   PublicWebhookSubscriptions: PublicWebhookSubscriptionsModel,
   PublicWebhookPayments: PublicWebhookPaymentsModel,
+  PublicWebhookPaymentFailed: PublicWebhookPaymentFailedModel,
 };
 
 associateMenuHeader(models);

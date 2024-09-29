@@ -22,6 +22,7 @@ function generateMigrations() {
     GenericCategory: models.GenericCategory,
     PublicWebhookSubscriptions: models.PublicWebhookSubscriptions,
     PublicWebhookPayments: models.PublicWebhookPayments,
+    PublicWebhookPaymentFailed: models.PublicWebhookPaymentFailed,
   };
 
   console.log('%csrc/config/generateMigrations.js:22 Models Sort', 'color: #007acc;', modelsSorted);
