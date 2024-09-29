@@ -11,6 +11,9 @@ router
 router
   .route('/tilopay/weblox/sucessful-payment')
   .post(validate(publicWebhookValidation.successfulPayment), publicWebhookController.successfulPayment);
+router
+  .route('/tilopay/weblox/failed-payment')
+  .post(validate(publicWebhookValidation.failedPayment), publicWebhookController.failedPayment);
 
 module.exports = router;
 
