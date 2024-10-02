@@ -1,30 +1,8 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, userService, tokenService, emailService } = require('../services');
+const { authService, tokenService, emailService } = require('../services');
 const logger = require('../config/logger');
 const { tokenTypes } = require('../config/tokens');
-
-/**
- * Register a new user
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- */
-const register = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
-  const tokens = await tokenService.generateAuthTokens(user, tokenTypes.VERIFY_EMAIL);
-  const response = {
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
-    tokens,
-  };
-  await emailService.sendEmailActivation(response.user, response.tokens);
-  logger.info(`User registered: ${user.email}`);
-  res.status(httpStatus.CREATED).send(response);
-});
 
 /**
  * User login
@@ -130,7 +108,6 @@ const verifyEmail = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  register,
   login,
   logout,
   refreshTokens,
