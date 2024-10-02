@@ -2,11 +2,30 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService } = require('../services');
+const { userService, tokenService, emailService } = require('../services');
+const { tokenTypes } = require('../config/tokens');
+const logger = require('../config/logger');
 
-const createUser = catchAsync(async (req, res) => {
+/**
+ * Register a new user
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  res.status(httpStatus.CREATED).send(user);
+  const tokens = await tokenService.generateAuthTokens(user, tokenTypes.VERIFY_EMAIL);
+  const response = {
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+    tokens,
+  };
+  await emailService.sendEmailActivation(response.user, response.tokens);
+  logger.info(`User registered: ${user.email}`);
+  res.status(httpStatus.CREATED).send(response);
 });
 
 const getUsers = catchAsync(async (req, res) => {
@@ -25,7 +44,7 @@ const getUser = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const user = await userService.updateUserById(req.params.userId, req.body);
+  const user = await userService.updateUserById(req.body.id, req.body);
   res.send(user);
 });
 
@@ -35,7 +54,7 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  createUser,
+  register,
   getUsers,
   getUser,
   updateUser,
