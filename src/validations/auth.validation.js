@@ -1,23 +1,6 @@
 const Joi = require('joi');
 const { password } = require('./custom.validation');
 
-const register = {
-  body: Joi.object().keys({
-    email: Joi.string().required().email().lowercase().trim().messages({
-      'string.email': 'Debe ser un email válido',
-      'any.required': 'El email es requerido',
-    }),
-    password: Joi.string().required().custom(password).messages({
-      'any.required': 'La contraseña es requerida',
-    }),
-    name: Joi.string().required().min(2).max(50).trim().messages({
-      'string.min': 'El nombre debe tener al menos 2 caracteres',
-      'string.max': 'El nombre no puede exceder los 50 caracteres',
-      'any.required': 'El nombre es requerido',
-    }),
-  }),
-};
-
 const login = {
   body: Joi.object().keys({
     email: Joi.string().required().email().lowercase().trim().messages({
@@ -78,7 +61,6 @@ const verifyEmail = {
 };
 
 module.exports = {
-  register,
   login,
   logout,
   refreshTokens,
