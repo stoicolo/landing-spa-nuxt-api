@@ -66,35 +66,60 @@ If you did not request any password resets, then ignore this email.`;
  * @param  {} emailData
  */
 const sendEmailActivation = async (emailData, token) => {
-  // create a link to activate the user
-
   const link = `${config.fe_url}/activate-user/?token=${token.verify_email.token}`;
+  const logoUrl = `${config.fe_url}/images/logo-weblox.png`;
+
   const output = `
-        <p>Bienvenido ${emailData.name}!</p>
-        <p>Hemos recibido su información personal satisfactoriamente. Por favor confirmar su deseo de ser parte de Weblox seleccionado el siguiente boton con un click:</p>
-        <table style="margin:0 auto;">
-          <tr>
-              <td style="background-color: rgb(18,126,177);border-radius: 5px;padding: 10px;text-align: center;">
-                  <a style="display: block;color: #ffffff;font-size: 12px;text-decoration: none;text-transform: uppercase;" target="_blank" href="${link}">
-                  Activar Usuario</a>
-              </td>
-          </tr>
-        </table>
-        <h3>Datos registrados en Weblox:</h3>
-        <ul>
-            <li>Nombre: ${emailData.name}</li>
-            <li>Usuario: ${emailData.id}</li>
-            <li>Email: ${emailData.email}</li>
-        </ul>
-        <p>Si desea modificar algun dato personal porfavor hacerlo por medio de la aplicación Weblox. \nAdemás, si desea saber más o reportar algun problema por favor utilizar el siguiente enlace: <a href='${config.fe_url}' target="_blank" style="">Weblox</a></p>
-        `;
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Bienvenido a Weblox</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f8f8; padding: 20px;">
+        <tr>
+          <td align="center">
+            <img src="${logoUrl}" alt="Weblox Logo" style="max-width: 200px; margin-bottom: 20px;">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="color: #127eb1; text-align: center;">Bienvenido a Weblox<span style="font-size: 60%; vertical-align: top;">®</span> ${emailData.name}!</h1>
+            <p style="text-align: center;">Hemos recibido su información personal satisfactoriamente. Por favor confirme su deseo de ser parte de Weblox seleccionando el siguiente botón:</p>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" style="padding: 20px 0;">
+                  <a href="${link}" style="background-color: #127eb1; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Activar Usuario</a>
+                </td>
+              </tr>
+            </table>
+            <h2 style="color: #127eb1;">Datos registrados en Weblox:</h2>
+            <ul style="list-style-type: none; padding-left: 0;">
+              <li><strong>Nombre:</strong> ${emailData.name}</li>
+              <li><strong>Email:</strong> ${emailData.email}</li>
+            </ul>
+            <p>Si desea modificar algún dato personal, por favor hágalo por medio de la aplicación Weblox.</p>
+            <p>Además, si desea saber más o reportar algún problema, por favor utilice el siguiente enlace: <a href="${config.fe_url}" style="color: #127eb1; text-decoration: none;">Weblox</a></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center; padding-top: 20px; font-size: 12px; color: #666;">
+            <p>&copy; 2023 Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Todos los derechos reservados.</p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
 
   // setup email data with unicode symbols
   const mailOptions = {
     from: '"Weblox" <support@softstoic.com>', // sender address
     to: emailData.email, // list of receivers
     subject: 'Bienvenido a Weblox', // Subject line
-    text: `hola ${emailData.name}!, te escribo desde Weblox.`, // plain text body
+    text: `Hola ${emailData.name}! Te damos la bienvenida a Weblox. Por favor, activa tu cuenta visitando: ${link}`, // plain text body
     html: output, // html body
   };
 

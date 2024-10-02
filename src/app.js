@@ -23,6 +23,8 @@ if (config.node_env !== 'test') {
   app.use(morgan.errorHandler);
 }
 
+app.use(express.static('public'));
+
 // set security HTTP headers
 app.use(helmet());
 
