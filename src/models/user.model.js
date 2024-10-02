@@ -48,7 +48,11 @@ const User = sequelize.define(
         isIn: [roles], // checks that value is inside 'roles'
       },
     },
-
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      trim: true,
+    },
     isEmailVerified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,

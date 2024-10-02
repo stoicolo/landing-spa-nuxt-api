@@ -58,11 +58,13 @@ const updateUserById = async (userId, updateBody) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
   }
-  if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email no disponible, prueba con otro.');
-  }
-  Object.assign(user, updateBody);
-  await user.save();
+
+  const { password, ...updateBodyWithoutPassword } = updateBody;
+
+  Object.assign(user, updateBodyWithoutPassword);
+
+  await user.save({ fields: Object.keys(updateBodyWithoutPassword) });
+
   return user;
 };
 
