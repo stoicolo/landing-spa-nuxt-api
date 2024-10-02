@@ -1,6 +1,3 @@
-const path = require('path');
-const fs = require('fs');
-
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 const logger = require('../config/logger');
@@ -71,10 +68,8 @@ If you did not request any password resets, then ignore this email.`;
 const sendEmailActivation = async (emailData, token) => {
   const link = `${config.fe_url}/activate-user/?token=${token.verify_email.token}`;
 
-  // Leer el archivo de imagen y convertirlo a base64
-  const logoPath = path.join(process.cwd(), 'public', 'images', 'logo-weblox.png');
-  const logoBase64 = fs.readFileSync(logoPath, { encoding: 'base64' });
-  const logoDataUri = `data:image/png;base64,${logoBase64}`;
+  // Asumimos que la imagen del logo está alojada en un servidor web accesible
+  const logoUrl = `${config.fe_url}/images/logo-weblox.png`;
 
   const output = `
     <!DOCTYPE html>
@@ -88,7 +83,7 @@ const sendEmailActivation = async (emailData, token) => {
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f8f8; padding: 20px;">
         <tr>
           <td align="center">
-            <img src="${logoDataUri}" alt="Weblox Logo" style="max-width: 200px; margin-bottom: 20px;">
+            <img src="${logoUrl}" alt="Weblox Logo" style="max-width: 200px; margin-bottom: 20px;">
           </td>
         </tr>
         <tr>
