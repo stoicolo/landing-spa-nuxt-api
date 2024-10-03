@@ -80,7 +80,7 @@ const sendEmailActivation = async (emailData, token) => {
       <title>Bienvenido a Weblox</title>
     </head>
     <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f8f8; padding: 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #dddddd; padding: 20px;">
         <tr>
           <td align="center">
             <img src="${logoUrl}" alt="Weblox Logo" style="max-width: 200px; margin-bottom: 20px;">
