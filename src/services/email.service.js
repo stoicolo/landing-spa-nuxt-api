@@ -69,7 +69,7 @@ const sendEmailActivation = async (emailData, token) => {
   const link = `${config.fe_url}/activate-user/?token=${token.verify_email.token}`;
 
   // Asumimos que la imagen del logo está alojada en un servidor web accesible
-  const logoUrl = `${config.fe_url}/images/logo-weblox.png`;
+  const logoUrl = `https://a0x7.c18.e2-5.dev/weblox-v1/weblox-v1/images/platform/weblox-logo-name.png`;
 
   const output = `
     <!DOCTYPE html>
