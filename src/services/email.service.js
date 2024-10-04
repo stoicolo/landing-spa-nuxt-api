@@ -84,9 +84,9 @@ const sendResetPasswordEmail = async (to, token) => {
         <tr>
           <td>
             <h1 style="color: #127eb1; text-align: center;">Restablecimiento de contraseña</h1>
-            <p style="text-align: center;">Estimado/a ${user.name},</p>
-            <p style="text-align: center;">Hemos recibido una solicitud para restablecer la contraseña de su cuenta Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Si usted no ha realizado esta solicitud, por favor ignore este correo.</p>
-            <p style="text-align: center;">Para proceder con el restablecimiento de su contraseña, por favor haga clic en el siguiente botón:</p>
+            <p style="color: #333; text-align: center;">Estimado/a ${user.name},</p>
+            <p style="color: #333; text-align: center;">Hemos recibido una solicitud para restablecer la contraseña de su cuenta Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Si usted no ha realizado esta solicitud, por favor ignore este correo.</p>
+            <p style="color: #333; text-align: center;">Para proceder con el restablecimiento de su contraseña, por favor haga clic en el siguiente botón:</p>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td align="center" style="padding: 20px 0;">
@@ -94,15 +94,15 @@ const sendResetPasswordEmail = async (to, token) => {
                 </td>
               </tr>
             </table>
-            <p style="text-align: center;">Si el botón no funciona, puede copiar y pegar el siguiente enlace en su navegador:</p>
-            <p style="text-align: center;"><a href="${resetPasswordUrl}" style="color: #127eb1; word-break: break-all;">${resetPasswordUrl}</a></p>
-            <p style="text-align: center;">Por razones de seguridad, este enlace expirará en 24 horas.</p>
-            <p style="text-align: center;">Si necesita ayuda o tiene alguna pregunta, no dude en contactarnos a través de nuestro sitio web: <a href="${config.fe_url}" style="color: #127eb1; text-decoration: none;">Weblox</a></p>
+            <p style="color: #333; text-align: center;">Si el botón no funciona, puede copiar y pegar el siguiente enlace en su navegador:</p>
+            <p style="color: #333; text-align: center;"><a href="${resetPasswordUrl}" style="color: #333; word-break: break-all;">${resetPasswordUrl}</a></p>
+            <p style="color: #333; text-align: center;">Por razones de seguridad, este enlace expirará en 24 horas.</p>
+            <p style="color: #333; text-align: center;">Si necesita ayuda o tiene alguna pregunta, no dude en contactarnos a través de nuestro sitio web: <a href="${config.fe_url}" style="color: #127eb1; text-decoration: none;">Weblox</a></p>
           </td>
         </tr>
         <tr>
           <td style="text-align: center; padding-top: 20px; font-size: 12px; color: #666;">
-            <p>&copy; 2023 Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Todos los derechos reservados.</p>
+            <p>&copy; 2024 Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Todos los derechos reservados.</p>
           </td>
         </tr>
       </table>
