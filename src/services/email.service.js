@@ -50,14 +50,83 @@ const sendEmail = async (to, subject, text) => {
  * @param {string} token
  * @returns {Promise}
  */
-const sendResetPasswordEmail = async (to, token) => {
-  const subject = 'Reset password';
-  // replace this url with the link to the reset password page of your front-end app
+const sendResetPasswordEmail = async (to, token, userName) => {
+  const subject = 'Restablecimiento de contraseña - Weblox';
   const resetPasswordUrl = `${config.fe_url}/reset-password?token=${token}`;
-  const text = `Dear user,
-To reset your password, click on this link: ${resetPasswordUrl}
-If you did not request any password resets, then ignore this email.`;
-  await sendEmail(to, subject, text);
+
+  // Asumimos que la imagen del logo está alojada en un servidor web accesible
+  const logoUrl = `https://a0x7.c18.e2-5.dev/weblox-v1/weblox-v1/images/platform/weblox-logo-name.png`;
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Restablecimiento de contraseña - Weblox</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #dddddd; padding: 20px;">
+        <tr>
+          <td align="center">
+            <img src="${logoUrl}" alt="Weblox Logo" style="max-width: 200px; margin-bottom: 20px;">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="color: #127eb1; text-align: center;">Restablecimiento de contraseña</h1>
+            <p style="text-align: center;">Estimado/a ${userName},</p>
+            <p style="text-align: center;">Hemos recibido una solicitud para restablecer la contraseña de su cuenta Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Si usted no ha realizado esta solicitud, por favor ignore este correo.</p>
+            <p style="text-align: center;">Para proceder con el restablecimiento de su contraseña, por favor haga clic en el siguiente botón:</p>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" style="padding: 20px 0;">
+                  <a href="${resetPasswordUrl}" style="background-color: #127eb1; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Restablecer Contraseña</a>
+                </td>
+              </tr>
+            </table>
+            <p style="text-align: center;">Si el botón no funciona, puede copiar y pegar el siguiente enlace en su navegador:</p>
+            <p style="text-align: center;"><a href="${resetPasswordUrl}" style="color: #127eb1; word-break: break-all;">${resetPasswordUrl}</a></p>
+            <p style="text-align: center;">Por razones de seguridad, este enlace expirará en 24 horas.</p>
+            <p style="text-align: center;">Si necesita ayuda o tiene alguna pregunta, no dude en contactarnos a través de nuestro sitio web: <a href="${config.fe_url}" style="color: #127eb1; text-decoration: none;">Weblox</a></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center; padding-top: 20px; font-size: 12px; color: #666;">
+            <p>&copy; 2023 Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Todos los derechos reservados.</p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const textContent = `
+    Estimado/a ${userName},
+
+    Hemos recibido una solicitud para restablecer la contraseña de su cuenta Weblox®. Si usted no ha realizado esta solicitud, por favor ignore este correo.
+
+    Para proceder con el restablecimiento de su contraseña, por favor visite el siguiente enlace:
+
+    ${resetPasswordUrl}
+
+    Por razones de seguridad, este enlace expirará en 24 horas.
+
+    Si necesita ayuda o tiene alguna pregunta, no dude en contactarnos a través de nuestro sitio web: ${config.fe_url}
+
+    Atentamente,
+    El equipo de Weblox
+  `;
+
+  const mailOptions = {
+    from: '"Weblox" <support@softstoic.com>',
+    to: to,
+    subject: subject,
+    text: textContent,
+    html: htmlContent,
+  };
+
+  await transport.sendMail(mailOptions);
 };
 
 /**
