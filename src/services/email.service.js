@@ -1,6 +1,9 @@
 const nodemailer = require('nodemailer');
+const httpStatus = require('http-status');
 const config = require('../config/config');
 const logger = require('../config/logger');
+const userService = require('./user.service');
+const ApiError = require('../utils/ApiError');
 
 const transport = nodemailer.createTransport({
   ...config.email.smtp,
@@ -50,7 +53,13 @@ const sendEmail = async (to, subject, text) => {
  * @param {string} token
  * @returns {Promise}
  */
-const sendResetPasswordEmail = async (to, token, userName) => {
+const sendResetPasswordEmail = async (to, token) => {
+  const user = await userService.getUserByEmail(to);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+  }
+
   const subject = 'Restablecimiento de contraseña - Weblox';
   const resetPasswordUrl = `${config.fe_url}/reset-password?token=${token}`;
 
@@ -75,7 +84,7 @@ const sendResetPasswordEmail = async (to, token, userName) => {
         <tr>
           <td>
             <h1 style="color: #127eb1; text-align: center;">Restablecimiento de contraseña</h1>
-            <p style="text-align: center;">Estimado/a ${userName},</p>
+            <p style="text-align: center;">Estimado/a ${user.name},</p>
             <p style="text-align: center;">Hemos recibido una solicitud para restablecer la contraseña de su cuenta Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Si usted no ha realizado esta solicitud, por favor ignore este correo.</p>
             <p style="text-align: center;">Para proceder con el restablecimiento de su contraseña, por favor haga clic en el siguiente botón:</p>
             <table width="100%" cellpadding="0" cellspacing="0">
@@ -102,7 +111,7 @@ const sendResetPasswordEmail = async (to, token, userName) => {
   `;
 
   const textContent = `
-    Estimado/a ${userName},
+    Estimado/a ${user.name},
 
     Hemos recibido una solicitud para restablecer la contraseña de su cuenta Weblox®. Si usted no ha realizado esta solicitud, por favor ignore este correo.
 
@@ -120,8 +129,8 @@ const sendResetPasswordEmail = async (to, token, userName) => {
 
   const mailOptions = {
     from: '"Weblox" <support@softstoic.com>',
-    to: to,
-    subject: subject,
+    to,
+    subject,
     text: textContent,
     html: htmlContent,
   };
