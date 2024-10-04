@@ -73,18 +73,6 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 /**
- * Send verification email
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- */
-const sendVerificationEmail = catchAsync(async (req, res) => {
-  const verifyEmailToken = await tokenService.generateAuthTokens(req.body.user, tokenTypes.VERIFY_EMAIL);
-  await emailService.sendVerificationEmail(req.user.email, verifyEmailToken);
-  logger.info(`Verification email sent to: ${req.user.email}`);
-  res.status(httpStatus.NO_CONTENT).send();
-});
-
-/**
  * Send activation email
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
@@ -113,7 +101,6 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
-  sendVerificationEmail,
   sendActivationEmail,
   verifyEmail,
 };
