@@ -95,7 +95,7 @@ const sendResetPasswordEmail = async (to, token) => {
               </tr>
             </table>
             <p style="color: #333; text-align: center;">Si el botón no funciona, puede copiar y pegar el siguiente enlace en su navegador:</p>
-            <p style="color: #333; text-align: center;"><a href="${resetPasswordUrl}" style="color: #333; word-break: break-all;">${resetPasswordUrl}</a></p>
+            <p style="text-align: center;"><a href="${resetPasswordUrl}" style="color: #333; word-break: break-all;">${resetPasswordUrl}</a></p>
             <p style="color: #333; text-align: center;">Por razones de seguridad, este enlace expirará en 24 horas.</p>
             <p style="color: #333; text-align: center;">Si necesita ayuda o tiene alguna pregunta, no dude en contactarnos a través de nuestro sitio web: <a href="${config.fe_url}" style="color: #127eb1; text-decoration: none;">Weblox</a></p>
           </td>
