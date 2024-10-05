@@ -25,17 +25,17 @@ const MenuDetail = sequelize.define(
     menuName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: false,
     },
     href: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: false,
     },
     slug: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: false,
     },
     iconName: {
       type: DataTypes.STRING,
