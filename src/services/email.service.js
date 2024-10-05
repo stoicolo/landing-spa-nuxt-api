@@ -218,9 +218,9 @@ const sendEmailActivation = async (emailData, token) => {
  * @returns {Promise}
 //  */
 const sendContactFormResponseEmail = async (payload) => {
-  const { receptorEmail, clientEmail, name, phone, message } = payload;
+  const { receptorEmail, clientEmail, name, phone, message, domain } = payload;
 
-  const subject = 'Hemos recibido su mensaje - Weblox';
+  const subject = `hola! Somos ${domain}, Hemos recibido su mensaje.`;
 
   const logoUrl = `https://a0x7.c18.e2-5.dev/weblox-v1/weblox-v1/images/platform/weblox-logo-name.png`;
 
