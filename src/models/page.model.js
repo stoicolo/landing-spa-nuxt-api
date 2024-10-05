@@ -33,7 +33,7 @@ const Page = sequelize.define(
     pageName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: false,
     },
   },
   {
