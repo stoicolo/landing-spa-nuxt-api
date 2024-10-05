@@ -12,6 +12,8 @@ router
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers)
   .patch(auth(), validate(userValidation.updateUser), userController.updateUser);
 
+router.post('/send-contact-form-response-email', userController.sendContactFormResponseEmail);
+
 router
   .route('/:userId')
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
