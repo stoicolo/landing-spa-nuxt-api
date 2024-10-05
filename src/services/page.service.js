@@ -16,13 +16,28 @@ const getPageByName = async (pageName) => {
 };
 
 /**
+ * Query for page name, user id, website id
+ * @param {userId} userId
+ * @returns {Promise<PageTemplateBackup>}
+ */
+const getPageByNameUserIdWebsiteId = async (pageName, userId, websiteId) => {
+  return Page.findOne({
+    where: {
+      pageName,
+      userId,
+      websiteId,
+    },
+  });
+};
+
+/**
  * Create a page
  * @param {Object} pageBody
  * @returns {Promise<Page>}
  */
 const createPage = async (pageBody) => {
   try {
-    const page = await getPageByName(pageBody.pageName);
+    const page = await getPageByNameUserIdWebsiteId(pageBody.pageName, pageBody.userId, pageBody.websiteId);
 
     if (page) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'El nombre del Page ya existe, prueba con otro nombre.');
