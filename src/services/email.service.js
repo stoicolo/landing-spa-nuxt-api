@@ -291,7 +291,7 @@ const sendContactFormResponseEmail = async (payload) => {
 
   const mailOptions = {
     from: '"Weblox" <support@softstoic.com>',
-    to: receptorEmail,
+    to: [receptorEmail, clientEmail],
     subject,
     text: textContent,
     html: htmlContent,
