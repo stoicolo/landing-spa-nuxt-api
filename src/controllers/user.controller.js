@@ -53,10 +53,17 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const sendContactFormResponseEmail = catchAsync(async (req, res) => {
+  await emailService.sendContactFormResponseEmail(req.body);
+  logger.info('Email sent successfully');
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
 module.exports = {
   register,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  sendContactFormResponseEmail,
 };

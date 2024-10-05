@@ -206,9 +206,104 @@ const sendEmailActivation = async (emailData, token) => {
   await transport.sendMail(mailOptions);
 };
 
+/**
+ * Send a response email to the client after submitting the contact form.
+ * @param  {} payload
+ * @returns {Promise}
+ * @param  {} payload.receptorEmail
+ * @param  {} payload.clientEmail
+ * @param  {} payload.name
+ * @param  {} payload.phone
+ *  @param  {} payload.message
+ * @returns {Promise}
+//  */
+const sendContactFormResponseEmail = async (payload) => {
+  const { receptorEmail, clientEmail, name, phone, message } = payload;
+
+  const subject = 'Hemos recibido su mensaje - Weblox';
+
+  const logoUrl = `https://a0x7.c18.e2-5.dev/weblox-v1/weblox-v1/images/platform/weblox-logo-name.png`;
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Hemos recibido su mensaje - Weblox</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #dddddd; padding: 20px;">
+        <tr>
+          <td align="center">
+            <img src="${logoUrl}" alt="Weblox Logo" style="max-width: 200px; margin-bottom: 20px;">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="color: #127eb1; text-align: center;">Hemos recibido su mensaje</h1>
+            <p style="color: #333; text-align: center;">Estimado/a ${name},</p>
+            <p style="color: #333; text-align: center;">Gracias por ponerse en contacto con nosotros a través de nuestro formulario. Hemos recibido su mensaje y le responderemos lo antes posible.</p>
+            <p style="color: #333; text-align: center;">Estos son los detalles que nos ha proporcionado:</p>
+            <table width="100%" cellpadding="10" cellspacing="0" style="background-color: #f8f8f8; margin: 20px 0;">
+              <tr>
+                <td style="border-bottom: 1px solid #ddd;"><strong>Nombre:</strong> ${name}</td>
+              </tr>
+              <tr>
+                <td style="border-bottom: 1px solid #ddd;"><strong>Email:</strong> ${clientEmail}</td>
+              </tr>
+              <tr>
+                <td style="border-bottom: 1px solid #ddd;"><strong>Teléfono:</strong> ${phone}</td>
+              </tr>
+              <tr>
+                <td><strong>Mensaje:</strong> ${message}</td>
+              </tr>
+            </table>
+            <p style="color: #333; text-align: center;">Si necesita información adicional o tiene alguna otra pregunta, no dude en contactarnos a través de nuestro sitio web: <a href="${config.fe_url}" style="color: #127eb1; text-decoration: none;">Weblox</a></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center; padding-top: 20px; font-size: 12px; color: #666;">
+            <p>&copy; 2024 Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Todos los derechos reservados.</p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const textContent = `
+    Estimado/a ${name},
+
+    Gracias por ponerse en contacto con nosotros a través de nuestro formulario. Hemos recibido su mensaje y le responderemos lo antes posible.
+
+    Estos son los detalles que nos ha proporcionado:
+    Nombre: ${name}
+    Email: ${clientEmail}
+    Teléfono: ${phone}
+    Mensaje: ${message}
+
+    Si necesita información adicional o tiene alguna otra pregunta, no dude en contactarnos a través de nuestro sitio web: ${config.fe_url}
+
+    Atentamente,
+    El equipo de Weblox
+  `;
+
+  const mailOptions = {
+    from: '"Weblox" <support@softstoic.com>',
+    to: receptorEmail,
+    subject,
+    text: textContent,
+    html: htmlContent,
+  };
+
+  await transport.sendMail(mailOptions);
+};
+
 module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
   sendEmailActivation,
+  sendContactFormResponseEmail,
 };
