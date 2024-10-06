@@ -10,22 +10,22 @@ router
   .route('/')
   .post(
     validate(legalAgreementHistoryValidation.createLegalAgreementHistory),
-    legalAgreementHistoryController.createLegalAgreementHistory
+    legalAgreementHistoryController.createDocument
   )
   .get(
     auth('admin'),
     validate(legalAgreementHistoryValidation.getLegalAgreementHistories),
-    legalAgreementHistoryController.getLegalAgreementHistories
+    legalAgreementHistoryController.getDocuments
   )
   .patch(
     auth('admin'),
     validate(legalAgreementHistoryValidation.updateLegalAgreementHistory),
-    legalAgreementHistoryController.updateLegalAgreementHistory
+    legalAgreementHistoryController.updateDocument
   )
   .delete(
     auth('admin'),
     validate(legalAgreementHistoryValidation.deleteLegalAgreementHistory),
-    legalAgreementHistoryController.deleteLegalAgreementHistory
+    legalAgreementHistoryController.deleteDocument
   );
 
 router
@@ -33,7 +33,7 @@ router
   .get(
     auth(),
     validate(legalAgreementHistoryValidation.getLegalAgreementHistoriesByUserId),
-    legalAgreementHistoryController.getLegalAgreementHistoriesByUserId
+    legalAgreementHistoryController.getDocumentsByUserId
   );
 
 router
@@ -41,7 +41,7 @@ router
   .get(
     auth(),
     validate(legalAgreementHistoryValidation.getLegalAgreementHistoryById),
-    legalAgreementHistoryController.getLegalAgreementHistoryById
+    legalAgreementHistoryController.getDocumentByDocumentId
   );
 module.exports = router;
 

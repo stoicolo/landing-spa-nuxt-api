@@ -26,7 +26,7 @@ const LegalAgreement = sequelize.define(
       defaultValue: 'terms',
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       required: true,
     },
     active: {

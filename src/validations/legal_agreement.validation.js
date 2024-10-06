@@ -2,7 +2,6 @@ const Joi = require('joi');
 
 const createLegalAgreement = {
   body: Joi.object().keys({
-    docId: Joi.number().required(),
     registerUserId: Joi.number().required(),
     lastModifierUserId: Joi.number(),
     type: Joi.string().required(),
