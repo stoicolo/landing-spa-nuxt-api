@@ -1,29 +1,29 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const legalAgreementValidation = require('../../validations/legal_agreement.validation');
-const legalAgreeementController = require('../../controllers/legal_agreement.controller');
+const legalAgrementValidation = require('../../validations/legal_agreement.validation');
+const legalAgreementController = require('../../controllers/legal_agreement.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('admin'), validate(legalAgreementValidation.createLegalAgreement), legalAgreeementController.createDocument)
-  .get(auth('admin'), validate(legalAgreementValidation.getLegalAgreements), legalAgreeementController.getDocuments)
-  .patch(auth('admin'), validate(legalAgreementValidation.updateLegalAgreement), legalAgreeementController.updateDocument)
-  .delete(auth('admin'), validate(legalAgreementValidation.deleteLegalAgreement), legalAgreeementController.deleteDocument);
+  .post(auth('admin'), validate(legalAgrementValidation.createLegalAgreement), legalAgreementController.createDocument)
+  .get(auth('admin'), validate(legalAgrementValidation.getLegalAgreements), legalAgreementController.getDocuments)
+  .patch(auth('admin'), validate(legalAgrementValidation.updateLegalAgreement), legalAgreementController.updateDocument)
+  .delete(auth('admin'), validate(legalAgrementValidation.deleteLegalAgreement), legalAgreementController.deleteDocument);
+
+router
+  .route('/last/:type')
+  .get(validate(legalAgrementValidation.getLegalAgreements), legalAgreementController.getLegalAgreementByType);
 
 router
   .route('/user/:userId')
-  .get(
-    auth(),
-    validate(legalAgreementValidation.getLegalAgreementsByUserId),
-    legalAgreeementController.getDocumentsByUserId
-  );
+  .get(auth(), validate(legalAgrementValidation.getLastLegalAgreementByType), legalAgreementController.getDocumentsByUserId);
 
 router
   .route('/doc/:docId')
-  .get(auth(), validate(legalAgreementValidation.getLegalAgreementById), legalAgreeementController.getDocumentByDocumentId);
+  .get(auth(), validate(legalAgrementValidation.getLegalAgreementById), legalAgreementController.getDocumentByDocumentId);
 
 module.exports = router;
 
