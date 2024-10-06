@@ -41,7 +41,7 @@ const uploadSingleImage = async (req, res) => {
 const getImagesURLsByWebsiteId = async (websiteId) => {
   return Media.findAll({
     where: {
-      websiteId,
+      [Op.or]: [{ websiteId }, { websiteId: 1 }],
     },
   });
 };
