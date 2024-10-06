@@ -19,6 +19,12 @@ const getLegalAgreements = {
   }),
 };
 
+const getLastLegalAgreementByType = {
+  query: Joi.object().keys({
+    type: Joi.string(),
+  }),
+};
+
 const getLegalAgreementsByUserId = {
   query: Joi.object().keys({
     userId: Joi.number().required(),
@@ -55,4 +61,5 @@ module.exports = {
   getLegalAgreementById,
   updateLegalAgreement,
   deleteLegalAgreement,
+  getLastLegalAgreementByType,
 };

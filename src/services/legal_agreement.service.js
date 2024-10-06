@@ -89,6 +89,21 @@ const deleteDocument = async (docId) => {
   return legalAgreement;
 };
 
+/**
+ * Get last legal agreement by type
+ * @param {string} type
+ * @returns {Promise<LegalAgreement>}
+ */
+const getLastLegalAgreementByType = async (type) => {
+  return LegalAgreement.findOne({
+    where: {
+      type,
+    },
+    order: [['createdAt', 'DESC']],
+    limit: 1,
+  });
+};
+
 module.exports = {
   createDocument,
   getDocuments,
@@ -96,4 +111,5 @@ module.exports = {
   getDocumentById,
   updateDocument,
   deleteDocument,
+  getLastLegalAgreementByType,
 };

@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService, tokenService, emailService } = require('../services');
+const { legalAgreementService, tokenService, emailService } = require('../services');
 const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
 
@@ -12,7 +12,7 @@ const logger = require('../config/logger');
  * @param {Object} res - Express response object
  */
 const createDocument = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
+  const user = await legalAgreementService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user, tokenTypes.VERIFY_EMAIL);
   const response = {
     user: {
@@ -31,33 +31,43 @@ const createDocument = catchAsync(async (req, res) => {
 const getDocuments = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await userService.queryUsers(filter, options);
+  const result = await legalAgreementService.queryUsers(filter, options);
   res.send(result);
 });
 
 const getDocumentsByUserId = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(req.params.userId);
+  const user = await legalAgreementService.getUserById(req.params.userId);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Documento no encontrado, verifica el id.');
   }
   res.send(user);
 });
 const getDocumentByDocumentId = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(req.params.userId);
+  const user = await legalAgreementService.getUserById(req.params.userId);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Documento no encontrado, verifica el id.');
   }
   res.send(user);
 });
 
 const updateDocument = catchAsync(async (req, res) => {
-  const user = await userService.updateUserById(req.body.id, req.body);
+  const user = await legalAgreementService.updateUserById(req.body.id, req.body);
   res.send(user);
 });
 
 const deleteDocument = catchAsync(async (req, res) => {
-  await userService.deleteUserById(req.params.userId);
+  await legalAgreementService.deleteUserById(req.params.userId);
   res.status(httpStatus.NO_CONTENT).send();
+});
+
+const getLegalAgreementByType = catchAsync(async (req, res) => {
+  const { type } = req.params;
+  const legalAgreement = await legalAgreementService.getLastLegalAgreementByType(type);
+
+  if (!legalAgreement) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Documento no encontrado, verifica el tipo.');
+  }
+  res.send(legalAgreement);
 });
 
 module.exports = {
@@ -67,4 +77,5 @@ module.exports = {
   getDocumentByDocumentId,
   updateDocument,
   deleteDocument,
+  getLegalAgreementByType,
 };

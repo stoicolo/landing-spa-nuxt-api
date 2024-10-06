@@ -9,7 +9,6 @@ const router = express.Router();
 router
   .route('/')
   .post(
-    auth('admin'),
     validate(legalAgreementHistoryValidation.createLegalAgreementHistory),
     legalAgreementHistoryController.createLegalAgreementHistory
   )
