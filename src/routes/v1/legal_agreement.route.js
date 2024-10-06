@@ -8,7 +8,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth('admin'), validate(legalAgrementValidation.createLegalAgreement), legalAgreementController.createDocument)
+  .post(auth(), validate(legalAgrementValidation.createLegalAgreement), legalAgreementController.createDocument)
   .get(auth('admin'), validate(legalAgrementValidation.getLegalAgreements), legalAgreementController.getDocuments)
   .patch(auth('admin'), validate(legalAgrementValidation.updateLegalAgreement), legalAgreementController.updateDocument)
   .delete(auth('admin'), validate(legalAgrementValidation.deleteLegalAgreement), legalAgreementController.deleteDocument);
