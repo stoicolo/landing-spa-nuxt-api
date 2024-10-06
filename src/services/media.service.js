@@ -98,6 +98,7 @@ const deleteImages = async (imageIds) => {
         await image.destroy();
         return { id: image.imageExternalId, success: true };
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Failed to delete image ${image.imageExternalId}:`, error);
         return { id: image.imageExternalId, success: false, error: error.message };
       }
@@ -108,6 +109,7 @@ const deleteImages = async (imageIds) => {
   const failedDeletes = results.filter((result) => !result.success);
 
   if (failedDeletes.length > 0) {
+    // eslint-disable-next-line no-console
     console.warn('Some images failed to delete:', failedDeletes);
   }
 
