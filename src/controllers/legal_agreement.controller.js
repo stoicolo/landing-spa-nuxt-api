@@ -11,7 +11,7 @@ const logger = require('../config/logger');
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
-const register = catchAsync(async (req, res) => {
+const createDocument = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(user, tokenTypes.VERIFY_EMAIL);
   const response = {
@@ -28,14 +28,21 @@ const register = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(response);
 });
 
-const getUsers = catchAsync(async (req, res) => {
+const getDocuments = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await userService.queryUsers(filter, options);
   res.send(result);
 });
 
-const getUser = catchAsync(async (req, res) => {
+const getDocumentsByUserId = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(req.params.userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+  }
+  res.send(user);
+});
+const getDocumentByDocumentId = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
@@ -43,27 +50,21 @@ const getUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
-const updateUser = catchAsync(async (req, res) => {
+const updateDocument = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.body.id, req.body);
   res.send(user);
 });
 
-const deleteUser = catchAsync(async (req, res) => {
+const deleteDocument = catchAsync(async (req, res) => {
   await userService.deleteUserById(req.params.userId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
-const sendContactFormResponseEmail = catchAsync(async (req, res) => {
-  await emailService.sendContactFormResponseEmail(req.body);
-  logger.info('Email sent successfully');
-  res.status(httpStatus.NO_CONTENT).send();
-});
-
 module.exports = {
-  register,
-  getUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-  sendContactFormResponseEmail,
+  createDocument,
+  getDocuments,
+  getDocumentsByUserId,
+  getDocumentByDocumentId,
+  updateDocument,
+  deleteDocument,
 };

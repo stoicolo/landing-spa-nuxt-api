@@ -15,6 +15,8 @@ const mediaRoute = require('./media.route');
 const genericTemplateRoute = require('./generic_template.route');
 const genericCategoryRoute = require('./generic_category.route');
 const publicWebhookRoute = require('./public_webhook.route');
+const legalAgreementRoute = require('./legal_agreement.route');
+const legalAgreementHistoryRoute = require('./legal_agreement_history.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -79,6 +81,14 @@ const defaultRoutes = [
   {
     path: '/public_webhooks',
     route: publicWebhookRoute,
+  },
+  {
+    path: '/legal_agreements',
+    route: legalAgreementRoute,
+  },
+  {
+    path: '/legal_agreement_histories',
+    route: legalAgreementHistoryRoute,
   },
 ];
 
