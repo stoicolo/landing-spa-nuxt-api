@@ -2,68 +2,60 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { userService, tokenService } = require('../services');
-const { tokenTypes } = require('../config/tokens');
-const logger = require('../config/logger');
+const { legalAgreementHistoryService } = require('../services');
 
 /**
  * Register a new user
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
-const createLegalAgreementHistory = catchAsync(async (req, res) => {
-  const user = await userService.createUser(req.body);
-  const tokens = await tokenService.generateAuthTokens(user, tokenTypes.VERIFY_EMAIL);
-  const response = {
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
-    tokens,
-  };
-  logger.info(`User registered: ${user.email}`);
-  res.status(httpStatus.CREATED).send(response);
+const createDocument = catchAsync(async (req, res) => {
+  try {
+    const document = await legalAgreementHistoryService.createDocument(req.body);
+
+    res.status(httpStatus.CREATED).send(document);
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
+  }
 });
 
-const getLegalAgreementHistories = catchAsync(async (req, res) => {
+const getDocuments = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'role']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await userService.queryUsers(filter, options);
+  const result = await legalAgreementHistoryService.queryUsers(filter, options);
   res.send(result);
 });
 
-const getLegalAgreementHistoriesByUserId = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(req.params.userId);
+const getDocumentsByUserId = catchAsync(async (req, res) => {
+  const user = await legalAgreementHistoryService.getUserById(req.params.userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
   }
   res.send(user);
 });
-const getLegalAgreementHistoryById = catchAsync(async (req, res) => {
-  const user = await userService.getUserById(req.params.userId);
+const getDocumentByDocumentId = catchAsync(async (req, res) => {
+  const user = await legalAgreementHistoryService.getUserById(req.params.userId);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
   }
   res.send(user);
 });
 
-const updateLegalAgreementHistory = catchAsync(async (req, res) => {
-  const user = await userService.updateUserById(req.body.id, req.body);
+const updateDocument = catchAsync(async (req, res) => {
+  const user = await legalAgreementHistoryService.updateUserById(req.body.id, req.body);
   res.send(user);
 });
 
-const deleteLegalAgreementHistory = catchAsync(async (req, res) => {
-  await userService.deleteUserById(req.params.userId);
+const deleteDocument = catchAsync(async (req, res) => {
+  await legalAgreementHistoryService.deleteUserById(req.params.userId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
 module.exports = {
-  createLegalAgreementHistory,
-  getLegalAgreementHistories,
-  getLegalAgreementHistoriesByUserId,
-  getLegalAgreementHistoryById,
-  updateLegalAgreementHistory,
-  deleteLegalAgreementHistory,
+  createDocument,
+  getDocuments,
+  getDocumentsByUserId,
+  getDocumentByDocumentId,
+  updateDocument,
+  deleteDocument,
 };
