@@ -23,9 +23,9 @@ function generateMigrations() {
     PublicWebhookSubscriptions: models.PublicWebhookSubscriptions,
     PublicWebhookPayments: models.PublicWebhookPayments,
     PublicWebhookPaymentFailed: models.PublicWebhookPaymentFailed,
+    LegalAgreement: models.LegalAgreement,
+    LegalAgreementHistory: models.LegalAgreementHistory,
   };
-
-  console.log('%csrc/config/generateMigrations.js:22 Models Sort', 'color: #007acc;', modelsSorted);
 
   Object.values(modelsSorted).forEach(async (model) => {
     const modelName = model.name;

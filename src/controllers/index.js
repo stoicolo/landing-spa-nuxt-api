@@ -12,3 +12,5 @@ module.exports.mediaController = require('./media.controller');
 module.exports.genericTemplateController = require('./generic_template.controller');
 module.exports.genericCategoryController = require('./generic_category.controller');
 module.exports.publicWebhookController = require('./public_webhook.controller');
+module.exports.legalAgreementController = require('./legal_agreement.controller');
+module.exports.legalAgreementHistoryController = require('./legal_agreement_history.controller');

@@ -4,29 +4,26 @@ const { sequelize } = require('../config/sequelize');
 const LegalAgreement = sequelize.define(
   'LegalAgreement',
   {
-    registerPersonalId: {
-      type: DataTypes.STRING,
+    registerUserId: {
+      type: DataTypes.INTEGER,
       required: true,
       references: {
         model: 'User',
         key: 'id',
       },
     },
-    lastModifierPersonalId: {
-      type: DataTypes.STRING,
+    lastModifierUserId: {
+      type: DataTypes.INTEGER,
       required: false,
       references: {
         model: 'User',
         key: 'id',
       },
     },
-    legalAgreementId: {
-      type: DataTypes.STRING,
-      required: true,
-    },
     type: {
       type: DataTypes.STRING,
       required: true,
+      defaultValue: 'terms',
     },
     description: {
       type: DataTypes.STRING,

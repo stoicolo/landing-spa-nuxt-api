@@ -5,11 +5,11 @@ const LegalAgreementHistory = sequelize.define(
   'LegalAgreementHistory',
   {
     legalAgreementId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       required: true,
     },
-    personalId: {
-      type: DataTypes.STRING,
+    userId: {
+      type: DataTypes.INTEGER,
       required: true,
       references: {
         model: 'User',

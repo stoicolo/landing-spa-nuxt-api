@@ -16,6 +16,8 @@ const GenericCategoryModel = require('./generic_category.model');
 const PublicWebhookSubscriptionsModel = require('./public_webhook_subscriptions.model');
 const PublicWebhookPaymentsModel = require('./public_webhook_payments.model');
 const PublicWebhookPaymentFailedModel = require('./public_webhook_payment_failed.model');
+const LegalAgreementModel = require('./legal_agreement.model.model');
+const LegalAgreementHistoryModel = require('./legal_agreement_history.model');
 
 const models = {
   User: UserModel,
@@ -36,6 +38,8 @@ const models = {
   PublicWebhookSubscriptions: PublicWebhookSubscriptionsModel,
   PublicWebhookPayments: PublicWebhookPaymentsModel,
   PublicWebhookPaymentFailed: PublicWebhookPaymentFailedModel,
+  LegalAgreement: LegalAgreementModel,
+  LegalAgreementHistory: LegalAgreementHistoryModel,
 };
 
 associateMenuHeader(models);

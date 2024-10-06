@@ -18,7 +18,7 @@ const uploadImage = catchAsync(async (req, res) => {
 });
 
 const getImagesURLsByWebsiteId = catchAsync(async (req, res) => {
-  const websiteId = req.query.websiteId;
+  const { websiteId } = req.query;
 
   if (!websiteId) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'websiteId is requiered');
