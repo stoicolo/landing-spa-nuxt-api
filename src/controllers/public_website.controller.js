@@ -19,7 +19,14 @@ const getPublicWebsitesByWebsiteDomain = catchAsync(async (req, res) => {
   if (!page) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Domain utilizado.');
   }
-  res.send(page);
+
+  const encryptedPage = await tokenService.generateTokenWithData(page, 'PublicWebsite');
+
+  if (!encryptedPage) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error al encriptar el website');
+  }
+
+  res.send(encryptedPage);
 });
 
 const getPublicWebsitesByWebsiteSlug = catchAsync(async (req, res) => {
@@ -29,13 +36,7 @@ const getPublicWebsitesByWebsiteSlug = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Slug utilizado.');
   }
 
-  const encryptedPage = await tokenService.generateAuthTokens(page, 'publicWebsite');
-
-  if (!encryptedPage) {
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error al encriptar el website');
-  }
-
-  res.send(encryptedPage);
+  res.send(page);
 });
 
 module.exports = {
