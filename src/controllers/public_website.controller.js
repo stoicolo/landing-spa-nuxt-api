@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 // const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { publicWebsiteService } = require('../services');
+const { publicWebsiteService, tokenService } = require('../services');
 
 const getPublicWebsiteById = catchAsync(async (req, res) => {
   const page = await publicWebsiteService.getPublicWebsiteById(req.params.websiteId);
@@ -28,7 +28,14 @@ const getPublicWebsitesByWebsiteSlug = catchAsync(async (req, res) => {
   if (!page) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Página Web no encontrada, verifica el Slug utilizado.');
   }
-  res.send(page);
+
+  const encryptedPage = await tokenService.generateAuthTokens(page, 'publicWebsite');
+
+  if (!encryptedPage) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error al encriptar el website');
+  }
+
+  res.send(encryptedPage);
 });
 
 module.exports = {
