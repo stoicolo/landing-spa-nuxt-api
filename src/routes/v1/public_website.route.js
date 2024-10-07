@@ -1,5 +1,6 @@
 const express = require('express');
 const validate = require('../../middlewares/validate');
+const auth = require('../../middlewares/auth');
 const publicWebsiteValidation = require('../../validations/public_website.validation');
 const publicWebsiteController = require('../../controllers/public_website.controller');
 
@@ -7,12 +8,12 @@ const router = express.Router();
 
 router
   .route('/id/:websiteId')
-  .get(validate(publicWebsiteValidation.getPublicWebsiteById), publicWebsiteController.getPublicWebsiteById);
+  .get(auth('admin'), validate(publicWebsiteValidation.getPublicWebsiteById), publicWebsiteController.getPublicWebsiteById);
 router
   .route('/domain/:websiteDomain')
   .get(validate(publicWebsiteValidation.getPublicWebsiteByDomain), publicWebsiteController.getPublicWebsitesByWebsiteDomain);
 router
-  .route('/slug/:websiteSlug')
+  .route(auth('admin'), '/slug/:websiteSlug')
   .get(validate(publicWebsiteValidation.getPublicWebsiteBySlug), publicWebsiteController.getPublicWebsitesByWebsiteSlug);
 
 module.exports = router;

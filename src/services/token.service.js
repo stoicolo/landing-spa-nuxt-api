@@ -26,6 +26,18 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   return jwt.sign(payload, secret);
 };
 
+const generateTokenWithData = (data, type, secret = config.jwt.secret) => {
+  const expires = dayjs().add(1, 'day');
+  const payload = {
+    data,
+    iat: dayjs().unix(),
+    exp: expires.unix(),
+    type,
+  };
+
+  return jwt.sign(payload, secret);
+};
+
 /**
  * Save a token
  * @param {string} token
@@ -243,4 +255,5 @@ module.exports = {
   generateResetPasswordToken,
   resetPassword,
   verifyEmail,
+  generateTokenWithData,
 };
