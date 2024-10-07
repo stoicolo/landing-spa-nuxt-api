@@ -127,7 +127,7 @@ const sendResetPasswordEmail = async (to, token) => {
   `;
 
   const mailOptions = {
-    from: '"Weblox" <support@softstoic.com>',
+    from: `Weblox <${config.email.smtp.from}>`,
     to,
     subject,
     text: textContent,
@@ -195,7 +195,7 @@ const sendEmailActivation = async (emailData, token) => {
 
   // setup email data with unicode symbols
   const mailOptions = {
-    from: '"Weblox" <support@softstoic.com>', // sender address
+    from: `Weblox <${config.email.smtp.from}>`, // sender address
     to: emailData.email, // list of receivers
     subject: 'Bienvenido a Weblox', // Subject line
     text: `Hola ${emailData.name}! Te damos la bienvenida a Weblox. Por favor, activa tu cuenta visitando: ${link}`, // plain text body
@@ -290,7 +290,7 @@ const sendContactFormResponseEmail = async (payload) => {
   `;
 
   const mailOptions = {
-    from: '"Weblox" <support@softstoic.com>',
+    from: `Weblox <${config.email.smtp.from}>`,
     to: [receptorEmail, clientEmail],
     subject,
     text: textContent,
