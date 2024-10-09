@@ -26,12 +26,11 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
   return jwt.sign(payload, secret);
 };
 
-const generateTokenWithData = (data, type, secret = config.jwt.secret) => {
-  const expires = dayjs().add(1, 'day');
+const generateTokenWithData = (data, type, expires = dayjs().add(1, 'day'), secret = config.jwt.secret) => {
   const payload = {
     data,
     iat: dayjs().unix(),
-    exp: expires.unix(),
+    exp: dayjs(expires).unix(),
     type,
   };
 
@@ -107,6 +106,18 @@ const generateAuthTokens = async (user, tokenType) => {
       reset_password: {
         token: resetPasswordToken,
         expires: resetPasswordTokenExpires.toDate(),
+      },
+    };
+  } else if (tokenType === tokenTypes.TRIAL_DAYS) {
+    const resetTrialDaysTokenExpires = dayjs().add(config.trial_days, 'minutes');
+    const resetTrialDaysToken = generateTokenWithData(user, tokenTypes.TRIAL_DAYS, resetTrialDaysTokenExpires);
+
+    await saveToken(resetTrialDaysToken, user.id, resetTrialDaysTokenExpires, tokenTypes.TRIAL_DAYS);
+
+    result = {
+      trial_days: {
+        token: resetTrialDaysToken,
+        expires: resetTrialDaysTokenExpires.toDate(),
       },
     };
   } else {
