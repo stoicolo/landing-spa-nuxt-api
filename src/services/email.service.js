@@ -176,7 +176,6 @@ const sendEmailActivation = async (emailData, token) => {
             </table>
             <h2 style="color: #127eb1;">Datos registrados en Weblox:</h2>
             <ul style="list-style-type: none; padding-left: 0;">
-              <li><strong>Nombre:</strong> ${emailData.name}</li>
               <li><strong>Email:</strong> ${emailData.email}</li>
             </ul>
             <p>Si desea modificar algún dato personal, por favor hágalo por medio de la aplicación Weblox.</p>
@@ -300,10 +299,110 @@ const sendContactFormResponseEmail = async (payload) => {
   await transport.sendMail(mailOptions);
 };
 
+const sendSubdomainEmail = async (payload, token) => {
+  const { clientEmail, clientName, subdomainUrl, paymentsProviderUrl } = payload;
+  const subdomainEditorUrlWithToken = `${subdomainUrl}/login/?token=${token}`;
+  const subdomainWebsiteUrlWithToken = `${subdomainUrl}/?token=${token}`;
+
+  const subject = `¡Bienvenido a su prueba de Weblox!`;
+
+  const logoUrl = `https://a0x7.c18.e2-5.dev/weblox-v1/weblox-v1/images/platform/weblox-logo-name.png`;
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Bienvenido a su prueba de Weblox</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #dddddd; padding: 20px;">
+        <tr>
+          <td align="center">
+            <img src="${logoUrl}" alt="Weblox Logo" style="max-width: 200px; margin-bottom: 20px;">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h1 style="color: #127eb1; text-align: center;">Bienvenido a su prueba de Weblox</h1>
+            <p style="color: #333; text-align: center;">Estimado/a ${clientName},</p>
+            <p style="color: #333; text-align: center;">Gracias por su interés en Weblox. Nos complace informarle que hemos configurado un subdominio de prueba para que pueda experimentar nuestros servicios.</p>
+            <p style="color: #333; text-align: center;">Detalles de su prueba:</p>
+            <table width="100%" cellpadding="10" cellspacing="0" style="background-color: #f8f8f8; margin: 20px 0;">
+              <tr>
+                <td style="border-bottom: 1px solid #ddd;"><strong>Subdominio:</strong> ${subdomainUrl}</td>
+              </tr>
+              <tr>
+                <td><strong>Duración de la prueba:</strong> ${config.trial_days / 60 / 24} días</td>
+              </tr>
+            </table>
+            <p style="color: #333; text-align: center;">Para comenzar su prueba, utilice los siguientes botones:</p>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="50%" style="text-align: center; padding-right: 10px;">
+                  <a href="${subdomainWebsiteUrlWithToken}" style="background-color: #127eb1; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; width: 200px;">Ver mi sitio de prueba</a>
+                </td>
+                <td width="50%" style="text-align: center; padding-left: 10px;">
+                  <a href="${subdomainEditorUrlWithToken}" style="background-color: #FF6600; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; width: 200px;">Editar mi sitio</a>
+                </td>
+              </tr>
+            </table>
+            <p style="color: #333; text-align: center; margin-top: 20px;">¿Listo para aprovechar al máximo Weblox? ¡Obtenga su suscripción ahora y desbloquee todo el potencial!</p>
+            <p style="text-align: center;">
+              <a href="${paymentsProviderUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; width: 200px;">Obtener suscripción</a>
+            </p>
+            <p style="color: #333; text-align: center;">Si tiene alguna pregunta o necesita asistencia, no dude en contactarnos.</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center; padding-top: 20px; font-size: 12px; color: #666;">
+            <p>&copy; 2024 Weblox<span style="font-size: 60%; vertical-align: top;">®</span>. Todos los derechos reservados.</p>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const textContent = `
+    Estimado/a ${clientName},
+
+    Gracias por su interés en Weblox. Nos complace informarle que hemos configurado un subdominio de prueba para que pueda experimentar nuestros servicios.
+
+    Detalles de su prueba:
+    Subdominio: ${subdomainUrl}
+    Duración de la prueba: ${config.trial_days} días
+
+    Para comenzar su prueba:
+    Ver mi sitio de prueba: ${subdomainWebsiteUrlWithToken}
+    Editar mi sitio: ${subdomainEditorUrlWithToken}
+
+    ¿Listo para aprovechar al máximo Weblox? ¡Obtenga su suscripción ahora y desbloquee todo el potencial!
+    Obtener suscripción: ${paymentsProviderUrl}
+
+    Si tiene alguna pregunta o necesita asistencia, no dude en contactarnos.
+
+    Atentamente,
+    El equipo de Weblox
+  `;
+
+  const mailOptions = {
+    from: `Weblox <${config.email.smtp.from}>`,
+    to: clientEmail,
+    subject,
+    text: textContent,
+    html: htmlContent,
+  };
+
+  await transport.sendMail(mailOptions);
+};
+
 module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
   sendEmailActivation,
   sendContactFormResponseEmail,
+  sendSubdomainEmail,
 };
