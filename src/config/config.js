@@ -17,14 +17,14 @@ const envVarsSchema = Joi.object()
     DB_SSL: Joi.string().required().description('DB ssl'),
     DB_ADMIN_USER: Joi.string().required().description('DB admin user'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
-    JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
-    JWT_REFRESH_EXPIRATION_DAYS: Joi.number().default(30).description('days after which refresh tokens expire'),
+    JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(1440).description('3 days after which access tokens expire'),
+    JWT_REFRESH_EXPIRATION_DAYS: Joi.number().default(4320).description('3 days after which refresh tokens expire'),
     JWT_RESET_PASSWORD_EXPIRATION_MINUTES: Joi.number()
-      .default(10)
+      .default(4320)
       .description('minutes after which reset password token expires'),
     JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
-      .default(10)
-      .description('minutes after which verify email token expires'),
+      .default(4320)
+      .description('3 days after which verify email token expires'),
     SMTP_HOST: Joi.string().description('server that will send the emails'),
     SMTP_PORT: Joi.number().description('port to connect to the email server'),
     SMTP_USERNAME: Joi.string().description('username for email server'),
@@ -35,6 +35,7 @@ const envVarsSchema = Joi.object()
     IDRIVE_ACCESS_KEY: Joi.string().description('iDrive access key'),
     IDRIVE_SECRET_KEY: Joi.string().description('iDrive secret key'),
     IDRIVE_BUCKET_NAME: Joi.string().description('iDrive bucket name'),
+    TRIAL_DAYS: Joi.number().default(4320).description('3 days for trial'),
   })
   .unknown();
 
@@ -81,6 +82,7 @@ module.exports = {
       },
     },
   },
+  trial_days: envVars.TRIAL_DAYS,
   idrive: {
     endpoint: envVars.IDRIVE_ENDPOINT,
     region: envVars.IDRIVE_REGION,
