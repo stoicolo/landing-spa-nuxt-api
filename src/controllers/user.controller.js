@@ -55,7 +55,20 @@ const deleteUser = catchAsync(async (req, res) => {
 
 const sendContactFormResponseEmail = catchAsync(async (req, res) => {
   await emailService.sendContactFormResponseEmail(req.body);
-  logger.info('Email sent successfully');
+  logger.info('Email for "sendContactFormResponseEmail" has been sent successfully');
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
+const sendSubdomainEmail = catchAsync(async (req, res) => {
+  const tokenBody = {
+    id: req.body.userId,
+    name: req.body.clientName,
+    email: req.body.clientEmail,
+  };
+  const response = await tokenService.generateAuthTokens(tokenBody, tokenTypes.TRIAL_DAYS);
+
+  await emailService.sendSubdomainEmail(req.body, response.trial_days);
+  logger.info('Email for "sendSubdomainEmail" has been sent successfully');
   res.status(httpStatus.NO_CONTENT).send();
 });
 
@@ -66,4 +79,5 @@ module.exports = {
   updateUser,
   deleteUser,
   sendContactFormResponseEmail,
+  sendSubdomainEmail,
 };

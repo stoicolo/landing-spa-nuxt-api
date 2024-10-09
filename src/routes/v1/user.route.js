@@ -13,6 +13,7 @@ router
   .patch(auth(), validate(userValidation.updateUser), userController.updateUser);
 
 router.post('/send-contact-form-response-email', userController.sendContactFormResponseEmail);
+router.post('/send-subdomain-email', userController.sendSubdomainEmail);
 
 router
   .route('/:userId')
