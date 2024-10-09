@@ -21,7 +21,16 @@ const Token = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [[tokenTypes.REFRESH, tokenTypes.RESET_PASSWORD, tokenTypes.VERIFY_EMAIL, tokenTypes.ACCESS]],
+        isIn: [
+          [
+            tokenTypes.REFRESH,
+            tokenTypes.RESET_PASSWORD,
+            tokenTypes.VERIFY_EMAIL,
+            tokenTypes.ACCESS,
+            tokenTypes.PUBLIC_WEBSITE,
+            tokenTypes.TRIAL_DAYS,
+          ],
+        ],
       },
     },
     expires: {
@@ -29,7 +38,7 @@ const Token = sequelize.define(
       allowNull: false,
     },
     token: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       unique: true,
     },

@@ -3,6 +3,8 @@ const tokenTypes = {
   REFRESH: 'refresh',
   RESET_PASSWORD: 'resetPassword',
   VERIFY_EMAIL: 'verifyEmail',
+  TRIAL_DAYS: 'trialDays',
+  PUBLIC_WEBSITE: 'publicWebsite',
 };
 
 module.exports = {
