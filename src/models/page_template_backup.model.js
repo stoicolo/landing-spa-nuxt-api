@@ -14,9 +14,13 @@ const PageTemplateBackup = sequelize.define(
     pageName: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    pageId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: 'Page',
-        key: 'pageName',
+        key: 'id',
       },
     },
     pageTemplateId: {
