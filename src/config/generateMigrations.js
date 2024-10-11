@@ -10,13 +10,13 @@ function generateMigrations() {
     Company: models.Company,
     Widget: models.Widget,
     PageTemplate: models.PageTemplate,
-    PageTemplateBackup: models.PageTemplateBackup,
-    Page: models.Page,
     Website: models.Website,
-    PublishHistory: models.PublishHistory,
-    PublicWebsite: models.PublicWebsite,
+    Page: models.Page,
+    PageTemplateBackup: models.PageTemplateBackup,
     MenuHeader: models.MenuHeader,
     MenuDetail: models.MenuDetail,
+    PublishHistory: models.PublishHistory,
+    PublicWebsite: models.PublicWebsite,
     Media: models.Media,
     GenericTemplate: models.GenericTemplate,
     GenericCategory: models.GenericCategory,
@@ -27,27 +27,39 @@ function generateMigrations() {
     LegalAgreementHistory: models.LegalAgreementHistory,
   };
 
-  Object.values(modelsSorted).forEach(async (model) => {
-    const modelName = model.name;
+  const modelsArray = Object.values(modelsSorted);
 
-    await sequelize.getQueryInterface().createTable(modelName, {
-      id: {
-        type: 'INTEGER',
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      ...model.tableAttributes, // adding custome attributes if necessary
-      createdAt: {
-        type: 'DATE',
-        allowNull: false,
-      },
-      updatedAt: {
-        type: 'DATE',
-        allowNull: false,
-      },
-      ...model.indexes, // adding custome attributes if necessary
+  return modelsArray
+    .reduce((promise, model) => {
+      return promise.then(() => {
+        const modelName = model.name;
+        return sequelize
+          .getQueryInterface()
+          .createTable(modelName, {
+            id: {
+              type: 'INTEGER',
+              primaryKey: true,
+              autoIncrement: true,
+            },
+            ...model.tableAttributes,
+            createdAt: {
+              type: 'DATE',
+              allowNull: false,
+            },
+            updatedAt: {
+              type: 'DATE',
+              allowNull: false,
+            },
+            ...model.indexes,
+          })
+          .then(() => {
+            console.log(`Table ${modelName} created successfully.`);
+          });
+      });
+    }, Promise.resolve())
+    .catch((error) => {
+      console.error('Error creating tables:', error);
     });
-  });
 }
 
 module.exports = generateMigrations;
