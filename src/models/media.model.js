@@ -30,7 +30,7 @@ const Media = sequelize.define(
       allowNull: false,
     },
     categories: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.ARRAY(DataTypes.TEXT),
       allowNull: false,
       defaultValue: [],
     },
