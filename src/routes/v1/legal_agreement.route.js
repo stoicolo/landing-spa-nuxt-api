@@ -8,10 +8,26 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth(), validate(legalAgrementValidation.createLegalAgreement), legalAgreementController.createDocument)
-  .get(auth('admin'), validate(legalAgrementValidation.getLegalAgreements), legalAgreementController.getDocuments)
-  .patch(auth('admin'), validate(legalAgrementValidation.updateLegalAgreement), legalAgreementController.updateDocument)
-  .delete(auth('admin'), validate(legalAgrementValidation.deleteLegalAgreement), legalAgreementController.deleteDocument);
+  .post(
+    auth('manageLegalAgreements'),
+    validate(legalAgrementValidation.createLegalAgreement),
+    legalAgreementController.createDocument
+  )
+  .get(
+    auth('manageLegalAgreements'),
+    validate(legalAgrementValidation.getLegalAgreements),
+    legalAgreementController.getDocuments
+  )
+  .patch(
+    auth('manageLegalAgreements'),
+    validate(legalAgrementValidation.updateLegalAgreement),
+    legalAgreementController.updateDocument
+  )
+  .delete(
+    auth('manageLegalAgreements'),
+    validate(legalAgrementValidation.deleteLegalAgreement),
+    legalAgreementController.deleteDocument
+  );
 
 router
   .route('/last/:type')
