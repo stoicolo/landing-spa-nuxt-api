@@ -17,6 +17,7 @@ const genericCategoryRoute = require('./generic_category.route');
 const publicWebhookRoute = require('./public_webhook.route');
 const legalAgreementRoute = require('./legal_agreement.route');
 const legalAgreementHistoryRoute = require('./legal_agreement_history.route');
+const couponRoute = require('./coupon.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -89,6 +90,10 @@ const defaultRoutes = [
   {
     path: '/legal_agreement_histories',
     route: legalAgreementHistoryRoute,
+  },
+  {
+    path: '/coupons',
+    route: couponRoute,
   },
 ];
 
