@@ -18,6 +18,7 @@ const PublicWebhookPaymentsModel = require('./public_webhook_payments.model');
 const PublicWebhookPaymentFailedModel = require('./public_webhook_payment_failed.model');
 const LegalAgreementModel = require('./legal_agreement.model.model');
 const LegalAgreementHistoryModel = require('./legal_agreement_history.model');
+const CouponModel = require('./coupon.model');
 
 const models = {
   User: UserModel,
@@ -40,6 +41,7 @@ const models = {
   PublicWebhookPaymentFailed: PublicWebhookPaymentFailedModel,
   LegalAgreement: LegalAgreementModel,
   LegalAgreementHistory: LegalAgreementHistoryModel,
+  Coupon: CouponModel,
 };
 
 associateMenuHeader(models);
