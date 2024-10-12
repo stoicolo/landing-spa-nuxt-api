@@ -17,3 +17,4 @@ module.exports.genericCategoryService = require('./generic_category.service');
 module.exports.publicWebhookService = require('./public_webhook.service');
 module.exports.legalAgreementService = require('./legal_agreement.service');
 module.exports.legalAgreementHistoryService = require('./legal_agreement_history.service');
+module.exports.couponService = require('./coupon.service');
