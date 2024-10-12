@@ -25,6 +25,7 @@ function generateMigrations() {
     PublicWebhookPaymentFailed: models.PublicWebhookPaymentFailed,
     LegalAgreement: models.LegalAgreement,
     LegalAgreementHistory: models.LegalAgreementHistory,
+    Coupon: models.Coupon,
   };
 
   const modelsArray = Object.values(modelsSorted);
@@ -33,27 +34,29 @@ function generateMigrations() {
     .reduce((promise, model) => {
       return promise.then(() => {
         const modelName = model.name;
+        const tableDefinition = {
+          id: {
+            type: 'INTEGER',
+            primaryKey: true,
+            autoIncrement: true,
+          },
+          ...model.tableAttributes,
+          createdAt: {
+            type: 'DATE',
+            allowNull: false,
+          },
+          updatedAt: {
+            type: 'DATE',
+            allowNull: false,
+          },
+          ...model.indexes,
+        };
+
         return sequelize
           .getQueryInterface()
-          .createTable(modelName, {
-            id: {
-              type: 'INTEGER',
-              primaryKey: true,
-              autoIncrement: true,
-            },
-            ...model.tableAttributes,
-            createdAt: {
-              type: 'DATE',
-              allowNull: false,
-            },
-            updatedAt: {
-              type: 'DATE',
-              allowNull: false,
-            },
-            ...model.indexes,
-          })
+          .createTable(modelName, tableDefinition)
           .then(() => {
-            console.log(`Table ${modelName} created successfully.`);
+            console.log(`Table ${modelName} created successfully.`, true);
           });
       });
     }, Promise.resolve())
