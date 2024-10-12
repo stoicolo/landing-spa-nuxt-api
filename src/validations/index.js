@@ -15,3 +15,4 @@ module.exports.genericCategoryValidation = require('./generic_category.validatio
 module.exports.publicWebhookValidation = require('./public_webhook.validation');
 module.exports.legalAgreementValidation = require('./legal_agreement.validation');
 module.exports.legalAgreementHistoryValidation = require('./legal_agreement_history.validation');
+module.exports.couponValidation = require('./coupon.validation');
