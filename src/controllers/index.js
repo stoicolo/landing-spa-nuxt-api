@@ -14,3 +14,4 @@ module.exports.genericCategoryController = require('./generic_category.controlle
 module.exports.publicWebhookController = require('./public_webhook.controller');
 module.exports.legalAgreementController = require('./legal_agreement.controller');
 module.exports.legalAgreementHistoryController = require('./legal_agreement_history.controller');
+module.exports.couponController = require('./coupon.controller');
