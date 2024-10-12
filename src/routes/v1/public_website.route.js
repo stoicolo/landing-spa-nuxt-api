@@ -8,13 +8,21 @@ const router = express.Router();
 
 router
   .route('/id/:websiteId')
-  .get(auth('admin'), validate(publicWebsiteValidation.getPublicWebsiteById), publicWebsiteController.getPublicWebsiteById);
+  .get(
+    auth('manageWebsites'),
+    validate(publicWebsiteValidation.getPublicWebsiteById),
+    publicWebsiteController.getPublicWebsiteById
+  );
 router
   .route('/domain/:websiteDomain')
   .get(validate(publicWebsiteValidation.getPublicWebsiteByDomain), publicWebsiteController.getPublicWebsitesByWebsiteDomain);
 router
-  .route(auth('admin'), '/slug/:websiteSlug')
-  .get(validate(publicWebsiteValidation.getPublicWebsiteBySlug), publicWebsiteController.getPublicWebsitesByWebsiteSlug);
+  .route('/slug/:websiteSlug')
+  .get(
+    auth('manageWebsites'),
+    validate(publicWebsiteValidation.getPublicWebsiteBySlug),
+    publicWebsiteController.getPublicWebsitesByWebsiteSlug
+  );
 
 module.exports = router;
 
