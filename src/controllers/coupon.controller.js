@@ -33,21 +33,21 @@ const getCouponsByUserId = catchAsync(async (req, res) => {
   }
   res.send(user);
 });
-const getCouponByCouponId = catchAsync(async (req, res) => {
-  const user = await couponService.getUserById(req.params.userId);
-  if (!user) {
+const getCouponByCouponInternalId = catchAsync(async (req, res) => {
+  const coupon = await couponService.getCouponByInternalId(req.params.internalId);
+  if (!coupon) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Cupón no encontrado, verifica el id.');
   }
-  res.send(user);
+  res.send(coupon);
 });
 
 const updateCoupon = catchAsync(async (req, res) => {
-  const user = await couponService.updateUserById(req.body.id, req.body);
+  const user = await couponService.updateCoupon(req.body.internalId, req.body);
   res.send(user);
 });
 
 const deleteCoupon = catchAsync(async (req, res) => {
-  await couponService.deleteUserById(req.params.userId);
+  await couponService.deleteCoupon(req.body.internalId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
@@ -65,7 +65,7 @@ module.exports = {
   createCoupon,
   getCoupons,
   getCouponsByUserId,
-  getCouponByCouponId,
+  getCouponByCouponInternalId,
   updateCoupon,
   deleteCoupon,
   getCouponByType,
