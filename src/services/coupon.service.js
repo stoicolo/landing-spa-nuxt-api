@@ -17,12 +17,16 @@ const createCoupon = async (couponBody) => {
 };
 
 /**
- * Get Coupon by couponId
- * @param {ObjectId} couponId
+ * Get Coupon by couponInternalId
+ * @param {ObjectId} couponInternalId
  * @returns {Promise<Coupon>}
  */
-const getCouponById = async (couponId) => {
-  return Coupon.findByPk(couponId);
+const getCouponByInternalId = async (couponInternalId) => {
+  return Coupon.findOne({
+    where: {
+      internalId: couponInternalId,
+    },
+  });
 };
 
 /**
@@ -59,13 +63,13 @@ const getCouponsByUserId = async (userId) => {
  * @returns {Promise<Coupon>}
  */
 const updateCoupon = async (id, updateBody) => {
-  const coupon = await getCouponById(id);
+  const coupon = await getCouponByInternalId(id);
 
   if (!coupon) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Cupón no encontrado, verifica el id.');
   }
 
-  const { registerUserId, description, releaseDate, registrationDate, ...updateBodyWithoutColumnsNotEditable } = updateBody;
+  const { ...updateBodyWithoutColumnsNotEditable } = updateBody;
 
   Object.assign(coupon, updateBodyWithoutColumnsNotEditable);
 
@@ -76,11 +80,11 @@ const updateCoupon = async (id, updateBody) => {
 
 /**
  * Delete coupon by id
- * @param {ObjectId} couponId
+ * @param {ObjectId} couponInternalId
  * @returns {Promise<Coupon>}
  */
-const deleteCoupon = async (couponId) => {
-  const coupon = await getCouponById(couponId);
+const deleteCoupon = async (couponInternalId) => {
+  const coupon = await getCouponByInternalId(couponInternalId);
 
   if (!coupon) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Cupón no encontrado, verifica el id.');
@@ -108,7 +112,7 @@ module.exports = {
   createCoupon,
   getCoupons,
   getCouponsByUserId,
-  getCouponById,
+  getCouponByInternalId,
   updateCoupon,
   deleteCoupon,
   getLastCouponByType,

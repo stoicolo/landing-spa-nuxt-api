@@ -9,15 +9,16 @@ const router = express.Router();
 router
   .route('/')
   .post(auth('manageCoupons'), validate(couponValidation.createCoupon), couponController.createCoupon)
-  .get(auth('manageCoupons'), validate(couponValidation.getCoupons), couponController.getCoupons)
-  .patch(auth('manageCoupons'), validate(couponValidation.updateCoupon), couponController.updateCoupon)
-  .delete(auth('manageCoupons'), validate(couponValidation.deleteCoupon), couponController.deleteCoupon);
+  .get(auth('manageCoupons'), validate(couponValidation.getCoupons), couponController.getCoupons);
 
 router
-  .route('/user/:userId')
-  .get(auth(), validate(couponValidation.getLastLegalAgreementByType), couponController.getCouponsByUserId);
+  .route('/id/:internalId')
+  .get(auth(), validate(couponValidation.getCouponByInternalId), couponController.getCouponByCouponInternalId);
 
-router.route('/doc/:docId').get(auth(), validate(couponValidation.getCouponById), couponController.getCouponByCouponId);
+router
+  .route('/id/')
+  .patch(auth('manageCoupons'), validate(couponValidation.updateCoupon), couponController.updateCoupon)
+  .delete(auth('manageCoupons'), validate(couponValidation.deleteCoupon), couponController.deleteCoupon);
 
 module.exports = router;
 

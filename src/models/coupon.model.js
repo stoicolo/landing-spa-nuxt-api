@@ -1,7 +1,8 @@
+const dayjs = require('dayjs');
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/sequelize');
 const couponTypes = require('../config/couponTypes');
-const { v4: uuidv4 } = require('uuid');
+const { addPagination } = require('../utils/paginationUtil');
 
 const Coupon = sequelize.define(
   'Coupon',
@@ -36,7 +37,7 @@ const Coupon = sequelize.define(
       defaultValue: 'USD',
     },
     due_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     usage_limit: {
@@ -65,13 +66,6 @@ const Coupon = sequelize.define(
   }
 );
 
-const newId = uuidv4(); // Genera un nuevo UUID v4
-
-// Add hooks
-Coupon.beforeCreate(async (coupon) => {
-  if (coupon.internalId) {
-    coupon.internalId = await newId;
-  }
-});
+addPagination(Coupon);
 
 module.exports = Coupon;
