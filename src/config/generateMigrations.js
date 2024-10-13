@@ -26,6 +26,7 @@ function generateMigrations() {
     LegalAgreement: models.LegalAgreement,
     LegalAgreementHistory: models.LegalAgreementHistory,
     Coupon: models.Coupon,
+    SubscriptionHistory: models.SubscriptionHistory,
   };
 
   const modelsArray = Object.values(modelsSorted);
