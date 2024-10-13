@@ -13,17 +13,17 @@ router
     legalAgreementHistoryController.createDocument
   )
   .get(
-    auth('manageLegalAgreementsHistory'),
+    auth('manageLegalAgreementsHistories'),
     validate(legalAgreementHistoryValidation.getLegalAgreementHistories),
     legalAgreementHistoryController.getDocuments
   )
   .patch(
-    auth('manageLegalAgreementsHistory'),
+    auth('manageLegalAgreementsHistories'),
     validate(legalAgreementHistoryValidation.updateLegalAgreementHistory),
     legalAgreementHistoryController.updateDocument
   )
   .delete(
-    auth('manageLegalAgreementsHistory'),
+    auth('manageLegalAgreementsHistories'),
     validate(legalAgreementHistoryValidation.deleteLegalAgreementHistory),
     legalAgreementHistoryController.deleteDocument
   );

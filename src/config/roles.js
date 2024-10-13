@@ -7,7 +7,8 @@ const allRoles = {
     'manageCoupons',
     'manageWebsites',
     'manageLegalAgreements',
-    'manageLegalAgreementsHistory',
+    'manageLegalAgreementsHistories',
+    'manageSubscriptionHistories',
   ],
   jp: [
     'getUsers',
@@ -15,7 +16,8 @@ const allRoles = {
     'manageCoupons',
     'manageWebsites',
     'manageLegalAgreements',
-    'manageLegalAgreementsHistory',
+    'manageLegalAgreementsHistories',
+    'manageSubscriptionHistories',
   ],
 };
 
