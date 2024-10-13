@@ -1,4 +1,3 @@
-const dayjs = require('dayjs');
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/sequelize');
 const couponTypes = require('../config/couponTypes');
