@@ -9,8 +9,9 @@ const allRoles = {
     'manageLegalAgreements',
     'manageLegalAgreementsHistories',
     'manageSubscriptionHistories',
+    'managePayrolls',
   ],
-  jp: [
+  jpag: [
     'getUsers',
     'manageUsers',
     'manageCoupons',
@@ -18,6 +19,7 @@ const allRoles = {
     'manageLegalAgreements',
     'manageLegalAgreementsHistories',
     'manageSubscriptionHistories',
+    'managePayrolls',
   ],
 };
 
