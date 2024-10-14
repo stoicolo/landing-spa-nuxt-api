@@ -16,3 +16,4 @@ module.exports.legalAgreementController = require('./legal_agreement.controller'
 module.exports.legalAgreementHistoryController = require('./legal_agreement_history.controller');
 module.exports.couponController = require('./coupon.controller');
 module.exports.subscriptionHistoryController = require('./subscription_history.controller');
+module.exports.payrollController = require('./payroll.controller');
