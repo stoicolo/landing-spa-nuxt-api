@@ -27,6 +27,7 @@ function generateMigrations() {
     LegalAgreementHistory: models.LegalAgreementHistory,
     Coupon: models.Coupon,
     SubscriptionHistory: models.SubscriptionHistory,
+    Payroll: models.Payroll,
   };
 
   const modelsArray = Object.values(modelsSorted);
@@ -57,11 +58,13 @@ function generateMigrations() {
           .getQueryInterface()
           .createTable(modelName, tableDefinition)
           .then(() => {
+            // eslint-disable-next-line no-console
             console.log(`Table ${modelName} created successfully.`, true);
           });
       });
     }, Promise.resolve())
     .catch((error) => {
+      // eslint-disable-next-line no-console
       console.error('Error creating tables:', error);
     });
 }
