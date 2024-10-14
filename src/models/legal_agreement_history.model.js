@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/sequelize');
+const { addPagination } = require('../utils/paginationUtil');
 
 const LegalAgreementHistory = sequelize.define(
   'LegalAgreementHistory',
@@ -33,5 +34,7 @@ const LegalAgreementHistory = sequelize.define(
     tableName: 'LegalAgreementHistory',
   }
 );
+
+addPagination(LegalAgreementHistory);
 
 module.exports = LegalAgreementHistory;
