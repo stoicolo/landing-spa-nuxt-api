@@ -44,19 +44,6 @@ const getCoupons = async (filter, options) => {
 };
 
 /**
- * Get Coupon by User id
- * @param {ObjectId} userId
- * @returns {Promise<Coupon>}
- */
-const getCouponsByUserId = async (userId) => {
-  return Coupon.findAll({
-    where: {
-      userId,
-    },
-  });
-};
-
-/**
  * Update coupon by id
  * @param {ObjectId} userId
  * @param {Object} updateBody
@@ -111,7 +98,6 @@ const getLastCouponByType = async (type) => {
 module.exports = {
   createCoupon,
   getCoupons,
-  getCouponsByUserId,
   getCouponByInternalId,
   updateCoupon,
   deleteCoupon,
