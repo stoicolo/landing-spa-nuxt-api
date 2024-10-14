@@ -19,3 +19,4 @@ module.exports.legalAgreementService = require('./legal_agreement.service');
 module.exports.legalAgreementHistoryService = require('./legal_agreement_history.service');
 module.exports.couponService = require('./coupon.service');
 module.exports.subscriptionHistoryService = require('./subscription_history.service');
+module.exports.payrollService = require('./payroll.service');
