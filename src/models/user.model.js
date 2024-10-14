@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const { roles } = require('../config/roles');
-const { toJSON, paginate } = require('./plugins');
+const { toJSON } = require('./plugins');
 const { sequelize } = require('../config/sequelize');
+const { addPagination } = require('../utils/paginationUtil');
 
 const User = sequelize.define(
   'User',
@@ -97,6 +98,6 @@ User.prototype.isPasswordMatch = async function (password) {
 
 // Add plugins
 toJSON(User);
-paginate(User);
+addPagination(User);
 
 module.exports = User;
