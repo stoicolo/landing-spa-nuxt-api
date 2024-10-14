@@ -27,15 +27,17 @@ const getSubscriptionHistories = catchAsync(async (req, res) => {
 });
 
 const getSubscriptionHistoriesByUserId = catchAsync(async (req, res) => {
-  const user = await subscriptionHistoryService.getSubscriptionHistoriesByUserId(req.params.userId);
-  if (!user) {
+  const subscriptionHistory = await subscriptionHistoryService.getSubscriptionHistoriesByUserId(req.params.userId);
+
+  if (!subscriptionHistory) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Historial de Subscripcion no encontrado, verifica el id.');
   }
-  res.send(user);
+  res.send(subscriptionHistory);
 });
 
 const getSubscriptionHistoryBySubscriptionHistoryInternalId = catchAsync(async (req, res) => {
   const subscriptionHistory = await subscriptionHistoryService.getSubscriptionHistoryByInternalId(req.params.internalId);
+
   if (!subscriptionHistory) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Historial de Subscripcion no encontrado, verifica el id.');
   }
@@ -43,8 +45,9 @@ const getSubscriptionHistoryBySubscriptionHistoryInternalId = catchAsync(async (
 });
 
 const updateSubscriptionHistory = catchAsync(async (req, res) => {
-  const user = await subscriptionHistoryService.updateSubscriptionHistory(req.body.internalId, req.body);
-  res.send(user);
+  const subscriptionHistory = await subscriptionHistoryService.updateSubscriptionHistory(req.body.internalId, req.body);
+
+  res.send(subscriptionHistory);
 });
 
 const deleteSubscriptionHistory = catchAsync(async (req, res) => {

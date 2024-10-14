@@ -7,6 +7,7 @@ const SubscriptionHistory = sequelize.define(
   {
     internalId: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
       unique: true,
     },

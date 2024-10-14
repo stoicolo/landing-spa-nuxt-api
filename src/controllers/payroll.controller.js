@@ -27,6 +27,15 @@ const getPayrolls = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getCouponsByUserId = catchAsync(async (req, res) => {
+  const coupon = await payrollService.getCouponsByAgentId(req.params.userId);
+
+  if (!coupon) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Cupón no encontrado, verifica el id.');
+  }
+  res.send(coupon);
+});
+
 const getPayrollsByAgentId = catchAsync(async (req, res) => {
   const payroll = await payrollService.getPayrollsByAgentId(req.params.userId);
 
@@ -63,4 +72,5 @@ module.exports = {
   getPayrollByPayrollInternalId,
   updatePayroll,
   deletePayroll,
+  getCouponsByUserId,
 };

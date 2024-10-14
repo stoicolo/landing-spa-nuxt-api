@@ -21,6 +21,19 @@ const createPayroll = async (payrollBody) => {
  * @param {ObjectId} payrollInternalId
  * @returns {Promise<Payroll>}
  */
+const getCouponsByAgentId = async (userId) => {
+  return Payroll.findAll({
+    where: {
+      agentId: userId,
+    },
+  });
+};
+
+/**
+ * Get Payroll by payrollInternalId
+ * @param {ObjectId} payrollInternalId
+ * @returns {Promise<Payroll>}
+ */
 const getPayrollByInternalId = async (payrollInternalId) => {
   return Payroll.findOne({
     where: {
@@ -109,4 +122,5 @@ module.exports = {
   getPayrollByInternalId,
   updatePayroll,
   deletePayroll,
+  getCouponsByAgentId,
 };
