@@ -6,7 +6,6 @@ dayjs.extend(customParseFormat);
 
 const createPayroll = {
   body: Joi.object().keys({
-    internalId: Joi.string().guid({ version: 'uuidv4' }),
     agentId: Joi.number().integer().positive().required(),
     agentType: Joi.string().required(),
     percentageToPay: Joi.number().precision(2).positive(),

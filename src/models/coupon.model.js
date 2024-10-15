@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const { sequelize } = require('../config/sequelize');
 const couponTypes = require('../config/couponTypes');
 const { addPagination } = require('../utils/paginationUtil');
@@ -11,6 +12,7 @@ const Coupon = sequelize.define(
       primaryKey: true,
       allowNull: false,
       unique: true,
+      defaultValue: () => uuidv4(),
     },
     externalCouponId: {
       type: DataTypes.STRING,

@@ -7,7 +7,6 @@ dayjs.extend(customParseFormat);
 
 const createCoupon = {
   body: Joi.object().keys({
-    internalId: Joi.string().guid({ version: 'uuidv4' }),
     externalCouponId: Joi.string().required(),
     description: Joi.string().required(),
     type: Joi.string()
