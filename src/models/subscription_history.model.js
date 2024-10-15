@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const { sequelize } = require('../config/sequelize');
 const { addPagination } = require('../utils/paginationUtil');
 
@@ -10,6 +11,7 @@ const SubscriptionHistory = sequelize.define(
       primaryKey: true,
       allowNull: false,
       unique: true,
+      defaultValue: () => uuidv4(),
     },
     newUserId: {
       type: DataTypes.INTEGER,

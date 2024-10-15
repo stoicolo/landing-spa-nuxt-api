@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const { sequelize } = require('../config/sequelize');
 const agentTypes = require('../config/agentTypes');
 const discountAmounts = require('../config/discountAmounts');
@@ -12,6 +13,7 @@ const Payroll = sequelize.define(
       primaryKey: true,
       allowNull: false,
       unique: true,
+      defaultValue: () => uuidv4(),
     },
     agentId: {
       type: DataTypes.INTEGER,
