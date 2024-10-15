@@ -19,8 +19,9 @@ const legalAgreementRoute = require('./legal_agreement.route');
 const legalAgreementHistoryRoute = require('./legal_agreement_history.route');
 const couponRoute = require('./coupon.route');
 const config = require('../../config/config');
-const subscriptionHistoriesRoute = require('./subscription_history.route');
-const payrollsRoute = require('./payroll.route');
+const subscriptionHistoryRoute = require('./subscription_history.route');
+const payrollRoute = require('./payroll.route');
+const agentRoute = require('./agent.route');
 
 const router = express.Router();
 
@@ -99,11 +100,15 @@ const defaultRoutes = [
   },
   {
     path: '/subscription_histories',
-    route: subscriptionHistoriesRoute,
+    route: subscriptionHistoryRoute,
   },
   {
     path: '/payrolls',
-    route: payrollsRoute,
+    route: payrollRoute,
+  },
+  {
+    path: '/agents',
+    route: agentRoute,
   },
 ];
 
