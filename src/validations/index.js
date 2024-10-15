@@ -18,3 +18,4 @@ module.exports.legalAgreementHistoryValidation = require('./legal_agreement_hist
 module.exports.couponValidation = require('./coupon.validation');
 module.exports.subscriptionHistoryValidation = require('./subscription_history.validation');
 module.exports.payrollValidation = require('./payroll.validation');
+module.exports.agentValidation = require('./agent.validation');
