@@ -1,6 +1,6 @@
 const allRoles = {
   user: [],
-  admin: ['getUsers', 'manageUsers', 'manageCoupons'],
+  admin: ['getUsers', 'getCoupons'],
   fmac: [
     'getUsers',
     'manageUsers',
@@ -10,6 +10,7 @@ const allRoles = {
     'manageLegalAgreementsHistories',
     'manageSubscriptionHistories',
     'managePayrolls',
+    'manageAgents',
   ],
   jpag: [
     'getUsers',
@@ -20,6 +21,7 @@ const allRoles = {
     'manageLegalAgreementsHistories',
     'manageSubscriptionHistories',
     'managePayrolls',
+    'manageAgents',
   ],
 };
 

@@ -28,6 +28,7 @@ function generateMigrations() {
     Coupon: models.Coupon,
     SubscriptionHistory: models.SubscriptionHistory,
     Payroll: models.Payroll,
+    Agent: models.Agent,
   };
 
   const modelsArray = Object.values(modelsSorted);
