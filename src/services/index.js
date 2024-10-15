@@ -20,3 +20,4 @@ module.exports.legalAgreementHistoryService = require('./legal_agreement_history
 module.exports.couponService = require('./coupon.service');
 module.exports.subscriptionHistoryService = require('./subscription_history.service');
 module.exports.payrollService = require('./payroll.service');
+module.exports.agentService = require('./agent.service');
