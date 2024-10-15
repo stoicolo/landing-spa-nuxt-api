@@ -5,6 +5,7 @@ const createPageTemplateBackup = {
     backupName: Joi.string().required(),
     pageTemplateId: Joi.number().required(),
     userId: Joi.number().required(),
+    pageId: Joi.number().required(),
     pageName: Joi.string().required(),
     sections: Joi.array().items(Joi.object()),
     categories: Joi.array().items(Joi.string()).required(),
