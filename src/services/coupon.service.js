@@ -30,6 +30,19 @@ const getCouponByInternalId = async (couponInternalId) => {
 };
 
 /**
+ * Get Coupon by couponInternalId
+ * @param {ObjectId} couponExternalId
+ * @returns {Promise<Coupon>}
+ */
+const getCouponByExternalId = async (couponExternalId) => {
+  return Coupon.findOne({
+    where: {
+      externalCouponId: couponExternalId,
+    },
+  });
+};
+
+/**
  * Query for Coupons
  * @param {Object} filter - filter
  * @param {Object} options - Query options
@@ -102,4 +115,5 @@ module.exports = {
   updateCoupon,
   deleteCoupon,
   getLastCouponByType,
+  getCouponByExternalId,
 };
