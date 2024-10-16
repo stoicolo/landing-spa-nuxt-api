@@ -10,8 +10,8 @@ const createPayroll = {
     agentType: Joi.string().required(),
     percentageToPay: Joi.number().precision(2).positive(),
     clientId: Joi.number().integer().positive().required(),
-    internalCouponId: Joi.string().guid({ version: 'uuidv4' }),
-    amountToPay: Joi.number().precision(2).positive(),
+    externalCouponId: Joi.string(),
+    amountToPay: Joi.number().precision(2).positive().default(0),
     isNewUserSubscriptionActive: Joi.boolean().required().default(false),
   }),
 };
