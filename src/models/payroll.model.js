@@ -45,18 +45,18 @@ const Payroll = sequelize.define(
         key: 'id',
       },
     },
-    internalCouponId: {
+    externalCouponId: {
       type: DataTypes.STRING,
       allowNull: true,
       unique: true,
       references: {
         model: 'Coupon',
-        key: 'internalId',
+        key: 'externalCouponId',
       },
     },
     amountToPay: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     isNewUserSubscriptionActive: {
       type: DataTypes.BOOLEAN,
