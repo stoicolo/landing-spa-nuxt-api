@@ -23,14 +23,14 @@ const Agent = sequelize.define(
         key: 'id',
       },
     },
-    internalCouponId: {
+    externalCouponId: {
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: true,
       unique: true,
       references: {
         model: 'Coupon',
-        key: 'internalId',
+        key: 'externalCouponId',
       },
     },
     agentType: {
