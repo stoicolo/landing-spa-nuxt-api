@@ -6,7 +6,7 @@ dayjs.extend(customParseFormat);
 
 const createSubscriptionHistory = {
   body: Joi.object().keys({
-    internalCouponId: Joi.string().guid({ version: 'uuidv4' }),
+    externalCouponId: Joi.string(),
     newUserId: Joi.number().integer().positive().required(),
     amountPaid: Joi.number().precision(2).positive(),
     newUserEmail: Joi.string().email().required(),

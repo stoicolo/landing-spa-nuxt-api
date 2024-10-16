@@ -7,7 +7,7 @@ dayjs.extend(customParseFormat);
 const createAgent = {
   body: Joi.object().keys({
     agentId: Joi.number().integer().positive().required(),
-    internalCouponId: Joi.string().guid({ version: 'uuidv4' }).required(),
+    externalCouponId: Joi.string().required(),
     agentType: Joi.string().required(),
   }),
 };
@@ -35,7 +35,7 @@ const updateAgent = {
     .keys({
       internalId: Joi.string().guid({ version: 'uuidv4' }).required(),
       agentId: Joi.number().integer().positive(),
-      internalCouponId: Joi.string().guid({ version: 'uuidv4' }),
+      externalCouponId: Joi.string(),
       agentType: Joi.string(),
     })
     .min(1),
