@@ -1,5 +1,8 @@
 const httpStatus = require('http-status');
 const { SubscriptionHistory } = require('../models');
+const payrollService = require('./payroll.service');
+const agentService = require('./agent.service');
+const couponService = require('./coupon.service');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -10,6 +13,42 @@ const ApiError = require('../utils/ApiError');
 const createSubscriptionHistory = async (subscriptionHistoryBody) => {
   try {
     const subscriptionHistory = await SubscriptionHistory.create(subscriptionHistoryBody);
+
+    // If the subscriptionHistory has an internalCouponId, its because an agent is involved
+    if (subscriptionHistory.externalCouponId) {
+      const agent = await agentService.getAgentIdByCouponExternalId(subscriptionHistory.externalCouponId);
+
+      if (!agent) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Agente no encontrado, verifica el id.');
+      }
+
+      const coupon = await couponService.getCouponByExternalId(subscriptionHistory.externalCouponId);
+
+      if (!coupon) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Cupón no encontrado, verifica el id.');
+      }
+
+      let percentageToPay = 0;
+      if (agent.agentType === 'standard') {
+        percentageToPay = 15;
+      }
+      if (agent.agentType === 'premium') {
+        percentageToPay = 30;
+      }
+
+      const newPayrollRecord = {
+        agentId: agent.agentId,
+        agentType: agent.agentType,
+        percentageToPay,
+        clientId: subscriptionHistoryBody.newUserId,
+        externalCouponId: subscriptionHistoryBody.externalCouponId,
+        amountToPay: null, // tilopay will calculate this via webhook successful
+        isNewUserSubscriptionActive: false, // tilopay will calculate this via webhook successful
+      };
+
+      await payrollService.createPayroll(newPayrollRecord);
+    }
+
     return subscriptionHistory;
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error.message);
@@ -25,6 +64,19 @@ const getSubscriptionHistoryByInternalId = async (subscriptionHistoryInternalId)
   return SubscriptionHistory.findOne({
     where: {
       internalId: subscriptionHistoryInternalId,
+    },
+  });
+};
+
+/**
+ * Get SubscriptionHistory by subscriptionHistoryInternalId
+ * @param {ObjectId} subscriptionHistoryNewUserEmail
+ * @returns {Promise<SubscriptionHistory>}
+ */
+const getSubscriptionHistoryByNewUserEmail = async (subscriptionHistoryNewUserEmail) => {
+  return SubscriptionHistory.findOne({
+    where: {
+      newUserEmail: subscriptionHistoryNewUserEmail,
     },
   });
 };
@@ -69,8 +121,29 @@ const updateSubscriptionHistory = async (id, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Cupón no encontrado, verifica el id.');
   }
 
-  const { internalId, newUserId, internalCouponId, amountPaid, newUserEmail, ...updateBodyWithoutColumnsNotEditable } =
-    updateBody;
+  const { internalId, newUserId, internalCouponId, newUserEmail, ...updateBodyWithoutColumnsNotEditable } = updateBody;
+
+  Object.assign(subscriptionHistory, updateBodyWithoutColumnsNotEditable);
+
+  await subscriptionHistory.save({ fields: Object.keys(updateBodyWithoutColumnsNotEditable) });
+
+  return subscriptionHistory;
+};
+
+/**
+ * Update subscriptionHistory by new user email
+ * @param {ObjectId} userId
+ * @param {Object} updateBody
+ * @returns {Promise<SubscriptionHistory>}
+ */
+const updateSubscriptionHistoryByEmail = async (newUserEmail, updateBody) => {
+  const subscriptionHistory = await getSubscriptionHistoryByNewUserEmail(newUserEmail);
+
+  if (!subscriptionHistory) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Historial de Subscripción no encontrado, verifica el id.');
+  }
+
+  const { internalId, newUserId, internalCouponId, ...updateBodyWithoutColumnsNotEditable } = updateBody;
 
   Object.assign(subscriptionHistory, updateBodyWithoutColumnsNotEditable);
 
@@ -101,4 +174,6 @@ module.exports = {
   getSubscriptionHistoryByInternalId,
   updateSubscriptionHistory,
   deleteSubscriptionHistory,
+  getSubscriptionHistoryByNewUserEmail,
+  updateSubscriptionHistoryByEmail,
 };

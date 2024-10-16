@@ -43,6 +43,19 @@ const getAgentByInternalId = async (agentInternalId) => {
 };
 
 /**
+ * Get Coupon by couponInternalId
+ * @param {ObjectId} couponInternalId
+ * @returns {Promise<Coupon>}
+ */
+const getAgentIdByCouponExternalId = async (externalCouponId) => {
+  return Agent.findOne({
+    where: {
+      externalCouponId,
+    },
+  });
+};
+
+/**
  * Query for Agents
  * @param {Object} filter - filter
  * @param {Object} options - Query options
@@ -100,4 +113,5 @@ module.exports = {
   updateAgent,
   deleteAgent,
   getCouponsByAgentId,
+  getAgentIdByCouponExternalId,
 };

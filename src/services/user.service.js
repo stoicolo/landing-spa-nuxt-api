@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
+const subscriptionHistoryService = require('./subscription_history.service');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -8,10 +9,33 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  if (await User.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email no disponible, prueba con otro.');
+  try {
+    if (await User.isEmailTaken(userBody.email)) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Email no disponible, prueba con otro.');
+    }
+    const userResponse = await User.create(userBody);
+
+    const newSubscriptionHistory = {
+      externalCouponId: userBody.coupon,
+      newUserId: userResponse.id,
+      newUserEmail: userBody.email,
+      amountPaid: null, // tilopay will calculate this via webhook successful
+      newSubscriptionNextPaymentDate: null, // tilopay will calculate this via webhook successful
+      isNewUserSubscriptionActive: false, // tilopay will calculate this via webhook successful
+    };
+
+    if (!newSubscriptionHistory) {
+      // TODO: Enviar correo a Softstoic porque el SubscriptionHistory no se crea
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Historial de Subscripción no encontrado, verifica el id.');
+    }
+
+    await subscriptionHistoryService.createSubscriptionHistory(newSubscriptionHistory);
+
+    return userResponse;
+  } catch (error) {
+    // TODO: Enviar correo a Softstoic porque el User Register no se crea
+    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
   }
-  return User.create(userBody);
 };
 
 /**

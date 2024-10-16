@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const { PublicWebhookPayments, PublicWebhookSubscriptions, PublicWebhookPaymentFailed } = require('../models');
+const subscriptionHistoryService = require('./subscription_history.service');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -15,7 +16,35 @@ const successfulSubscription = async (publicWebhookBody) => {
       frequency: publicWebhookBody.frequency ?? null,
     };
 
-    return await PublicWebhookSubscriptions.create(subscription);
+    const postResponse = await PublicWebhookSubscriptions.create(subscription);
+
+    if (subscription.email) {
+      const subscriptionToUpdate = await subscriptionHistoryService.getSubscriptionHistoryByNewUserEmail(subscription.email);
+
+      if (!subscriptionToUpdate) {
+        // TODO: Enviar EMAIL a soporte porque el usuario está usando un Email que no existe en la base de datos
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          'Email NO registrado al buscar Historial de Subscripción, verifica el email en base de datos.'
+        );
+      }
+
+      const payload = {
+        amountPaid: subscription.amount,
+        newSubscriptionNextPaymentDate: subscription.next_payment_date,
+        isNewUserSubscriptionActive: true,
+      };
+
+      await subscriptionHistoryService.updateSubscriptionHistoryByEmail(subscription.email, payload);
+    } else {
+      // TODO: Enviar EMAIL a soporte porque el usuario está usando un Email que no existe en la base de datos
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'Email NO registrado al buscar Historial de Subscripción, verifica el email en base de datos.'
+      );
+    }
+
+    return postResponse;
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
