@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const { PublicWebhookPayments, PublicWebhookSubscriptions, PublicWebhookPaymentFailed } = require('../models');
 const subscriptionHistoryService = require('./subscription_history.service');
+const couponService = require('./coupon.service');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -16,7 +17,7 @@ const successfulSubscription = async (publicWebhookBody) => {
       frequency: publicWebhookBody.frequency ?? null,
     };
 
-    const postResponse = await PublicWebhookSubscriptions.create(subscription);
+    let postResponse = await PublicWebhookSubscriptions.create(subscription);
 
     if (subscription.email) {
       const subscriptionToUpdate = await subscriptionHistoryService.getSubscriptionHistoryByNewUserEmail(subscription.email);
@@ -29,13 +30,27 @@ const successfulSubscription = async (publicWebhookBody) => {
         );
       }
 
+      const coupon = await couponService.getCouponByExternalId(subscription.coupon);
+
+      let numberToDiscount = 0;
+
+      if (coupon) {
+        if (coupon.type === 'percentage') {
+          numberToDiscount = +coupon.discount / 100; // %
+        }
+        if (coupon.type === 'amount') {
+          numberToDiscount = +coupon.discount; // USD
+        }
+      }
+
+      const amountToPay = subscription.amount - subscription.amount * numberToDiscount;
       const payload = {
-        amountPaid: subscription.amount,
+        amountPaid: amountToPay,
         newSubscriptionNextPaymentDate: subscription.next_payment_date,
         isNewUserSubscriptionActive: true,
       };
 
-      await subscriptionHistoryService.updateSubscriptionHistoryByEmail(subscription.email, payload);
+      postResponse = await subscriptionHistoryService.updateSubscriptionHistoryByEmail(subscription.email, payload);
     } else {
       // TODO: Enviar EMAIL a soporte porque el usuario está usando un Email que no existe en la base de datos
       throw new ApiError(
