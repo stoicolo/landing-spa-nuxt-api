@@ -43,6 +43,21 @@ const getPayrollByInternalId = async (payrollInternalId) => {
 };
 
 /**
+ * Get Payroll by Client Id and Agent Id
+ * @param {ObjectId} clientId
+ * @param {ObjectId} agentId
+ * @returns {Promise<Payroll>}
+ */
+const getPayrollByClientIdAgentId = async (clientId, agentId) => {
+  return Payroll.findOne({
+    where: {
+      clientId,
+      agentId,
+    },
+  });
+};
+
+/**
  * Query for Payrolls
  * @param {Object} filter - filter
  * @param {Object} options - Query options
@@ -79,7 +94,7 @@ const updatePayroll = async (id, updateBody) => {
   const payroll = await getPayrollByInternalId(id);
 
   if (!payroll) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Cupón no encontrado, verifica el id.');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Planilla registro no encontrado, verifica el id.');
   }
 
   const {
@@ -88,8 +103,39 @@ const updatePayroll = async (id, updateBody) => {
     agentType,
     percentageToPay,
     clientId,
-    internalCouponId,
+    externalCouponId,
     amountToPay,
+    ...updateBodyWithoutColumnsNotEditable
+  } = updateBody;
+
+  Object.assign(payroll, updateBodyWithoutColumnsNotEditable);
+
+  await payroll.save({ fields: Object.keys(updateBodyWithoutColumnsNotEditable) });
+
+  return payroll;
+};
+
+/**
+ * Update payroll by id
+ * @param {ObjectId} clientId
+ * @param {ObjectId} agentId
+ * @param {Object} updateBody
+ * @returns {Promise<Payroll>}
+ */
+const updatePayrollByPublicWebhooks = async (payrollClientId, payrollAgentId, updateBody) => {
+  const payroll = await getPayrollByClientIdAgentId(payrollClientId, payrollAgentId);
+
+  if (!payroll) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Planilla registro no encontrado, verifica el id.');
+  }
+
+  const {
+    internalId,
+    agentId,
+    agentType,
+    percentageToPay,
+    clientId,
+    externalCouponId,
     ...updateBodyWithoutColumnsNotEditable
   } = updateBody;
 
@@ -123,4 +169,5 @@ module.exports = {
   updatePayroll,
   deletePayroll,
   getCouponsByAgentId,
+  updatePayrollByPublicWebhooks,
 };

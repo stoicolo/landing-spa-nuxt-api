@@ -147,9 +147,100 @@ const updateSubscriptionHistoryByEmail = async (newUserEmail, updateBody) => {
 
   Object.assign(subscriptionHistory, updateBodyWithoutColumnsNotEditable);
 
-  await subscriptionHistory.save({ fields: Object.keys(updateBodyWithoutColumnsNotEditable) });
+  const responseSubscriptionHistory = await subscriptionHistory.save({
+    fields: Object.keys(updateBodyWithoutColumnsNotEditable),
+  });
 
-  return subscriptionHistory;
+  const agent = await agentService.getAgentIdByCouponExternalId(subscriptionHistory.externalCouponId);
+
+  if (!agent) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Agente no encontrado, verifica el id.');
+  }
+
+  let numberToPay = 0;
+
+  if (agent) {
+    if (agent.agentType === 'standard') {
+      numberToPay = 15 / 100; // %
+    }
+    if (agent.agentType === 'premium') {
+      numberToPay = 30 / 100; // %
+    }
+  }
+
+  try {
+    const amountToPay = updateBody.amountPaid * numberToPay;
+    const payrollToUpdate = {
+      amountToPay,
+      isNewUserSubscriptionActive: updateBody.isNewUserSubscriptionActive,
+    };
+
+    const postResponse = await payrollService.updatePayrollByPublicWebhooks(
+      subscriptionHistory.newUserId,
+      agent.agentId,
+      payrollToUpdate
+    );
+
+    return postResponse;
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
+
+  return responseSubscriptionHistory;
+
+  try {
+    const subscription = {
+      ...publicWebhookBody,
+      coupon: publicWebhookBody.coupon ?? null,
+      frequency: publicWebhookBody.frequency ?? null,
+    };
+
+    let postResponse = await PublicWebhookSubscriptions.create(subscription);
+
+    if (subscription.email) {
+      const subscriptionToUpdate = await subscriptionHistoryService.getSubscriptionHistoryByNewUserEmail(subscription.email);
+
+      if (!subscriptionToUpdate) {
+        // TODO: Enviar EMAIL a soporte porque el usuario está usando un Email que no existe en la base de datos
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          'Email NO registrado al buscar Historial de Subscripción, verifica el email en base de datos.'
+        );
+      }
+
+      const coupon = await couponService.getCouponByExternalId(subscription.coupon);
+
+      let numberToDiscount = 0;
+
+      if (coupon) {
+        if (coupon.type === 'percentage') {
+          numberToDiscount = +coupon.discount / 100; // %
+        }
+        if (coupon.type === 'amount') {
+          numberToDiscount = +coupon.discount; // USD
+        }
+      }
+
+      const amountToPay = subscription.amount - subscription.amount * numberToDiscount;
+      const payload = {
+        amountPaid: amountToPay,
+        newSubscriptionNextPaymentDate: subscription.next_payment_date,
+        isNewUserSubscriptionActive: true,
+      };
+
+      postResponse = await subscriptionHistoryService.updateSubscriptionHistoryByEmail(subscription.email, payload);
+    } else {
+      // TODO: Enviar EMAIL a soporte porque el usuario está usando un Email que no existe en la base de datos
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        'Email NO registrado al buscar Historial de Subscripción, verifica el email en base de datos.'
+      );
+    }
+
+    return postResponse;
+  } catch (error) {
+    throw new ApiError(httpStatus.BAD_REQUEST, error);
+  }
 };
 
 /**
