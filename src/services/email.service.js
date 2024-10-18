@@ -301,8 +301,8 @@ const sendContactFormResponseEmail = async (payload) => {
 
 const sendSubdomainEmail = async (payload, token) => {
   const { clientEmail, clientName, subdomainUrl, paymentsProviderUrl } = payload;
-  const subdomainEditorUrlWithToken = `${subdomainUrl}/login/?token=${token}`;
-  const subdomainWebsiteUrlWithToken = `${subdomainUrl}/?token=${token}`;
+  const subdomainEditorUrlWithToken = `${subdomainUrl}/login/?token=${token.token}`;
+  const subdomainWebsiteUrlWithToken = `${subdomainUrl}/?token=${token.token}`;
 
   const subject = `¡Bienvenido a su prueba de Weblox!`;
 
