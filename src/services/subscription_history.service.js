@@ -31,7 +31,7 @@ const createSubscriptionHistory = async (subscriptionHistoryBody) => {
 
       let percentageToPay = 0;
 
-      if (coupon.externalCouponId !== config.coupon_default_zero_discount) {
+      if (coupon.externalCouponId !== '26BMM3YH') {
         if (agent.agentType === 'standard') {
           percentageToPay = 15;
         }
@@ -165,7 +165,7 @@ const updateSubscriptionHistoryByEmail = async (newUserEmail, updateBody) => {
 
   let numberToPay = 0;
 
-  if (agent.externalCouponId !== config.coupon_default_zero_discount) {
+  if (agent.externalCouponId !== '26BMM3YH') {
     if (agent) {
       if (agent.agentType === 'standard') {
         numberToPay = 15 / 100; // %
