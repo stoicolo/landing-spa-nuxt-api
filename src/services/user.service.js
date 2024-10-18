@@ -62,14 +62,16 @@ const createUser = async (userBody) => {
     }
     const userResponse = await User.create(userBody);
 
-    const newSubscriptionHistory = {
-      externalCouponId: userBody.coupon || '26BMM3YH',
+    const newSubscriptionHistoryPayload = {
+      externalCouponId: userBody.coupon || 'config.coupon_default_zero_discount',
       newUserId: userResponse.id,
       newUserEmail: userBody.email,
       amountPaid: null, // tilopay will calculate this via webhook successful
       newSubscriptionNextPaymentDate: null, // tilopay will calculate this via webhook successful
       isNewUserSubscriptionActive: false, // tilopay will calculate this via webhook successful
     };
+
+    const newSubscriptionHistory = await subscriptionHistoryService.createSubscriptionHistory(newSubscriptionHistoryPayload);
 
     if (!newSubscriptionHistory) {
       // TODO: Enviar correo a Softstoic porque el SubscriptionHistory no se crea
@@ -78,8 +80,6 @@ const createUser = async (userBody) => {
 
       throw new ApiError(httpStatus.BAD_REQUEST, 'Historial de Subscripción no encontrado, verifica el id.');
     }
-
-    await subscriptionHistoryService.createSubscriptionHistory(newSubscriptionHistory);
 
     return userResponse;
   } catch (error) {
