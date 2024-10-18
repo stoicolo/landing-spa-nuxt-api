@@ -17,7 +17,7 @@ const register = {
     }),
     phoneNumber: Joi.string().required(),
     role: Joi.string().required().valid('user'),
-    coupon: Joi.string(),
+    coupon: Joi.string().allow(null).allow(''),
   }),
 };
 

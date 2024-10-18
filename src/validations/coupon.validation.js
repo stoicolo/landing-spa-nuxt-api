@@ -12,7 +12,7 @@ const createCoupon = {
     type: Joi.string()
       .required()
       .valid(...couponTypes),
-    discount: Joi.number().precision(2).positive().required(),
+    discount: Joi.number().precision(2).positive().allow(0).required(),
     currency: Joi.string().default('USD'),
     due_date: Joi.date().required(),
     usage_limit: Joi.number().integer().positive().required(),

@@ -3,6 +3,7 @@ const { SubscriptionHistory } = require('../models');
 const payrollService = require('./payroll.service');
 const agentService = require('./agent.service');
 const couponService = require('./coupon.service');
+const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -29,11 +30,16 @@ const createSubscriptionHistory = async (subscriptionHistoryBody) => {
       }
 
       let percentageToPay = 0;
-      if (agent.agentType === 'standard') {
-        percentageToPay = 15;
-      }
-      if (agent.agentType === 'premium') {
-        percentageToPay = 30;
+
+      if (coupon.externalCouponId !== config.coupon_default_zero_discount) {
+        if (agent.agentType === 'standard') {
+          percentageToPay = 15;
+        }
+        if (agent.agentType === 'premium') {
+          percentageToPay = 30;
+        }
+      } else {
+        percentageToPay = 100;
       }
 
       const newPayrollRecord = {
@@ -159,13 +165,17 @@ const updateSubscriptionHistoryByEmail = async (newUserEmail, updateBody) => {
 
   let numberToPay = 0;
 
-  if (agent) {
-    if (agent.agentType === 'standard') {
-      numberToPay = 15 / 100; // %
+  if (agent.externalCouponId !== config.coupon_default_zero_discount) {
+    if (agent) {
+      if (agent.agentType === 'standard') {
+        numberToPay = 15 / 100; // %
+      }
+      if (agent.agentType === 'premium') {
+        numberToPay = 30 / 100; // %
+      }
     }
-    if (agent.agentType === 'premium') {
-      numberToPay = 30 / 100; // %
-    }
+  } else {
+    numberToPay = 1; // 100%
   }
 
   try {
@@ -175,72 +185,12 @@ const updateSubscriptionHistoryByEmail = async (newUserEmail, updateBody) => {
       isNewUserSubscriptionActive: updateBody.isNewUserSubscriptionActive,
     };
 
-    const postResponse = await payrollService.updatePayrollByPublicWebhooks(
-      subscriptionHistory.newUserId,
-      agent.agentId,
-      payrollToUpdate
-    );
-
-    return postResponse;
+    await payrollService.updatePayrollByPublicWebhooks(subscriptionHistory.newUserId, agent.agentId, payrollToUpdate);
   } catch (error) {
     throw new ApiError(httpStatus.BAD_REQUEST, error);
   }
 
   return responseSubscriptionHistory;
-
-  try {
-    const subscription = {
-      ...publicWebhookBody,
-      coupon: publicWebhookBody.coupon ?? null,
-      frequency: publicWebhookBody.frequency ?? null,
-    };
-
-    let postResponse = await PublicWebhookSubscriptions.create(subscription);
-
-    if (subscription.email) {
-      const subscriptionToUpdate = await subscriptionHistoryService.getSubscriptionHistoryByNewUserEmail(subscription.email);
-
-      if (!subscriptionToUpdate) {
-        // TODO: Enviar EMAIL a soporte porque el usuario está usando un Email que no existe en la base de datos
-        throw new ApiError(
-          httpStatus.BAD_REQUEST,
-          'Email NO registrado al buscar Historial de Subscripción, verifica el email en base de datos.'
-        );
-      }
-
-      const coupon = await couponService.getCouponByExternalId(subscription.coupon);
-
-      let numberToDiscount = 0;
-
-      if (coupon) {
-        if (coupon.type === 'percentage') {
-          numberToDiscount = +coupon.discount / 100; // %
-        }
-        if (coupon.type === 'amount') {
-          numberToDiscount = +coupon.discount; // USD
-        }
-      }
-
-      const amountToPay = subscription.amount - subscription.amount * numberToDiscount;
-      const payload = {
-        amountPaid: amountToPay,
-        newSubscriptionNextPaymentDate: subscription.next_payment_date,
-        isNewUserSubscriptionActive: true,
-      };
-
-      postResponse = await subscriptionHistoryService.updateSubscriptionHistoryByEmail(subscription.email, payload);
-    } else {
-      // TODO: Enviar EMAIL a soporte porque el usuario está usando un Email que no existe en la base de datos
-      throw new ApiError(
-        httpStatus.BAD_REQUEST,
-        'Email NO registrado al buscar Historial de Subscripción, verifica el email en base de datos.'
-      );
-    }
-
-    return postResponse;
-  } catch (error) {
-    throw new ApiError(httpStatus.BAD_REQUEST, error);
-  }
 };
 
 /**
