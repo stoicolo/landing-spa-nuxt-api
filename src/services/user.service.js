@@ -71,13 +71,13 @@ const createUser = async (userBody) => {
       isNewUserSubscriptionActive: false, // tilopay will calculate this via webhook successful
     };
 
-    if (!newSubscriptionHistory) {
-      // TODO: Enviar correo a Softstoic porque el SubscriptionHistory no se crea
+    // if (!newSubscriptionHistory) {
+    //   // TODO: Enviar correo a Softstoic porque el SubscriptionHistory no se crea
 
-      deleteUserById(userResponse.id); // delete user if subscriptionHistory is not created
+    //   deleteUserById(userResponse.id); // delete user if subscriptionHistory is not created
 
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Historial de Subscripción no encontrado, verifica el id.');
-    }
+    //   throw new ApiError(httpStatus.BAD_REQUEST, 'Historial de Subscripción no encontrado, verifica el id.');
+    // }
 
     await subscriptionHistoryService.createSubscriptionHistory(newSubscriptionHistory);
 
