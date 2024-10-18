@@ -2,55 +2,7 @@ const httpStatus = require('http-status');
 const { User } = require('../models');
 const subscriptionHistoryService = require('./subscription_history.service');
 const ApiError = require('../utils/ApiError');
-
-/**
- * Create a user
- * @param {Object} userBody
- * @returns {Promise<User>}
- */
-const createUser = async (userBody) => {
-  try {
-    if (await User.isEmailTaken(userBody.email)) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Email no disponible, prueba con otro.');
-    }
-    const userResponse = await User.create(userBody);
-
-    const newSubscriptionHistory = {
-      externalCouponId: userBody.coupon,
-      newUserId: userResponse.id,
-      newUserEmail: userBody.email,
-      amountPaid: null, // tilopay will calculate this via webhook successful
-      newSubscriptionNextPaymentDate: null, // tilopay will calculate this via webhook successful
-      isNewUserSubscriptionActive: false, // tilopay will calculate this via webhook successful
-    };
-
-    if (!newSubscriptionHistory) {
-      // TODO: Enviar correo a Softstoic porque el SubscriptionHistory no se crea
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Historial de Subscripción no encontrado, verifica el id.');
-    }
-
-    await subscriptionHistoryService.createSubscriptionHistory(newSubscriptionHistory);
-
-    return userResponse;
-  } catch (error) {
-    // TODO: Enviar correo a Softstoic porque el User Register no se crea
-    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
-  }
-};
-
-/**
- * Query for users
- * @param {Object} filter - filter
- * @param {Object} options - Query options
- * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
- * @param {number} [options.limit] - Maximum number of results per page (default = 10)
- * @param {number} [options.page] - Current page (default = 1)
- * @returns {Promise<QueryResult>}
- */
-const queryUsers = async (filter, options) => {
-  const users = await User.paginate(filter, options);
-  return users;
-};
+const config = require('../config/config');
 
 /**
  * Get user by id
@@ -68,6 +20,89 @@ const getUserById = async (id) => {
  */
 const getUserByEmail = async (email) => {
   return User.findOne({ where: { email } });
+};
+
+/**
+ * Delete user by id
+ * @param {ObjectId} userId
+ * @returns {Promise<User>}
+ */
+const deleteUserById = async (userId) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+  }
+  await user.destroy();
+  return user;
+};
+
+/**
+ * Delete user by email
+ * @param {ObjectId} userEmail
+ * @returns {Promise<User>}
+ */
+const deleteUserByEmail = async (userEmail) => {
+  const user = await getUserByEmail(userEmail);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el email.');
+  }
+  await user.destroy();
+  return user;
+};
+
+/**
+ * Create a user
+ * @param {Object} userBody
+ * @returns {Promise<User>}
+ */
+const createUser = async (userBody) => {
+  try {
+    if (await User.isEmailTaken(userBody.email)) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Email no disponible, prueba con otro.');
+    }
+    const userResponse = await User.create(userBody);
+
+    const newSubscriptionHistory = {
+      externalCouponId: userBody.coupon || config.coupon_default_zero_discount,
+      newUserId: userResponse.id,
+      newUserEmail: userBody.email,
+      amountPaid: null, // tilopay will calculate this via webhook successful
+      newSubscriptionNextPaymentDate: null, // tilopay will calculate this via webhook successful
+      isNewUserSubscriptionActive: false, // tilopay will calculate this via webhook successful
+    };
+
+    if (!newSubscriptionHistory) {
+      // TODO: Enviar correo a Softstoic porque el SubscriptionHistory no se crea
+
+      deleteUserById(userResponse.id); // delete user if subscriptionHistory is not created
+
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Historial de Subscripción no encontrado, verifica el id.');
+    }
+
+    await subscriptionHistoryService.createSubscriptionHistory(newSubscriptionHistory);
+
+    return userResponse;
+  } catch (error) {
+    // TODO: Enviar correo a Softstoic porque el User Register no se crea
+
+    deleteUserByEmail(userBody.email); // delete user if subscriptionHistory is not created
+
+    throw new ApiError(httpStatus.BAD_REQUEST, error.message);
+  }
+};
+
+/**
+ * Query for users
+ * @param {Object} filter - filter
+ * @param {Object} options - Query options
+ * @param {string} [options.sortBy] - Sort option in the format: sortField:(desc|asc)
+ * @param {number} [options.limit] - Maximum number of results per page (default = 10)
+ * @param {number} [options.page] - Current page (default = 1)
+ * @returns {Promise<QueryResult>}
+ */
+const queryUsers = async (filter, options) => {
+  const users = await User.paginate(filter, options);
+  return users;
 };
 
 /**
@@ -111,20 +146,6 @@ const updateUserToActivated = async (userId, updateBody) => {
 
   await user.save();
 
-  return user;
-};
-
-/**
- * Delete user by id
- * @param {ObjectId} userId
- * @returns {Promise<User>}
- */
-const deleteUserById = async (userId) => {
-  const user = await getUserById(userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
-  }
-  await user.destroy();
   return user;
 };
 
