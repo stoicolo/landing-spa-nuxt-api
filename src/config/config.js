@@ -36,6 +36,7 @@ const envVarsSchema = Joi.object()
     IDRIVE_SECRET_KEY: Joi.string().description('iDrive secret key'),
     IDRIVE_BUCKET_NAME: Joi.string().description('iDrive bucket name'),
     TRIAL_DAYS: Joi.number().default(4320).description('3 days for trial'),
+    COUPON_DEFAULT_ZERO_DISCOUNT: Joi.string().default('26BMM3YH').description('coupon default zero discount'),
   })
   .unknown();
 
@@ -83,6 +84,7 @@ module.exports = {
     },
   },
   trial_days: envVars.TRIAL_DAYS,
+  coupon_default_zero_discount: envVars.COUPON_DEFAULT_ZERO_DISCOUNT,
   idrive: {
     endpoint: envVars.IDRIVE_ENDPOINT,
     region: envVars.IDRIVE_REGION,
