@@ -17,7 +17,6 @@ const Payroll = sequelize.define(
     },
     agentId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
       references: {
         model: 'User',
@@ -40,7 +39,6 @@ const Payroll = sequelize.define(
     },
     clientId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
       references: {
         model: 'User',
@@ -50,7 +48,6 @@ const Payroll = sequelize.define(
     externalCouponId: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
       references: {
         model: 'Coupon',
         key: 'externalCouponId',

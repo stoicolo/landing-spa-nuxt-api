@@ -24,7 +24,6 @@ const SubscriptionHistory = sequelize.define(
     externalCouponId: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
       references: {
         model: 'Coupon',
         key: 'externalCouponId',
@@ -37,7 +36,7 @@ const SubscriptionHistory = sequelize.define(
     newUserEmail: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+
       trim: true,
       lowercase: true,
       validate: {

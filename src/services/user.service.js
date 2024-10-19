@@ -63,7 +63,7 @@ const createUser = async (userBody) => {
     const userResponse = await User.create(userBody);
 
     const newSubscriptionHistoryPayload = {
-      externalCouponId: userBody.coupon || '26BMM3YH',
+      externalCouponId: userBody.coupon || config.coupon_default_zero_discount,
       newUserId: userResponse.id,
       newUserEmail: userBody.email,
       amountPaid: null, // tilopay will calculate this via webhook successful

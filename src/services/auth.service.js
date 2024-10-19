@@ -5,6 +5,7 @@ const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
+const catchAsync = require('../utils/catchAsync');
 
 /**
  * Login with username and password
@@ -117,6 +118,7 @@ const verifyEmail = async (verifyEmailToken) => {
     }
     await Token.destroy({ where: { userId: user.dataValues.id, type: tokenTypes.VERIFY_EMAIL } });
     await userService.updateUserToActivated(user.dataValues.id, { isEmailVerified: true });
+
     logger.info(`Correo electrónico verificado exitosamente para el usuario: ${user.dataValues.email}`);
   } catch (error) {
     logger.error(`Fallo en la verificación de correo electrónico: ${error.message}`);
