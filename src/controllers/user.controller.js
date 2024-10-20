@@ -43,6 +43,15 @@ const getUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const checkUserActivationStatusbyUserId = catchAsync(async (req, res) => {
+  const user = await userService.getUserByPk(req.params.userId);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+  }
+  res.send({ isUserVerified: user.isEmailVerified });
+});
+
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.body.id, req.body);
   res.send(user);
@@ -80,4 +89,5 @@ module.exports = {
   deleteUser,
   sendContactFormResponseEmail,
   sendSubdomainEmail,
+  checkUserActivationStatusbyUserId,
 };
