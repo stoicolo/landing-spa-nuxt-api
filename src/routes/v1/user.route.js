@@ -20,6 +20,10 @@ router
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
+router
+  .route('/user/:userId')
+  .get(auth(), validate(userValidation.getUser), userController.checkUserActivationStatusbyUserId);
+
 module.exports = router;
 
 /**

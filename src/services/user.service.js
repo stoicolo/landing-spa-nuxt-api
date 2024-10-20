@@ -14,6 +14,15 @@ const getUserById = async (id) => {
 };
 
 /**
+ * Get user by PK
+ * @param {ObjectId} id
+ * @returns {Promise<User>}
+ */
+const getUserByPk = async (id) => {
+  return User.findOne({ where: { id } });
+};
+
+/**
  * Get user by email
  * @param {string} email
  * @returns {Promise<User>}
@@ -153,6 +162,7 @@ module.exports = {
   createUser,
   queryUsers,
   getUserById,
+  getUserByPk,
   getUserByEmail,
   updateUserById,
   updateUserToActivated,
