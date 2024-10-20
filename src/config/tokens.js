@@ -7,6 +7,16 @@ const tokenTypes = {
   PUBLIC_WEBSITE: 'publicWebsite',
 };
 
+const tokenTypeList = [
+  tokenTypes.ACCESS,
+  tokenTypes.REFRESH,
+  tokenTypes.RESET_PASSWORD,
+  tokenTypes.VERIFY_EMAIL,
+  tokenTypes.TRIAL_DAYS,
+  tokenTypes.PUBLIC_WEBSITE,
+];
+
 module.exports = {
   tokenTypes,
+  tokenTypeList,
 };
