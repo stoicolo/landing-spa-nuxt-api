@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const { password, objectId } = require('./custom.validation');
+const { tokenTypeList } = require('../config/tokens');
 
 const register = {
   body: Joi.object().keys({
@@ -55,10 +56,21 @@ const deleteUser = {
   }),
 };
 
+const createToken = {
+  body: Joi.object().keys({
+    userId: Joi.string().required(),
+    tokenType: Joi.string()
+      .required()
+      .valid(...tokenTypeList),
+    sendEmail: Joi.boolean().default(false),
+  }),
+};
+
 module.exports = {
   register,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  createToken,
 };

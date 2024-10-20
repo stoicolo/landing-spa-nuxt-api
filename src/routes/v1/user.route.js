@@ -24,6 +24,8 @@ router
   .route('/user/:userId')
   .get(auth(), validate(userValidation.getUser), userController.checkUserActivationStatusbyUserId);
 
+router.route('/user/').post(auth('manageUsers'), validate(userValidation.createToken), userController.createToken);
+
 module.exports = router;
 
 /**

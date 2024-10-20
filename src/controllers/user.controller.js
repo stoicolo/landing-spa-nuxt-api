@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { userService, tokenService, emailService } = require('../services');
 const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
+const { Token } = require('../models');
 
 /**
  * Register a new user
@@ -81,6 +82,45 @@ const sendSubdomainEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+/**
+ * Create Token for user by userId and tokenType
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+const createToken = catchAsync(async (req, res) => {
+  try {
+    const user = await userService.getUserById(req.body.userId);
+
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
+    }
+
+    await Token.deleteMany({ user: user.id, type: req.body.tokenType });
+
+    const tokens = await tokenService.generateAuthTokens(user, req.body.tokenType);
+
+    const response = {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      tokens,
+    };
+
+    if (req.body.sendEmail) {
+      // await emailService.sendEmailActivation(response.user, response.tokens);
+    }
+
+    logger.info(`Token created for user: ${user.email}`);
+    res.status(httpStatus.CREATED).send(response);
+  } catch (error) {
+    logger.error(`Error in createToken: ${error}`);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error en createToken');
+  }
+});
+
 module.exports = {
   register,
   getUsers,
@@ -90,4 +130,5 @@ module.exports = {
   sendContactFormResponseEmail,
   sendSubdomainEmail,
   checkUserActivationStatusbyUserId,
+  createToken,
 };
