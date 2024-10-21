@@ -5,7 +5,6 @@ const catchAsync = require('../utils/catchAsync');
 const { userService, tokenService, emailService } = require('../services');
 const { tokenTypes } = require('../config/tokens');
 const logger = require('../config/logger');
-const { Token } = require('../models');
 
 /**
  * Register a new user
@@ -95,8 +94,6 @@ const createToken = catchAsync(async (req, res) => {
       throw new ApiError(httpStatus.NOT_FOUND, 'Usuario no encontrado, verifica el id.');
     }
 
-    await Token.deleteMany({ user: user.id, type: req.body.tokenType });
-
     const tokens = await tokenService.generateAuthTokens(user, req.body.tokenType);
 
     const response = {
@@ -117,7 +114,7 @@ const createToken = catchAsync(async (req, res) => {
     res.status(httpStatus.CREATED).send(response);
   } catch (error) {
     logger.error(`Error in createToken: ${error}`);
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error en createToken');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error when createToken');
   }
 });
 
