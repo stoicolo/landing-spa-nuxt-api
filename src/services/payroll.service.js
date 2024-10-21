@@ -85,8 +85,24 @@ const getPayrollsByAgentId = async (userId) => {
 };
 
 /**
- * Update payroll by id
- * @param {ObjectId} userId
+ * Get last legal agreement by type
+ * @param {string} type
+ * @returns {Promise<LegalAgreement>}
+ */
+const getLastPayrollByAgentIdAndClientId = async (agentId, clientId) => {
+  return Payroll.findOne({
+    where: {
+      agentId,
+      clientId,
+    },
+    order: [['id', 'DESC']],
+    limit: 1,
+  });
+};
+
+/**
+ * Update payroll by internal id
+ * @param {ObjectId} internal id
  * @param {Object} updateBody
  * @returns {Promise<Payroll>}
  */
@@ -123,7 +139,7 @@ const updatePayroll = async (id, updateBody) => {
  * @returns {Promise<Payroll>}
  */
 const updatePayrollByPublicWebhooks = async (payrollClientId, payrollAgentId, updateBody) => {
-  const payroll = await getPayrollByClientIdAgentId(payrollClientId, payrollAgentId);
+  const payroll = await getLastPayrollByAgentIdAndClientId(payrollAgentId, payrollClientId);
 
   if (!payroll) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Planilla registro no encontrado, verifica el id.');
@@ -170,4 +186,5 @@ module.exports = {
   deletePayroll,
   getCouponsByAgentId,
   updatePayrollByPublicWebhooks,
+  getLastPayrollByAgentIdAndClientId,
 };
