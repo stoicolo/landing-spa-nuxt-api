@@ -72,6 +72,13 @@ const generateAuthTokens = async (user, tokenType) => {
     const refreshTokenExpires = dayjs().add(config.jwt.refreshExpirationDays, 'days');
     const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: tokenTypes.REFRESH,
+      },
+    });
+
     await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
     result = {
@@ -88,6 +95,13 @@ const generateAuthTokens = async (user, tokenType) => {
     const verifyEmailTokenExpires = dayjs().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
     const verifyEmailToken = generateToken(user.id, verifyEmailTokenExpires, tokenTypes.VERIFY_EMAIL);
 
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: tokenTypes.VERIFY_EMAIL,
+      },
+    });
+
     await saveToken(verifyEmailToken, user.id, verifyEmailTokenExpires, tokenTypes.VERIFY_EMAIL);
 
     result = {
@@ -100,6 +114,13 @@ const generateAuthTokens = async (user, tokenType) => {
     const resetPasswordTokenExpires = dayjs().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
     const resetPasswordToken = generateToken(user.id, resetPasswordTokenExpires, tokenTypes.RESET_PASSWORD);
 
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: tokenTypes.RESET_PASSWORD,
+      },
+    });
+
     await saveToken(resetPasswordToken, user.id, resetPasswordTokenExpires, tokenTypes.RESET_PASSWORD);
 
     result = {
@@ -111,6 +132,13 @@ const generateAuthTokens = async (user, tokenType) => {
   } else if (tokenType === tokenTypes.TRIAL_DAYS) {
     const resetTrialDaysTokenExpires = dayjs().add(config.trial_days, 'minutes');
     const resetTrialDaysToken = generateTokenWithData(user, tokenTypes.TRIAL_DAYS, resetTrialDaysTokenExpires);
+
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: tokenTypes.TRIAL_DAYS,
+      },
+    });
 
     await saveToken(resetTrialDaysToken, user.id, resetTrialDaysTokenExpires, tokenTypes.TRIAL_DAYS);
 
@@ -230,7 +258,13 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
       throw new Error();
     }
     await userService.updateUserById(user.id, { password: newPassword });
-    await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
+
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: tokenTypes.RESET_PASSWORD,
+      },
+    });
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'El restablecimiento de contraseña falló');
   }
@@ -248,7 +282,13 @@ const verifyEmail = async (verifyEmailToken) => {
     if (!user) {
       throw new Error();
     }
-    await Token.deleteMany({ user: user.id, type: tokenTypes.VERIFY_EMAIL });
+
+    await Token.destroy({
+      where: {
+        userId: user.id,
+        type: tokenTypes.VERIFY_EMAIL,
+      },
+    });
     await userService.updateUserById(user.id, { isEmailVerified: true });
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'La verificación de correo electrónico falló');

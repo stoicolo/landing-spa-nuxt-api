@@ -58,7 +58,7 @@ const deleteUser = {
 
 const createToken = {
   body: Joi.object().keys({
-    userId: Joi.string().required(),
+    userId: Joi.number().integer(),
     tokenType: Joi.string()
       .required()
       .valid(...tokenTypeList),
