@@ -103,7 +103,7 @@ const getLastCouponByType = async (type) => {
     where: {
       type,
     },
-    order: [['createdAt', 'DESC']],
+    order: [['id', 'DESC']],
     limit: 1,
   });
 };
