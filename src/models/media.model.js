@@ -23,7 +23,6 @@ const Media = sequelize.define(
     imageExternalUrl: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     imageExternalId: {
       type: DataTypes.STRING,
