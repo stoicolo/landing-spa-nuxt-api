@@ -24,12 +24,12 @@ const uploadSingleImage = async (req, res) => {
       };
       bdResult = await Media.create(menuBody);
     } catch (error) {
-      res.json({ message: 'Error when saving images URLs', error: error.message });
+      return res.json({ message: 'Error when saving images URLs', error: error.message });
     }
 
-    res.json({ message: 'image uploaded!', data: bdResult });
+    return res.json({ message: 'image uploaded!', data: bdResult });
   } catch (error) {
-    res.status(500).json({ message: 'Error when uploading image: ', error: error.message });
+    return res.status(500).json({ message: 'Error when uploading image: ', error: error.message });
   }
 };
 
