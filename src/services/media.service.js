@@ -6,30 +6,70 @@ const ApiError = require('../utils/ApiError');
 
 const uploadSingleImage = async (req, res) => {
   try {
+    // Log inicial
+    console.log('Starting upload process');
+    console.log('Request body:', req.body);
+    
     const { file } = req;
-
+    
     if (!file) {
+      console.log('No file provided');
       return res.status(400).json({ message: 'a file is required' });
     }
 
-    const result = await uploadImage(file, 'images', req.body.websiteId);
-    let bdResult = null;
+    console.log('File details:', {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size
+    });
 
-    try {
-      const menuBody = {
-        websiteId: req.body.websiteId,
-        userId: req.body.userId,
-        imageExternalUrl: result.url,
-        imageExternalId: result.id,
-      };
-      bdResult = await Media.create(menuBody);
-    } catch (error) {
-      return res.json({ message: 'Error when saving images URLs', error: error.message });
+    // Upload image
+    console.log('Uploading image...');
+    const result = await uploadImage(file, 'images', req.body.websiteId);
+    console.log('Upload result:', result);
+
+    // Validate required fields
+    if (!req.body.websiteId || !req.body.userId) {
+      console.log('Missing required fields');
+      return res.status(400).json({ 
+        message: 'websiteId and userId are required',
+        receivedData: { websiteId: req.body.websiteId, userId: req.body.userId }
+      });
     }
 
-    return res.json({ message: 'image uploaded!', data: bdResult });
+    // Prepare data for database
+    const menuBody = {
+      websiteId: parseInt(req.body.websiteId),  // Asegurar que sea número
+      userId: parseInt(req.body.userId),        // Asegurar que sea número
+      imageExternalUrl: result.url,
+      imageExternalId: result.id,
+    };
+
+    console.log('Attempting to save to database with data:', menuBody);
+
+    // Save to database
+    const bdResult = await Media.create(menuBody);
+    console.log('Database save result:', bdResult);
+
+    // Send success response
+    return res.status(200).json({ 
+      message: 'image uploaded!', 
+      data: bdResult 
+    });
+
   } catch (error) {
-    return res.status(500).json({ message: 'Error when uploading image: ', error: error.message });
+    // Log error details
+    console.error('Error in uploadSingleImage:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+
+    // Send error response
+    return res.status(500).json({ 
+      message: 'Error processing image upload', 
+      error: error.message 
+    });
   }
 };
 
