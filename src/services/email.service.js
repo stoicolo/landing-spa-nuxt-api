@@ -39,9 +39,11 @@ const sendEmail = async (to, subject, text) => {
 
     await transport.sendMail(msg);
 
+    // eslint-disable-next-line no-console
     console.log('Email sent successfully.');
     return true; // or some other success indicator
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error sending email:', error);
     return false; // or handle error in another way
   }
