@@ -22,6 +22,7 @@ const CouponModel = require('./coupon.model');
 const SubscriptionHistoryModel = require('./subscription_history.model');
 const PayrollModel = require('./payroll.model');
 const AgentModel = require('./agent.model');
+const ArticleCategoryModel = require('./article_category.model');
 
 const models = {
   User: UserModel,
@@ -48,6 +49,7 @@ const models = {
   SubscriptionHistory: SubscriptionHistoryModel,
   Payroll: PayrollModel,
   Agent: AgentModel,
+  ArticleCategory: ArticleCategoryModel,
 };
 
 associateMenuHeader(models);
