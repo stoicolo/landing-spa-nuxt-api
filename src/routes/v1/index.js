@@ -22,6 +22,7 @@ const config = require('../../config/config');
 const subscriptionHistoryRoute = require('./subscription_history.route');
 const payrollRoute = require('./payroll.route');
 const agentRoute = require('./agent.route');
+const articleCategoryRoute = require('./article_category.route');
 
 const router = express.Router();
 
@@ -109,6 +110,10 @@ const defaultRoutes = [
   {
     path: '/agents',
     route: agentRoute,
+  },
+  {
+    path: '/article_categories',
+    route: articleCategoryRoute,
   },
 ];
 
