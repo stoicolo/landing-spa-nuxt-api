@@ -13,7 +13,11 @@ const logger = require('../config/logger');
  */
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
-  const tokens = await tokenService.generateAuthTokens(user, tokenTypes.VERIFY_EMAIL);
+
+  let tokens = await tokenService.generateTokenWithData(user, tokenTypes.VERIFY_EMAIL);
+
+  tokens = { verify_email: { token: tokens } };
+
   const response = {
     user: {
       id: user.id,
