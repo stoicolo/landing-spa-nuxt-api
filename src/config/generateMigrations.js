@@ -31,6 +31,7 @@ function generateMigrations() {
     Agent: models.Agent,
     ArticleCategory: models.ArticleCategory,
     ArticleBrand: models.ArticleBrand,
+    Article: models.Article,
   };
 
   const modelsArray = Object.values(modelsSorted);
