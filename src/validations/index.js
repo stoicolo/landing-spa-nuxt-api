@@ -21,3 +21,4 @@ module.exports.payrollValidation = require('./payroll.validation');
 module.exports.agentValidation = require('./agent.validation');
 module.exports.articleCategoryValidation = require('./article_category.validation');
 module.exports.articleBrandValidation = require('./article_brand.validation');
+module.exports.articleValidation = require('./article.validation');
