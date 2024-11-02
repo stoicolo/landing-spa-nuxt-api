@@ -1,0 +1,38 @@
+const articleCondition = [
+  'new',
+  'used',
+  'refurbished',
+  'open_box',
+  'other',
+  'unknown',
+  'not_specified',
+  'seller_refurbished',
+  'manufacturer_refurbished',
+  'pre_owned',
+  'certified_refurbished',
+  'seller_certified',
+  'pre_owned',
+  'pre_owned_certified',
+  'pre_owned',
+];
+const articleStatuses = [
+  'active',
+  'inactive',
+  'disabled',
+  'deleted',
+  'discontinued',
+  'sold_out',
+  'out_of_stock',
+  'pending',
+  'draft',
+  'published',
+  'unpublished',
+  'archived',
+  'hidden',
+  'visible',
+  'visible_hidden',
+  'visible_hidden_deleted',
+  'visible_hidden',
+];
+
+module.exports = { articleCondition, articleStatuses };
