@@ -78,8 +78,11 @@ const resetPassword = catchAsync(async (req, res) => {
  * @param {Object} res - Express response object
  */
 const sendActivationEmail = catchAsync(async (req, res) => {
-  const verifyEmailToken = await tokenService.generateAuthTokens(req.body.user, tokenTypes.VERIFY_EMAIL);
+  const { name, email, id } = req.body.user;
+  const verifyEmailToken = await tokenService.generateAuthTokens({ name, email, id }, tokenTypes.VERIFY_EMAIL);
+
   await emailService.sendEmailActivation(req.body.user, verifyEmailToken);
+
   logger.info(`Activation email sent to: ${req.user.email}`);
   res.status(httpStatus.NO_CONTENT).send();
 });
