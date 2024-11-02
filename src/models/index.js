@@ -24,6 +24,7 @@ const PayrollModel = require('./payroll.model');
 const AgentModel = require('./agent.model');
 const ArticleCategoryModel = require('./article_category.model');
 const ArticleBrandModel = require('./article_brand.model');
+const ArticleModel = require('./article.model');
 
 const models = {
   User: UserModel,
@@ -52,6 +53,7 @@ const models = {
   Agent: AgentModel,
   ArticleCategory: ArticleCategoryModel,
   ArticleBrand: ArticleBrandModel,
+  Article: ArticleModel,
 };
 
 associateMenuHeader(models);
