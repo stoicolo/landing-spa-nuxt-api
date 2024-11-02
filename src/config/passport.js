@@ -1,8 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
 const passportJWT = require('passport-jwt');
-
+const config = require('./config');
 const { User } = require('../models');
 
 const JWTStrategy = passportJWT.Strategy;
@@ -18,34 +17,32 @@ module.exports = () => {
         usernameField: 'email',
         passwordField: 'password',
       },
-      (email, password, callback) => {
-        passwordFromLogin = password;
+      async (email, password, callback) => {
+        try {
+          passwordFromLogin = password;
 
-        return User.findOne({ where: { email } })
-          .then((user, err) => {
-            // Match User
-            if (!user) {
-              return callback(null, false);
+          // Match User
+          const userByEmail = await User.findOne({ where: { email } });
+          if (!userByEmail) {
+            return callback(null, false);
+          }
+
+          const user = await User.findByPk(userByEmail.personalId);
+          if (!user) {
+            throw new Error('Usuario no encontrado');
+          }
+
+          // Match Password
+          User.isPasswordMatch(passwordFromLogin, user.password, (err, isMatch) => {
+            if (err) throw err;
+            if (isMatch) {
+              return callback(null, user);
             }
-
-            return User.findByPk(user.personalId)
-              .then((user, err) => {
-                if (!user) {
-                  throw new Error(err);
-                }
-
-                // Match Password
-                User.isPasswordMatch(passwordFromLogin, user.password, (err, isMatch) => {
-                  if (err) throw err;
-                  if (isMatch) {
-                    return callback(null, user);
-                  }
-                  return callback(err);
-                });
-              })
-              .catch((err) => callback(err));
-          })
-          .catch((err) => callback(err));
+            return callback(err);
+          });
+        } catch (err) {
+          return callback(err);
+        }
       }
     )
   );
@@ -55,7 +52,7 @@ module.exports = () => {
     new JWTStrategy(
       {
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: 'CC_24',
+        secretOrKey: config.jwt.secret,
       },
       async (jwtPayload, callback) => {
         try {
