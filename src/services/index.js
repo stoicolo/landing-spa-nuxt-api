@@ -23,3 +23,4 @@ module.exports.payrollService = require('./payroll.service');
 module.exports.agentService = require('./agent.service');
 module.exports.articleCategoryService = require('./article_category.service');
 module.exports.articleBrandService = require('./article_brand.service');
+module.exports.articleService = require('./article.service');
