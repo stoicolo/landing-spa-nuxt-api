@@ -65,6 +65,7 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
 const generateAuthTokens = async (user, tokenType) => {
   let result = {};
 
+  // Generate tokens for the user (access and refresh tokens)
   if (tokenType === tokenTypes.ACCESS || tokenType === tokenTypes.REFRESH) {
     const accessTokenExpires = dayjs().add(config.jwt.accessExpirationMinutes, 'minutes');
     const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
@@ -72,6 +73,7 @@ const generateAuthTokens = async (user, tokenType) => {
     const refreshTokenExpires = dayjs().add(config.jwt.refreshExpirationDays, 'days');
     const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
 
+    // Remove existing refresh tokens for the user
     await Token.destroy({
       where: {
         userId: user.id,
@@ -92,9 +94,12 @@ const generateAuthTokens = async (user, tokenType) => {
       },
     };
   } else if (tokenType === tokenTypes.VERIFY_EMAIL) {
-    const verifyEmailTokenExpires = dayjs().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
-    const verifyEmailToken = generateToken(user.id, verifyEmailTokenExpires, tokenTypes.VERIFY_EMAIL);
+    // Generate verify email token for the user (to verify their email and activate their account)
 
+    const verifyEmailTokenExpires = dayjs().add(config.jwt.verifyEmailExpirationMinutes, 'minutes');
+    const verifyEmailToken = generateTokenWithData(user, tokenTypes.VERIFY_EMAIL, verifyEmailTokenExpires);
+
+    // Remove existing verify email tokens for the user
     await Token.destroy({
       where: {
         userId: user.id,
@@ -102,6 +107,7 @@ const generateAuthTokens = async (user, tokenType) => {
       },
     });
 
+    // Save new verify email token
     await saveToken(verifyEmailToken, user.id, verifyEmailTokenExpires, tokenTypes.VERIFY_EMAIL);
 
     result = {
@@ -111,9 +117,12 @@ const generateAuthTokens = async (user, tokenType) => {
       },
     };
   } else if (tokenType === tokenTypes.RESET_PASSWORD) {
+    // Generate reset password token for the user (to reset their password)
+
     const resetPasswordTokenExpires = dayjs().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
     const resetPasswordToken = generateToken(user.id, resetPasswordTokenExpires, tokenTypes.RESET_PASSWORD);
 
+    // Remove existing reset password tokens for the user
     await Token.destroy({
       where: {
         userId: user.id,
@@ -130,9 +139,12 @@ const generateAuthTokens = async (user, tokenType) => {
       },
     };
   } else if (tokenType === tokenTypes.TRIAL_DAYS) {
+    // Generate reset trial days token for the user (to reset their trial days)
+
     const resetTrialDaysTokenExpires = dayjs().add(config.trial_days, 'minutes');
     const resetTrialDaysToken = generateTokenWithData(user, tokenTypes.TRIAL_DAYS, resetTrialDaysTokenExpires);
 
+    // Remove existing trial days tokens for the user
     await Token.destroy({
       where: {
         userId: user.id,
