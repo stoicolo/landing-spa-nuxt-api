@@ -193,6 +193,31 @@ const verifyToken = async (token, type) => {
 };
 
 /**
+ * Verify token with data and return token doc (or throw an error if it is not valid)
+ * @param {string} token
+ * @param {string} type
+ * @returns {Promise<Token>}
+ */
+const verifyTokenWithData = async (token, type) => {
+  const payload = jwt.verify(token, config.jwt.secret);
+
+  const tokenDoc = await Token.findOne({
+    where: {
+      token,
+      userId: payload.data.id,
+      type,
+      blacklisted: false,
+    },
+    order: [['createdAt', 'DESC']],
+  });
+
+  if (!tokenDoc) {
+    throw new Error('Token no encontrado');
+  }
+  return tokenDoc;
+};
+
+/**
  * Login with username and password
  * @param {string} email
  * @param {string} password
@@ -312,6 +337,7 @@ module.exports = {
   saveToken,
   generateAuthTokens,
   verifyToken,
+  verifyTokenWithData,
   loginUserWithEmailAndPassword,
   logout,
   refreshAuth,
