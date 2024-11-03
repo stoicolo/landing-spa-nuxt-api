@@ -3,6 +3,7 @@
 const { v4: uuidv4 } = require('uuid');
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/sequelize');
+const { articleTypes } = require('../config/articleLists');
 
 const Article = sequelize.define(
   'Article',
@@ -36,8 +37,15 @@ const Article = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
       references: {
-        model: 'Article',
+        model: 'ArticleBrand',
         key: 'internalId',
+      },
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [articleTypes],
       },
     },
     categoryId: {

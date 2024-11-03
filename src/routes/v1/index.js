@@ -122,7 +122,7 @@ const defaultRoutes = [
     route: articleBrandRoute,
   },
   {
-    path: '/article',
+    path: '/articles',
     route: articleRoute,
   },
 ];

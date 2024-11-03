@@ -35,4 +35,33 @@ const articleStatuses = [
   'visible_hidden',
 ];
 
-module.exports = { articleCondition, articleStatuses };
+const articleTypes = [
+  'product',
+  'blog',
+  'service',
+  'subscription',
+  'digital',
+  'physical',
+  'download',
+  'upload',
+  'rental',
+  'lease',
+  'subscription',
+  'membership',
+  'access',
+  'ticket',
+  'event',
+  'course',
+  'training',
+  'workshop',
+  'seminar',
+  'webinar',
+  'conference',
+  'meeting',
+  'session',
+  'class',
+  'lesson',
+  'tutorial',
+];
+
+module.exports = { articleCondition, articleStatuses, articleTypes };

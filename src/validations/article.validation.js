@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const dayjs = require('dayjs');
+const { articleTypes } = require('../config/articleLists');
 
 const createArticle = {
   body: Joi.object().keys({
@@ -14,7 +15,7 @@ const createArticle = {
         if (!date.isValid()) {
           return helpers.error('any.invalid');
         }
-        if (date.isBefore(dayjs())) {
+        if (date.isAfter(dayjs())) {
           return helpers.error('date.max');
         }
         return date.format('YYYY-MM-DD HH:mm'); // Convertimos al formato que Sequelize espera
@@ -25,6 +26,9 @@ const createArticle = {
       }),
     price: Joi.number().precision(2).positive().default(0),
     sections: Joi.array().items(Joi.object()).required(),
+    type: Joi.string()
+      .required()
+      .valid(...articleTypes),
   }),
 };
 
