@@ -15,7 +15,7 @@ const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
   const { name, email, id } = user.dataValues;
 
-  let tokens = await tokenService.generateTokenWithData({ name, email, id }, tokenTypes.VERIFY_EMAIL);
+  let tokens = await tokenService.generateAuthTokens({ name, email, id }, tokenTypes.VERIFY_EMAIL);
 
   tokens = { verify_email: { token: tokens } };
 
