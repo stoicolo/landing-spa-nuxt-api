@@ -143,9 +143,9 @@ const sendResetPasswordEmail = async (to, token) => {
  * @param  {} emailData
  */
 const sendEmailActivation = async (emailData, token) => {
-  const link = `${config.fe_url}/activate-user/?token=${token.verify_email.token}`;
+  console.log('token.verify_email.token', token.verify_email.token);
+  const link = `${config.fe_url}/activate-user/?token=${token.verify_email.token.data}`;
 
-  // Asumimos que la imagen del logo está alojada en un servidor web accesible
   const logoUrl = `https://a0x7.c18.e2-5.dev/weblox-v1/weblox-v1/images/platform/weblox-logo-name.png`;
 
   const output = `
