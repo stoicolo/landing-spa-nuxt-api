@@ -18,3 +18,5 @@ module.exports.couponController = require('./coupon.controller');
 module.exports.subscriptionHistoryController = require('./subscription_history.controller');
 module.exports.payrollController = require('./payroll.controller');
 module.exports.agentController = require('./agent.controller');
+module.exports.articleCategoryController = require('./article_category.controller');
+module.exports.articleBrandController = require('./article_brand.controller');
