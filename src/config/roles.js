@@ -11,6 +11,9 @@ const allRoles = {
     'manageSubscriptionHistories',
     'managePayrolls',
     'manageAgents',
+    'manageArticleCategories',
+    'manageArticleBrands',
+    'manageArticles',
   ],
   jpag: [
     'getUsers',
@@ -22,6 +25,9 @@ const allRoles = {
     'manageSubscriptionHistories',
     'managePayrolls',
     'manageAgents',
+    'manageArticleCategories',
+    'manageArticleBrands',
+    'manageArticles',
   ],
 };
 
