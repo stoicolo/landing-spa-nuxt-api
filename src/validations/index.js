@@ -19,3 +19,5 @@ module.exports.couponValidation = require('./coupon.validation');
 module.exports.subscriptionHistoryValidation = require('./subscription_history.validation');
 module.exports.payrollValidation = require('./payroll.validation');
 module.exports.agentValidation = require('./agent.validation');
+module.exports.articleCategoryValidation = require('./article_category.validation');
+module.exports.articleBrandValidation = require('./article_brand.validation');
